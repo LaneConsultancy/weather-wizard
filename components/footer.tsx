@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, MapPin, Mail, Clock, ChevronRight } from "lucide-react";
+import { Phone, MapPin, Clock, ChevronRight, Cookie } from "lucide-react";
 import { getAllAreas } from "@/lib/areas";
+import { CookieSettingsButton } from "@/components/cookie-consent-banner";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -27,6 +28,11 @@ export function Footer() {
     { name: "Our Services", href: "#services" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "Contact Us", href: "#contact" },
+  ];
+
+  const legalLinks = [
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Cookie Policy", href: "/cookies" },
   ];
 
   return (
@@ -165,7 +171,17 @@ export function Footer() {
               © {currentYear} Weather Wizard Roofing & Guttering. All rights
               reserved.
             </p>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 flex-wrap justify-center">
+              {legalLinks.map((link, index) => (
+                <Link
+                  key={index}
+                  href={link.href}
+                  className="text-white/50 hover:text-copper transition-colors text-sm"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <CookieSettingsButton />
               <span className="text-white/50 text-sm flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500" />
                 Fully Insured & Certified

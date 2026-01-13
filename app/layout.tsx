@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Cinzel } from "next/font/google";
 import "./globals.css";
+import { ConsentProvider } from "@/lib/cookie-consent";
+import { CookieConsentBanner } from "@/components/cookie-consent-banner";
+import { MicrosoftUET } from "@/components/microsoft-uet";
+import { WhatConverts } from "@/components/whatconverts";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -145,7 +149,13 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans">
-        {children}
+        <ConsentProvider>
+          {children}
+          <CookieConsentBanner />
+          {/* Tracking scripts - only load after consent */}
+          <MicrosoftUET />
+          <WhatConverts />
+        </ConsentProvider>
       </body>
     </html>
   );
