@@ -26,7 +26,6 @@ export function Header({ variant = "default" }: HeaderProps) {
   const navLinks = [
     { href: "#services", label: "Services" },
     { href: "#about", label: "About" },
-    { href: "#testimonials", label: "Reviews" },
     { href: "#contact", label: "Contact" },
   ];
 
