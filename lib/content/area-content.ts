@@ -16,27 +16,21 @@ export interface AreaContent {
 export function generateAreaContent(area: Area): AreaContent {
   const nearbyAreasText = area.nearbyAreas.slice(0, 3).join(', ');
 
-  // Estimate homes protected based on population (roughly 10% penetration)
-  const homesProtected = area.population
-    ? Math.round((area.population * 0.10) / 100) * 100
-    : 500;
-
   return {
-    heroHeadline: `Expert Roofing Services in ${area.name}`,
-    heroSubheadline: `Protecting ${area.name} homes for over 25 years`,
-    trustSignal: `${homesProtected.toLocaleString()}+ ${area.name} Homes Protected`,
-    serviceAreaDescription: `Based in ${area.displayName}, proudly serving ${nearbyAreasText} and surrounding areas`,
-    metaTitle: `${area.name} Roofing Services | Weather Wizard | Roof Repairs & Guttering`,
-    metaDescription: `Expert roofing services in ${area.displayName}. Local specialists in roof repairs, installations, guttering, fascias & soffits. 25+ years experience. Free quotes.`,
+    heroHeadline: `${area.name} Roof Problem?\nI'll Fix It Properly.`,
+    heroSubheadline: `After 25 years fixing Kent roofs, I've seen every problem going. Based in Maidstone, I cover ${area.name} and all of ${area.county}. I answer my own phone, turn up when I say I will, and give you a fixed price before any work starts.`,
+    trustSignal: `25+ Years Fixing ${area.name} Roofs`,
+    serviceAreaDescription: `Based in Maidstone, covering ${area.displayName}, ${nearbyAreasText} and surrounding areas`,
+    metaTitle: `Roofer in ${area.name} | 25 Years Experience | Weather Wizard`,
+    metaDescription: `Need a roofer in ${area.displayName}? 25 years' experience, public liability insured. I answer my phone, give fixed prices, and fix roofs properly. Call 0800 316 2922.`,
     keywords: [
-      `roofing ${area.name.toLowerCase()}`,
-      `roof repairs ${area.name.toLowerCase()}`,
       `roofer ${area.name.toLowerCase()}`,
+      `roof repairs ${area.name.toLowerCase()}`,
+      `roofing ${area.name.toLowerCase()}`,
       `guttering ${area.name.toLowerCase()}`,
-      `fascias soffits ${area.name.toLowerCase()}`,
       `${area.name.toLowerCase()} roofing services`,
-      `roof installation ${area.name.toLowerCase()}`,
-      ...area.postcodes.map(pc => `roofing ${pc}`),
+      `emergency roofer ${area.name.toLowerCase()}`,
+      ...area.postcodes.map(pc => `roofer ${pc}`),
     ],
   };
 }
@@ -59,18 +53,11 @@ export function generateServiceHeadline(area: Area, service: string): string {
  * Generate trust signal variations
  */
 export function generateTrustSignals(area: Area) {
-  const homesProtected = area.population
-    ? Math.round((area.population * 0.10) / 100) * 100
-    : 500;
-
-  const projectsCompleted = Math.round(homesProtected * 1.5);
-  const rating = 4.9;
-
   return {
-    homesProtected: `${homesProtected.toLocaleString()}+ ${area.name} Homes Protected`,
-    projectsCompleted: `${projectsCompleted.toLocaleString()}+ Projects Completed`,
-    rating: `${rating} Star Rating`,
-    experience: '25+ Years Experience',
+    experience: "25+ Years' Experience",
+    insured: 'Public Liability Insured',
+    location: 'Based in Maidstone',
+    coverage: `Covering ${area.name}`,
   };
 }
 
@@ -94,12 +81,13 @@ export function generateLocalBusinessStructuredData(area: Area) {
     '@context': 'https://schema.org',
     '@type': 'RoofingContractor',
     name: `Weather Wizard - ${area.name}`,
-    description: `Professional roofing services in ${area.displayName}`,
+    description: `Professional roofing services in ${area.displayName}. 25 years' experience, public liability insured.`,
     url: `https://weatherwizard.co.uk/${area.slug}`,
-    telephone: '01234567890', // Replace with actual phone
+    telephone: '08003162922',
     address: {
       '@type': 'PostalAddress',
-      addressLocality: area.name,
+      addressLocality: 'Maidstone',
+      addressRegion: 'Kent',
       addressCountry: 'GB',
     },
     areaServed: {
@@ -124,11 +112,7 @@ export function generateLocalBusinessStructuredData(area: Area) {
       },
       geoRadius: '15000', // 15km radius
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '250',
-    },
+    // Note: aggregateRating removed - new business, no reviews yet
   };
 }
 

@@ -1,9 +1,6 @@
 import Link from "next/link";
 import { Area, getNearbyAreas } from "@/lib/areas";
-import { MapPin, Navigation } from "lucide-react";
-import { Cinzel } from "next/font/google";
-
-const cinzel = Cinzel({ subsets: ["latin"], weight: ["700"] });
+import { MapPin, Navigation, ChevronRight, Building } from "lucide-react";
 
 interface AreaLocalInfoProps {
   area: Area;
@@ -13,57 +10,94 @@ export function AreaLocalInfo({ area }: AreaLocalInfoProps) {
   const nearbyAreas = getNearbyAreas(area.slug);
 
   return (
-    <section className="py-16 bg-navy-50">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+    <section className="relative py-20 md:py-28 bg-cream overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-copper/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute bottom-0 right-0 w-72 h-72 bg-slate-200/50 rounded-full blur-3xl translate-y-1/2 translate-x-1/2" />
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Local Information */}
           <div>
-            <h2 className={`${cinzel.className} text-3xl md:text-4xl font-bold text-navy mb-6`}>
+            <span className="inline-block text-copper font-semibold text-sm tracking-wider uppercase mb-3">
+              Local Coverage
+            </span>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-900 mb-8">
               Serving {area.displayName}
             </h2>
-            <div className="space-y-4 text-navy/80">
-              <div className="flex items-start gap-3">
-                <MapPin className="w-6 h-6 text-gold flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-navy mb-2">Our Service Area</h3>
-                  <p>
-                    We're proud to serve {area.displayName} and the surrounding areas.
-                    Our local knowledge and experience means we understand the specific roofing
-                    challenges faced by homes in {area.name}, from weather patterns to local
-                    building styles.
-                  </p>
+
+            <div className="space-y-6">
+              {/* Service Area Card */}
+              <div className="group bg-white rounded-xl p-6 shadow-soft border border-slate-100 hover:border-copper/20 transition-all duration-300">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-lg bg-gradient-to-br from-copper/20 to-copper/5 group-hover:from-copper/30 group-hover:to-copper/10 transition-colors">
+                    <MapPin className="w-5 h-5 text-copper" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-slate-900 mb-2">Our Service Area</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      We&apos;re proud to serve {area.displayName} and the surrounding areas.
+                      Our local knowledge means we understand the specific roofing
+                      challenges faced by homes in {area.name}.
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <Navigation className="w-6 h-6 text-gold flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-navy mb-2">Quick Response Times</h3>
-                  <p>
-                    Being locally based in Kent means we can respond quickly to your roofing
-                    needs in {area.name}. Whether it's an emergency repair or a scheduled
-                    maintenance visit, we're never far away.
-                  </p>
+              {/* Quick Response Card */}
+              <div className="group bg-white rounded-xl p-6 shadow-soft border border-slate-100 hover:border-copper/20 transition-all duration-300">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-lg bg-gradient-to-br from-copper/20 to-copper/5 group-hover:from-copper/30 group-hover:to-copper/10 transition-colors">
+                    <Navigation className="w-5 h-5 text-copper" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-slate-900 mb-2">Quick Response Times</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      Being locally based in Kent means we respond quickly to your roofing
+                      needs in {area.name}. Emergency repairs or scheduled maintenance -
+                      we&apos;re never far away.
+                    </p>
+                  </div>
                 </div>
               </div>
 
+              {/* Local Landmarks */}
               {area.localLandmarks && area.localLandmarks.length > 0 && (
-                <div className="mt-6 p-4 bg-white rounded-lg border border-navy/10">
-                  <h3 className="font-semibold text-navy mb-2">Landmarks We Serve Near</h3>
-                  <ul className="list-disc list-inside space-y-1 text-navy/70">
+                <div className="bg-white rounded-xl p-6 shadow-soft border border-slate-100">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Building className="w-5 h-5 text-copper" />
+                    <h3 className="font-semibold text-slate-900">Landmarks We Serve Near</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
                     {area.localLandmarks.map((landmark, index) => (
-                      <li key={index}>{landmark}</li>
+                      <span
+                        key={index}
+                        className="inline-block bg-slate-100 text-slate-700 text-sm px-3 py-1.5 rounded-full"
+                      >
+                        {landmark}
+                      </span>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               )}
 
+              {/* Postcodes */}
               {area.postcodes && area.postcodes.length > 0 && (
-                <div className="mt-4 p-4 bg-white rounded-lg border border-navy/10">
-                  <h3 className="font-semibold text-navy mb-2">Postcodes We Cover</h3>
-                  <p className="text-navy/70">
-                    {area.postcodes.join(', ')}
-                  </p>
+                <div className="bg-slate-900 rounded-xl p-6 text-white">
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-copper" />
+                    Postcodes We Cover
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {area.postcodes.map((postcode, index) => (
+                      <span
+                        key={index}
+                        className="inline-block bg-white/10 text-white/90 text-sm px-3 py-1.5 rounded-lg border border-white/10"
+                      >
+                        {postcode}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -72,32 +106,44 @@ export function AreaLocalInfo({ area }: AreaLocalInfoProps) {
           {/* Nearby Areas */}
           {nearbyAreas.length > 0 && (
             <div>
-              <h2 className={`${cinzel.className} text-3xl md:text-4xl font-bold text-navy mb-6`}>
-                We Also Serve Nearby Areas
+              <span className="inline-block text-copper font-semibold text-sm tracking-wider uppercase mb-3">
+                Nearby Areas
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                We Also Serve
               </h2>
-              <p className="text-navy/70 mb-6">
-                In addition to {area.name}, we provide our expert roofing services to the following nearby areas:
+              <p className="text-slate-600 mb-8">
+                In addition to {area.name}, we provide our expert roofing services to these nearby areas:
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                 {nearbyAreas.map((nearbyArea) => (
                   <Link
                     key={nearbyArea.slug}
                     href={`/${nearbyArea.slug}`}
-                    className="block bg-white rounded-lg p-4 border border-navy/10 hover:border-gold hover:shadow-md transition-all"
+                    className="group flex items-center gap-3 bg-white rounded-xl p-4 shadow-soft border border-slate-100 hover:border-copper/30 hover:shadow-soft-lg transition-all duration-300 hover:-translate-y-0.5"
                   >
-                    <h3 className="font-semibold text-navy mb-1">{nearbyArea.name}</h3>
-                    <p className="text-sm text-navy/60">{nearbyArea.displayName}</p>
+                    <div className="p-2 rounded-lg bg-slate-100 group-hover:bg-copper/10 transition-colors">
+                      <MapPin className="w-4 h-4 text-slate-400 group-hover:text-copper transition-colors" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-slate-900 group-hover:text-copper transition-colors truncate">
+                        {nearbyArea.name}
+                      </h3>
+                      <p className="text-xs text-slate-500 truncate">{nearbyArea.displayName}</p>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-copper transition-colors flex-shrink-0" />
                   </Link>
                 ))}
               </div>
-              <div className="mt-6">
-                <Link
-                  href="/"
-                  className="inline-block text-gold hover:text-gold/80 font-semibold underline"
-                >
-                  View all areas we serve →
-                </Link>
-              </div>
+
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 text-copper hover:text-copper-600 font-semibold group"
+              >
+                View all areas we serve
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           )}
         </div>

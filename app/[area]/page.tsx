@@ -1,7 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Phone, Shield, Award, Zap, Users } from "lucide-react";
+import { Shield, Wrench, MapPin, Phone, ChevronRight } from "lucide-react";
+import { Header } from "@/components/header";
 import { AreaHero } from "@/components/area/area-hero";
 import { AreaTrustSignals } from "@/components/area/area-trust-signals";
 import { AreaServices } from "@/components/area/area-services";
@@ -10,21 +9,16 @@ import { TestimonialsSection } from "@/components/testimonials-section";
 import { CTASection } from "@/components/cta-section";
 import { Footer } from "@/components/footer";
 import {
-  getAllAreas,
   getAreaBySlug,
   getAllAreaSlugs
 } from "@/lib/areas";
 import {
   generateAreaContent,
-  generateTrustSignals,
   generateLocalBusinessStructuredData,
   generateBreadcrumbStructuredData
 } from "@/lib/content/area-content";
-import { Cinzel } from "next/font/google";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-
-const cinzel = Cinzel({ subsets: ["latin"], weight: ["700"] });
 
 interface AreaPageProps {
   params: Promise<{
@@ -88,7 +82,6 @@ export default async function AreaPage({ params }: AreaPageProps) {
   }
 
   const content = generateAreaContent(area);
-  const trustSignals = generateTrustSignals(area);
   const localBusinessData = generateLocalBusinessStructuredData(area);
   const breadcrumbData = generateBreadcrumbStructuredData(area);
 
@@ -109,60 +102,17 @@ export default async function AreaPage({ params }: AreaPageProps) {
       />
 
       {/* Header */}
-      <header className="bg-navy text-white py-4 sticky top-0 z-50 shadow-lg">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center gap-3">
-              <Image
-                src="/weather-wizard-logo-no-bg.png"
-                alt="Weather Wizard Logo"
-                width={80}
-                height={80}
-                className="w-20 h-20"
-              />
-              <div className="flex flex-col">
-                <span className={`${cinzel.className} text-2xl text-gold tracking-wide`}>
-                  Weather Wizard
-                </span>
-                <span className="text-xs text-white/80 italic">
-                  We Weather Every Storm
-                </span>
-              </div>
-            </Link>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center gap-6">
-              <a href="#services" className="text-white/90 hover:text-gold transition-colors">Services</a>
-              <a href="#about" className="text-white/90 hover:text-gold transition-colors">About</a>
-              <a href="#testimonials" className="text-white/90 hover:text-gold transition-colors">Reviews</a>
-              <a href="#contact" className="text-white/90 hover:text-gold transition-colors">Contact</a>
-            </nav>
-
-            <div className="flex items-center gap-3">
-              <div className="hidden lg:flex flex-col items-end mr-2">
-                <span className="text-xs text-teal font-semibold">24/7 Emergency Response</span>
-                <span className="text-sm text-white/80">Call: 01622 123456</span>
-              </div>
-              <Button size="lg" className="bg-gold hover:bg-gold/90 text-navy font-bold" asChild>
-                <a href="tel:01622123456">
-                  <Phone className="mr-2 h-5 w-5" />
-                  Call Now
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Breadcrumb Navigation */}
-      <nav className="bg-navy-50 py-3">
+      <nav className="bg-slate-50 border-b border-slate-100 py-3">
         <div className="container mx-auto px-4">
-          <ol className="flex items-center gap-2 text-sm text-navy/70">
+          <ol className="flex items-center gap-2 text-sm text-slate-500">
             <li>
-              <Link href="/" className="hover:text-gold transition-colors">Home</Link>
+              <Link href="/" className="hover:text-copper transition-colors">Home</Link>
             </li>
-            <li>→</li>
-            <li className="text-navy font-semibold">{area.name}</li>
+            <li><ChevronRight className="w-3.5 h-3.5 text-slate-300" /></li>
+            <li className="text-slate-900 font-semibold">{area.name}</li>
           </ol>
         </div>
       </nav>
@@ -175,68 +125,87 @@ export default async function AreaPage({ params }: AreaPageProps) {
       />
 
       {/* Trust Signals Bar */}
-      <AreaTrustSignals
-        area={area}
-        homesProtected={trustSignals.homesProtected}
-      />
+      <AreaTrustSignals area={area} />
 
       {/* Services Section */}
       <AreaServices area={area} />
 
       {/* Why Choose Weather Wizard Section */}
-      <section id="about" className="py-20 bg-gradient-to-br from-navy to-navy-700 text-white relative overflow-hidden">
-        {/* Subtle roof tile texture overlay */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(255, 255, 255, 0.1) 12px, rgba(255, 255, 255, 0.1) 13px), repeating-linear-gradient(-45deg, transparent, transparent 12px, rgba(255, 255, 255, 0.1) 12px, rgba(255, 255, 255, 0.1) 13px)'}} />
+      <section id="about" className="relative py-20 md:py-28 bg-slate-900 text-white overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute inset-0 slate-pattern opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-transparent to-slate-900" />
+
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-copper/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-slate-700/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+
         <div className="container mx-auto px-4 relative z-10">
+          {/* Section header */}
           <div className="text-center mb-16">
-            <h2 className={`${cinzel.className} text-4xl md:text-5xl font-bold mb-4`}>
-              Why Choose Weather Wizard in {area.name}?
+            <span className="inline-block text-copper font-semibold text-sm tracking-wider uppercase mb-3">
+              About Me
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+              Why {area.name} Homeowners Call Me
             </h2>
-            <p className="text-xl text-white/80 max-w-2xl mx-auto">
-              Trusted by {area.name} residents for over 25 years
+            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+              25 years fixing roofs has taught me what matters: turn up when you say you will, do the job properly, and answer your phone when people need you.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            <div className="text-center">
-              <div className="bg-gold/10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                <Award className="w-10 h-10 text-gold" />
-              </div>
-              <h3 className={`${cinzel.className} font-bold text-xl mb-3`}>25+ Years Experience</h3>
-              <p className="text-white/80">
-                Over two decades serving homes in {area.name} and across Kent. Proven track record of excellence.
-              </p>
-            </div>
+          {/* Feature grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-6xl mx-auto">
+            {[
+              {
+                icon: Wrench,
+                title: "25 Years' Experience",
+                description: `I've fixed every type of roof Kent has to offer. Missing tiles to full rebuilds — I've done the lot.`
+              },
+              {
+                icon: Shield,
+                title: "Properly Insured",
+                description: "Public liability insurance means you're covered. I wouldn't work on anyone's roof without it."
+              },
+              {
+                icon: MapPin,
+                title: "Based in Maidstone",
+                description: `${area.name} is my patch. I know the local roofs, the local weather, and I'll be here if anything goes wrong.`
+              },
+              {
+                icon: Phone,
+                title: "I Answer the Phone",
+                description: `Call me any time — I pick up. No call centres, no callbacks. Just me, ready to help.`
+              }
+            ].map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={index}
+                  className="group relative bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 hover:border-copper/30 transition-all duration-300 hover:-translate-y-1"
+                >
+                  {/* Icon */}
+                  <div className="mb-5">
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-lg bg-gradient-to-br from-copper/20 to-copper/5 group-hover:from-copper/30 group-hover:to-copper/10 transition-colors duration-300">
+                      <Icon className="w-7 h-7 text-copper" />
+                    </div>
+                  </div>
 
-            <div className="text-center">
-              <div className="bg-gold/10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-10 h-10 text-gold" />
-              </div>
-              <h3 className={`${cinzel.className} font-bold text-xl mb-3`}>Guaranteed Results</h3>
-              <p className="text-white/80">
-                Comprehensive guarantees on all work. We stand behind our service with full insurance and certification.
-              </p>
-            </div>
+                  {/* Title */}
+                  <h3 className="font-display text-xl font-bold text-white mb-3 group-hover:text-copper transition-colors duration-300">
+                    {feature.title}
+                  </h3>
 
-            <div className="text-center">
-              <div className="bg-gold/10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                <Users className="w-10 h-10 text-gold" />
-              </div>
-              <h3 className={`${cinzel.className} font-bold text-xl mb-3`}>Local Expertise</h3>
-              <p className="text-white/80">
-                Family-run Kent business with deep local knowledge of {area.name}. We understand local weather and homes.
-              </p>
-            </div>
+                  {/* Description */}
+                  <p className="text-white/60 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
 
-            <div className="text-center">
-              <div className="bg-gold/10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-10 h-10 text-gold" />
-              </div>
-              <h3 className={`${cinzel.className} font-bold text-xl mb-3`}>Emergency Service</h3>
-              <p className="text-white/80">
-                24/7 emergency repairs available in {area.name}. When disaster strikes, we respond fast to protect your property.
-              </p>
-            </div>
+                  {/* Decorative accent */}
+                  <div className="absolute bottom-0 left-6 right-6 h-0.5 bg-gradient-to-r from-transparent via-copper/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Cinzel } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-cinzel",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Weather Wizard | Expert Roofing Services in Kent | Roof Repairs & Guttering",
@@ -44,7 +56,7 @@ const structuredData = {
   description: "Expert Roofing & Guttering Services in Kent",
   image: "/weather-wizard-logo-no-bg.png",
   url: "https://weatherwizard.co.uk",
-  telephone: "+44-XXXX-XXXXXX",
+  telephone: "+44-1622-123456",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Kent",
@@ -125,14 +137,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB">
+    <html lang="en-GB" className={`${plusJakarta.variable} ${cinzel.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className={inter.className}>
+      <body className="font-sans">
         {children}
       </body>
     </html>
