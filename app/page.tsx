@@ -15,7 +15,7 @@ export default function Home() {
       {/* Header */}
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero Section with Integrated Form */}
       <HeroSection />
 
       {/* Trust Signals Bar */}

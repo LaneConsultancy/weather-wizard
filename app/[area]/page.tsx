@@ -117,7 +117,7 @@ export default async function AreaPage({ params }: AreaPageProps) {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section with Integrated Form */}
       <AreaHero
         area={area}
         heroHeadline={content.heroHeadline}
