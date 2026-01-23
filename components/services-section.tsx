@@ -156,17 +156,8 @@ export function ServicesSection() {
                   asChild
                 >
                   <a href="tel:08003162922" className="flex items-center justify-center gap-2">
-                    {service.isEmergency ? (
-                      <>
-                        <Phone className="h-4 w-4" />
-                        Call Now
-                      </>
-                    ) : (
-                      <>
-                        Learn More
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </>
-                    )}
+                    <Phone className="h-4 w-4" />
+                    {service.isEmergency ? "Call Now" : "Get Quote"}
                   </a>
                 </Button>
               </div>

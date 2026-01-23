@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Cinzel } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { ConsentProvider } from "@/lib/cookie-consent";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
@@ -156,6 +157,12 @@ export default function RootLayout({
           <MicrosoftUET />
           <WhatConverts />
         </ConsentProvider>
+
+        {/* Tally Form Widget Script */}
+        <Script
+          src="https://tally.so/widgets/embed.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

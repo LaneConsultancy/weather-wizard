@@ -119,17 +119,8 @@ export function AreaServices({ area }: AreaServicesProps) {
                   asChild
                 >
                   <a href="tel:08003162922" className="flex items-center justify-center gap-2">
-                    {service.isEmergency ? (
-                      <>
-                        <Phone className="h-4 w-4" />
-                        Emergency Call
-                      </>
-                    ) : (
-                      <>
-                        Learn More
-                        <ArrowRight className="h-4 w-4" />
-                      </>
-                    )}
+                    <Phone className="h-4 w-4" />
+                    {service.isEmergency ? "Emergency Call" : "Get Quote"}
                   </a>
                 </Button>
               </div>
