@@ -8,11 +8,19 @@ export function cn(...inputs: ClassValue[]) {
 export function sanitizeKeyword(keyword: string | null): string | null {
   if (!keyword) return null;
 
-  // Strip HTML tags
-  let sanitized = keyword.replace(/<[^>]*>/g, '');
+  // Reject if input contains HTML tags (potential XSS)
+  if (/<[^>]*>/.test(keyword)) {
+    return null;
+  }
 
-  // Remove potentially dangerous characters
-  sanitized = sanitized.replace(/[<>'"&]/g, '');
+  // Reject if input contains suspicious patterns
+  const suspiciousPatterns = /[(){}\[\]]|javascript:|data:|on\w+=/i;
+  if (suspiciousPatterns.test(keyword)) {
+    return null;
+  }
+
+  // Remove any remaining potentially dangerous characters
+  let sanitized = keyword.replace(/[<>'"&]/g, '');
 
   // Limit to 50 characters
   sanitized = sanitized.substring(0, 50);
@@ -20,7 +28,12 @@ export function sanitizeKeyword(keyword: string | null): string | null {
   // Trim whitespace
   sanitized = sanitized.trim();
 
-  return sanitized || null;
+  // Reject if too short (likely garbage after sanitization)
+  if (sanitized.length < 3) {
+    return null;
+  }
+
+  return sanitized;
 }
 
 export function titleCase(str: string): string {
