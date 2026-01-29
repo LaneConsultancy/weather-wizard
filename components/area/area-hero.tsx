@@ -43,7 +43,7 @@ export function AreaHero({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
 
             {/* Main Headline - SEO optimized with area name */}
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-up">
-              {area.displayName} Roof Repairs
+              Roof Repairs {area.displayName}
               <span className="block text-copper">I&apos;ll Fix It Properly.</span>
             </h1>
 
