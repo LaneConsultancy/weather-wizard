@@ -18,7 +18,7 @@ export function generateAreaContent(area: Area): AreaContent {
 
   return {
     heroHeadline: `${area.name} Roof Problem?\nI'll Fix It Properly.`,
-    heroSubheadline: `After 25 years fixing Kent roofs, I've seen every problem going. Based in Maidstone, I cover ${area.name} and all of ${area.county}. I answer my own phone, turn up when I say I will, and give you a fixed price before any work starts.`,
+    heroSubheadline: `After 25 years fixing Kent roofs, I've seen every problem going. Based in Maidstone, I cover ${area.name === area.county ? area.county : `${area.name} and all of ${area.county}`}. I answer my own phone, turn up when I say I will, and give you a fixed price before any work starts.`,
     trustSignal: `25+ Years Fixing ${area.name} Roofs`,
     serviceAreaDescription: `Based in Maidstone, covering ${area.displayName}, ${nearbyAreasText} and surrounding areas`,
     metaTitle: `Roofer in ${area.name} | 25 Years Experience | Weather Wizard`,

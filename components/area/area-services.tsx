@@ -58,7 +58,7 @@ export function AreaServices({ area }: AreaServicesProps) {
             Roofing Services in {area.name}
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            25 years fixing roofs across {area.displayName} and Kent. I&apos;ve seen every problem and know how to fix it properly. Here&apos;s what I can help you with.
+            25 years fixing roofs across {area.displayName}. I&apos;ve seen every problem and know how to fix it properly. Here&apos;s what I can help you with.
           </p>
         </div>
 
