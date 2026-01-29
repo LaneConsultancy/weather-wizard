@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "get-google-ads-token": "tsx scripts/get-google-ads-token.ts",
+    "test-google-ads": "tsx scripts/test-google-ads.ts",
+    "research-keywords": "tsx scripts/research-keywords.ts",
+    "example-create-campaign": "tsx scripts/example-create-campaign.ts",
+    "create-campaigns": "tsx scripts/create-weather-wizard-campaigns.ts",
+    "update-ad-urls": "tsx scripts/update-ad-urls.ts",
+    "remove-wrong-ads": "tsx scripts/remove-wrong-domain-ads.ts"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.8",
@@ -14,6 +21,8 @@
     "autoprefixer": "^10.4.23",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
+    "google-ads-api": "^22.0.0",
     "lucide-react": "^0.469.0",
     "next": "^16.1.1",
     "react": "^18",
@@ -28,8 +37,10 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "15.1.6",
+    "open": "^10.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

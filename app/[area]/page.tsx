@@ -5,7 +5,7 @@ import { AreaHero } from "@/components/area/area-hero";
 import { AreaTrustSignals } from "@/components/area/area-trust-signals";
 import { AreaServices } from "@/components/area/area-services";
 import { AreaLocalInfo } from "@/components/area/area-local-info";
-import { TestimonialsSection } from "@/components/testimonials-section";
+import { ReviewsSection } from "@/components/reviews-section";
 import { CTASection } from "@/components/cta-section";
 import { Footer } from "@/components/footer";
 import {
@@ -17,6 +17,7 @@ import {
   generateLocalBusinessStructuredData,
   generateBreadcrumbStructuredData
 } from "@/lib/content/area-content";
+import { SITE_URL, createUrl } from "@/lib/config";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -49,13 +50,14 @@ export async function generateMetadata({ params }: AreaPageProps): Promise<Metad
   const content = generateAreaContent(area);
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: content.metaTitle,
     description: content.metaDescription,
     keywords: content.keywords,
     openGraph: {
       title: content.metaTitle,
       description: content.metaDescription,
-      url: `https://weatherwizard.co.uk/${area.slug}`,
+      url: createUrl(area.slug),
       siteName: 'Weather Wizard',
       type: 'website',
       images: [
@@ -68,7 +70,7 @@ export async function generateMetadata({ params }: AreaPageProps): Promise<Metad
       ],
     },
     alternates: {
-      canonical: `https://weatherwizard.co.uk/${area.slug}`,
+      canonical: createUrl(area.slug),
     },
   };
 }
@@ -123,6 +125,9 @@ export default async function AreaPage({ params }: AreaPageProps) {
         heroHeadline={content.heroHeadline}
         heroSubheadline={content.heroSubheadline}
       />
+
+      {/* Reviews Section - Real Checkatrade Reviews */}
+      <ReviewsSection />
 
       {/* Trust Signals Bar */}
       <AreaTrustSignals area={area} />
@@ -209,9 +214,6 @@ export default async function AreaPage({ params }: AreaPageProps) {
           </div>
         </div>
       </section>
-
-      {/* Testimonials Section */}
-      <TestimonialsSection />
 
       {/* Local Info & Nearby Areas */}
       <AreaLocalInfo area={area} />
