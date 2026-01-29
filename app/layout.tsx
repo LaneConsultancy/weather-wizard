@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Cinzel } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { SITE_URL } from "@/lib/config";
 import { ConsentProvider } from "@/lib/cookie-consent";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { MicrosoftUET } from "@/components/microsoft-uet";
@@ -24,6 +25,7 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Weather Wizard | Expert Roofing Services in Kent | Roof Repairs & Guttering",
   description:
     "Trusted roofing specialists in Kent. Expert roof repairs, guttering, chimney work & more. 25+ years experience. Free quotes. Call today for professional service.",
@@ -62,7 +64,7 @@ const structuredData = {
   name: "Weather Wizard",
   description: "Expert Roofing & Guttering Services in Kent",
   image: "/weather-wizard-logo-no-bg.png",
-  url: "https://weatherwizard.co.uk",
+  url: SITE_URL,
   telephone: "+44-1622-123456",
   address: {
     "@type": "PostalAddress",

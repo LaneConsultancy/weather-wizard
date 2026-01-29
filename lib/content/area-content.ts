@@ -1,4 +1,5 @@
 import { Area } from '../areas';
+import { SITE_URL } from '../config';
 
 export interface AreaContent {
   heroHeadline: string;
@@ -82,7 +83,7 @@ export function generateLocalBusinessStructuredData(area: Area) {
     '@type': 'RoofingContractor',
     name: `Weather Wizard - ${area.name}`,
     description: `Professional roofing services in ${area.displayName}. 25 years' experience, public liability insured.`,
-    url: `https://weatherwizard.co.uk/${area.slug}`,
+    url: `${SITE_URL}/${area.slug}`,
     telephone: '08003162922',
     address: {
       '@type': 'PostalAddress',

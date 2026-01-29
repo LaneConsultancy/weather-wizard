@@ -17,6 +17,7 @@ import {
   generateLocalBusinessStructuredData,
   generateBreadcrumbStructuredData
 } from "@/lib/content/area-content";
+import { SITE_URL, createUrl } from "@/lib/config";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -49,13 +50,14 @@ export async function generateMetadata({ params }: AreaPageProps): Promise<Metad
   const content = generateAreaContent(area);
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: content.metaTitle,
     description: content.metaDescription,
     keywords: content.keywords,
     openGraph: {
       title: content.metaTitle,
       description: content.metaDescription,
-      url: `https://weatherwizard.co.uk/${area.slug}`,
+      url: createUrl(area.slug),
       siteName: 'Weather Wizard',
       type: 'website',
       images: [
@@ -68,7 +70,7 @@ export async function generateMetadata({ params }: AreaPageProps): Promise<Metad
       ],
     },
     alternates: {
-      canonical: `https://weatherwizard.co.uk/${area.slug}`,
+      canonical: createUrl(area.slug),
     },
   };
 }
