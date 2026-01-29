@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Phone, MapPin, Shield, Clock, Wrench } from "lucide-react";
+import { Phone, MapPin, Shield, Clock, Wrench, Check } from "lucide-react";
 
 export function HeroSection() {
   return (
@@ -42,8 +42,30 @@ export function HeroSection() {
               <span className="block text-copper">I&apos;ll Fix It Properly.</span>
             </h1>
 
-            {/* Subheadline - Address the real concern */}
-            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed animate-fade-up delay-100">
+            {/* MOBILE: Bullet points for quick scanning */}
+            <div className="block sm:hidden space-y-3 mb-6 animate-fade-up delay-100">
+              <div className="flex items-center gap-3 text-white/90">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-copper/20 flex items-center justify-center">
+                  <Check className="h-3 w-3 text-copper" />
+                </div>
+                <span className="text-base">25 years fixing Kent roofs</span>
+              </div>
+              <div className="flex items-center gap-3 text-white/90">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-copper/20 flex items-center justify-center">
+                  <Check className="h-3 w-3 text-copper" />
+                </div>
+                <span className="text-base">I answer my phone personally</span>
+              </div>
+              <div className="flex items-center gap-3 text-white/90">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-copper/20 flex items-center justify-center">
+                  <Check className="h-3 w-3 text-copper" />
+                </div>
+                <span className="text-base">Fixed prices before work starts</span>
+              </div>
+            </div>
+
+            {/* DESKTOP: Full paragraph */}
+            <p className="hidden sm:block text-lg md:text-xl text-white/90 mb-8 leading-relaxed animate-fade-up delay-100">
               After 25 years fixing Kent roofs, I&apos;ve seen every problem going.
               I answer my own phone, turn up when I say I will, and give you a fixed
               price before any work starts. No surprises.

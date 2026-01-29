@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CheckCircle, Phone, ArrowLeft } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { GoogleAdsConversion } from "@/components/google-ads-conversion";
 
 export const metadata: Metadata = {
   title: "Thank You | Weather Wizard",
@@ -20,6 +21,13 @@ export const metadata: Metadata = {
 export default function ThankYouPage() {
   return (
     <main className="min-h-screen flex flex-col">
+      {/* Google Ads Conversion Tracking */}
+      <GoogleAdsConversion
+        conversionLabel="Lx0ZCNmdzO4bEIz3ucdA"
+        conversionValue={50}
+        currency="GBP"
+      />
+
       {/* Header */}
       <Header />
 
