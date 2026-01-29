@@ -6,6 +6,8 @@ import { ConsentProvider } from "@/lib/cookie-consent";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { MicrosoftUET } from "@/components/microsoft-uet";
 import { WhatConverts } from "@/components/whatconverts";
+import { GoogleAds } from "@/components/google-ads";
+import { StickyCallBar } from "@/components/sticky-call-bar";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -149,11 +151,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className="font-sans">
+      <body className="font-sans" suppressHydrationWarning>
         <ConsentProvider>
           {children}
+          <StickyCallBar />
           <CookieConsentBanner />
           {/* Tracking scripts - only load after consent */}
+          <GoogleAds />
           <MicrosoftUET />
           <WhatConverts />
         </ConsentProvider>
