@@ -5,7 +5,7 @@ import { AreaHero } from "@/components/area/area-hero";
 import { AreaTrustSignals } from "@/components/area/area-trust-signals";
 import { AreaServices } from "@/components/area/area-services";
 import { AreaLocalInfo } from "@/components/area/area-local-info";
-import { TestimonialsSection } from "@/components/testimonials-section";
+import { ReviewsSection } from "@/components/reviews-section";
 import { CTASection } from "@/components/cta-section";
 import { Footer } from "@/components/footer";
 import {
@@ -124,6 +124,9 @@ export default async function AreaPage({ params }: AreaPageProps) {
         heroSubheadline={content.heroSubheadline}
       />
 
+      {/* Reviews Section - Real Checkatrade Reviews */}
+      <ReviewsSection />
+
       {/* Trust Signals Bar */}
       <AreaTrustSignals area={area} />
 
@@ -209,9 +212,6 @@ export default async function AreaPage({ params }: AreaPageProps) {
           </div>
         </div>
       </section>
-
-      {/* Testimonials Section */}
-      <TestimonialsSection />
 
       {/* Local Info & Nearby Areas */}
       <AreaLocalInfo area={area} />

@@ -1,9 +1,12 @@
 "use client";
 
+import { Suspense } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Phone, MapPin, Shield, Clock, Wrench } from "lucide-react";
 import { Area } from "@/lib/areas";
+import { sanitizeKeyword, titleCase } from "@/lib/utils";
 
 interface AreaHeroProps {
   area: Area;
@@ -11,7 +14,16 @@ interface AreaHeroProps {
   heroSubheadline: string;
 }
 
-export function AreaHero({ area, heroHeadline, heroSubheadline }: AreaHeroProps) {
+function AreaHeroContent({ area, heroHeadline, heroSubheadline }: AreaHeroProps) {
+  const searchParams = useSearchParams();
+  const keywordParam = searchParams.get('keyword');
+  const sanitizedKeyword = sanitizeKeyword(keywordParam);
+
+  // Use keyword if present, otherwise use fallback
+  const displayHeadline = sanitizedKeyword
+    ? titleCase(sanitizedKeyword)
+    : `Roof Repairs ${area.displayName}`;
+
   return (
     <section className="relative min-h-[90vh] flex items-center pt-20 bg-gradient-to-b from-[#1a2e42] to-[#0f1c2a]">
       {/* Content */}
@@ -41,9 +53,9 @@ export function AreaHero({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
               </div>
             </div>
 
-            {/* Main Headline - SEO optimized with area name */}
+            {/* Main Headline - SEO optimized with area name or dynamic keyword */}
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-up">
-              Roof Repairs {area.displayName}
+              {displayHeadline}
               <span className="block text-copper">I&apos;ll Fix It Properly.</span>
             </h1>
 
@@ -135,5 +147,19 @@ export function AreaHero({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
         </div>
       </div>
     </section>
+  );
+}
+
+export function AreaHero(props: AreaHeroProps) {
+  return (
+    <Suspense fallback={
+      <section className="relative min-h-[90vh] flex items-center pt-20 bg-gradient-to-b from-[#1a2e42] to-[#0f1c2a]">
+        <div className="container mx-auto px-4 relative z-10 py-16 md:py-24">
+          <div className="text-white text-center">Loading...</div>
+        </div>
+      </section>
+    }>
+      <AreaHeroContent {...props} />
+    </Suspense>
   );
 }
