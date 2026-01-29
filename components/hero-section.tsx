@@ -36,7 +36,7 @@ export function HeroSection() {
 
             {/* Main Headline - Problem-Solution Lead */}
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-up">
-              Leaking Roof?
+              Kent Roof Repairs
               <span className="block text-copper">I&apos;ll Fix It Properly.</span>
             </h1>
 

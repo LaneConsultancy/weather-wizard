@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Phone, MapPin, Shield, Clock, Wrench, FileText } from "lucide-react";
+import { Phone, MapPin, Shield, Clock, Wrench } from "lucide-react";
 import { Area } from "@/lib/areas";
 
 interface AreaHeroProps {
@@ -13,79 +12,76 @@ interface AreaHeroProps {
 }
 
 export function AreaHero({ area, heroHeadline, heroSubheadline }: AreaHeroProps) {
-  useEffect(() => {
-    // Load Tally embeds after component mounts
-    if (typeof window !== "undefined" && (window as any).Tally) {
-      (window as any).Tally.loadEmbeds();
-    }
-  }, []);
-
-  const trustBadges = [
-    { icon: Wrench, text: "25 Years' Experience" },
-    { icon: Shield, text: "Public Liability Insured" },
-    { icon: Clock, text: "24/7 Emergency" },
-  ];
-
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
-      {/* Background Image with overlays */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/roof-repairs.png"
-          alt={`Professional roofing services in ${area.displayName}`}
-          fill
-          className="object-cover"
-          priority
-          sizes="100vw"
-          quality={85}
-        />
-        {/* Gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-900/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-slate-900/40" />
-      </div>
-
+    <section className="relative min-h-[90vh] flex items-center pt-20 bg-gradient-to-b from-[#1a2e42] to-[#0f1c2a]">
+      {/* Content */}
       <div className="container mx-auto px-4 relative z-10 py-16 md:py-24">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-center">
           {/* Left Column - Hero Content */}
-          <div className="max-w-2xl text-white">
-            {/* Location badge */}
-            <div className="inline-flex items-center gap-2 bg-copper/20 backdrop-blur-sm border border-copper/40 rounded-full px-4 py-2 mb-6 animate-fade-up">
-              <MapPin className="h-4 w-4 text-copper" />
-              <span className="text-sm font-semibold text-copper">{area.displayName}</span>
+          <div className="lg:col-span-3 max-w-2xl">
+            {/* Badges Row - Horizontally aligned */}
+            <div className="flex flex-wrap items-center gap-3 mb-6 animate-fade-in">
+              {/* Urgency Badge */}
+              <div className="inline-flex items-center gap-2 bg-green-500/20 border border-green-500/30 rounded-full px-4 py-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                <span className="text-sm font-medium text-green-400">
+                  Available today
+                </span>
+              </div>
+
+              {/* Location Badge */}
+              <div className="inline-flex items-center gap-2 bg-copper/20 border border-copper/30 rounded-full px-4 py-2">
+                <MapPin className="h-4 w-4 text-copper" />
+                <span className="text-sm font-medium text-copper">
+                  {area.displayName}
+                </span>
+              </div>
             </div>
 
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight animate-fade-up" style={{ animationDelay: "100ms" }}>
-              {heroHeadline}
+            {/* Main Headline - SEO optimized with area name */}
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-up">
+              {area.displayName} Roof Repairs
+              <span className="block text-copper">I&apos;ll Fix It Properly.</span>
             </h1>
 
-            <p className="text-lg md:text-xl mb-8 text-white/90 leading-relaxed animate-fade-up" style={{ animationDelay: "200ms" }}>
+            {/* Subheadline */}
+            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed animate-fade-up delay-100">
               {heroSubheadline}
             </p>
 
-            {/* Trust Badges */}
-            <div className="flex flex-wrap gap-3 mb-8 animate-fade-up" style={{ animationDelay: "300ms" }}>
-              {trustBadges.map((badge, index) => {
-                const Icon = badge.icon;
-                return (
-                  <div
-                    key={index}
-                    className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-2 hover:bg-white/15 transition-colors"
-                  >
-                    <Icon className="h-4 w-4 text-copper" />
-                    <span className="text-sm font-medium text-white">{badge.text}</span>
-                  </div>
-                );
-              })}
+            {/* Trust Badges Row */}
+            <div className="flex flex-wrap gap-4 mb-10 animate-fade-up delay-200">
+              <div className="flex items-center gap-2 text-white">
+                <div className="p-1.5 bg-copper/20 rounded-md">
+                  <Wrench className="h-4 w-4 text-copper" />
+                </div>
+                <span className="text-sm font-medium">25 Years&apos; Experience</span>
+              </div>
+              <div className="flex items-center gap-2 text-white">
+                <div className="p-1.5 bg-copper/20 rounded-md">
+                  <Shield className="h-4 w-4 text-copper" />
+                </div>
+                <span className="text-sm font-medium">Public Liability Insured</span>
+              </div>
+              <div className="flex items-center gap-2 text-white">
+                <div className="p-1.5 bg-copper/20 rounded-md">
+                  <Clock className="h-4 w-4 text-copper" />
+                </div>
+                <span className="text-sm font-medium">24/7 Emergency</span>
+              </div>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-8 animate-fade-up" style={{ animationDelay: "400ms" }}>
+            <div className="flex flex-col sm:flex-row gap-4 mb-10 animate-fade-up delay-300">
               <Button
                 size="lg"
-                className="bg-copper hover:bg-copper-500 text-white font-semibold text-lg px-8 py-7 shadow-copper hover:shadow-copper-lg transition-all duration-300 btn-shine"
+                className="bg-copper hover:bg-copper-500 text-white font-semibold text-lg px-8 py-6 shadow-copper hover:shadow-copper-lg transition-all duration-300 btn-shine"
                 asChild
               >
-                <a href="tel:08003162922" className="flex items-center gap-2">
+                <a href="tel:08003162922" className="flex items-center gap-3">
                   <Phone className="h-5 w-5" />
                   Call 0800 316 2922
                 </a>
@@ -93,87 +89,46 @@ export function AreaHero({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white/30 text-white hover:bg-white hover:text-slate-900 font-semibold text-lg px-8 py-7 backdrop-blur-sm transition-all duration-300"
+                className="border-2 border-white/30 text-white hover:bg-white hover:text-slate-900 font-semibold text-lg px-8 py-6 backdrop-blur-sm transition-all duration-300"
                 asChild
               >
                 <a href="#contact">Get Free Quote</a>
               </Button>
             </div>
 
-            {/* Location line */}
-            <p className="text-white/70 animate-fade-up flex items-center gap-2 flex-wrap" style={{ animationDelay: "500ms" }}>
-              <span className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-copper" />
-                Based in Maidstone, covering {area.displayName}
-              </span>
-              <span className="mx-2 text-white/30">|</span>
-              <span className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-copper" />
-                I answer 24/7
-              </span>
-            </p>
+            {/* Stats Row */}
+            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/10 animate-fade-up delay-400">
+              <div>
+                <p className="text-2xl md:text-3xl font-bold text-copper">25+</p>
+                <p className="text-sm text-white/70">Years in the Trade</p>
+              </div>
+              <div>
+                <p className="text-2xl md:text-3xl font-bold text-copper">Maidstone</p>
+                <p className="text-sm text-white/70">Based Locally</p>
+              </div>
+              <div>
+                <p className="text-2xl md:text-3xl font-bold text-copper">{area.displayName}</p>
+                <p className="text-sm text-white/70">Area Covered</p>
+              </div>
+            </div>
           </div>
 
-          {/* Right Column - Lead Form */}
-          <div className="animate-fade-up" style={{ animationDelay: "600ms" }}>
-            <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-6 shadow-2xl">
-              {/* Form Header */}
-              <div className="mb-6">
-                <div className="inline-flex items-center gap-2 bg-copper/20 border border-copper/30 rounded-full px-3 py-1 mb-3">
-                  <FileText className="h-3.5 w-3.5 text-copper" />
-                  <span className="text-xs font-semibold text-copper tracking-wide uppercase">
-                    Free Quote
-                  </span>
-                </div>
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">
-                  Get Your Free Quote
-                </h2>
-                <p className="text-white/80 text-sm">
-                  Tell me about your roofing needs and I&apos;ll get back to you with an honest assessment.
-                </p>
-              </div>
+          {/* Right Column - Wizard Mascot */}
+          <div className="lg:col-span-2 flex justify-center lg:justify-end items-center animate-fade-up delay-500">
+            <div className="relative">
+              {/* Golden glow effect behind mascot */}
+              <div className="absolute inset-0 bg-gradient-radial from-[#d4af37]/20 to-transparent blur-3xl" />
 
-              {/* Trust Elements */}
-              <div className="space-y-2 mb-6">
-                <div className="flex items-start gap-2">
-                  <div className="flex-shrink-0 w-4 h-4 rounded-full bg-copper/20 flex items-center justify-center mt-0.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-copper" />
-                  </div>
-                  <p className="text-white/70 text-xs">Response within 2 hours during business hours</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="flex-shrink-0 w-4 h-4 rounded-full bg-copper/20 flex items-center justify-center mt-0.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-copper" />
-                  </div>
-                  <p className="text-white/70 text-xs">Fixed prices, no hidden charges</p>
-                </div>
-              </div>
-
-              {/* Tally Form Embed */}
-              <div className="rounded-lg">
-                <iframe
-                  data-tally-src="https://tally.so/embed/npqGpV?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                  loading="lazy"
-                  width="100%"
-                  height="400"
-                  frameBorder="0"
-                  marginHeight={0}
-                  marginWidth={0}
-                  title="Get Your Free Roofing Quote"
-                  className="rounded-lg"
-                ></iframe>
-              </div>
-
-              {/* Or call directly */}
-              <div className="pt-4 mt-4 border-t border-white/10">
-                <p className="text-white/70 text-xs mb-2">Prefer to speak directly?</p>
-                <a
-                  href="tel:08003162922"
-                  className="inline-flex items-center gap-2 text-copper hover:text-copper-400 transition-colors font-semibold text-sm group"
-                >
-                  <Phone className="h-4 w-4 group-hover:animate-bounce" />
-                  0800 316 2922
-                </a>
+              {/* Wizard mascot image */}
+              <div className="relative">
+                <Image
+                  src="/images/wizard-mascot.webp"
+                  alt="Weather Wizard mascot"
+                  width={1024}
+                  height={1024}
+                  className="w-64 sm:w-80 lg:w-full max-w-md drop-shadow-[0_0_30px_rgba(212,175,55,0.25)] animate-float"
+                  priority
+                />
               </div>
             </div>
           </div>
