@@ -12,58 +12,58 @@ export function QuoteFormSection() {
   }, []);
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-white to-slate-50">
+    <section className="py-16 md:py-24 bg-gradient-to-b from-[#1a2e42] to-[#0f1c2a]">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-copper/10 border border-copper/20 rounded-full px-4 py-2 mb-4">
+            <div className="inline-flex items-center gap-2 bg-copper/20 border border-copper/30 rounded-full px-4 py-2 mb-4">
               <FileText className="h-4 w-4 text-copper" />
               <span className="text-sm font-semibold text-copper tracking-wide uppercase">
                 Free Quote
               </span>
             </div>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
               Ready to Get Your Roof Sorted?
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-lg text-white/80 max-w-2xl mx-auto">
               Tell me about your roofing needs and I&apos;ll get back to you with an honest assessment and a fixed price.
             </p>
           </div>
 
           {/* Trust Signals Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div className="flex items-center gap-3 bg-white rounded-lg p-4 shadow-sm border border-slate-100">
-              <div className="p-2 bg-copper/10 rounded-lg">
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+              <div className="p-2 bg-copper/20 rounded-lg">
                 <Clock className="h-5 w-5 text-copper" />
               </div>
               <div>
-                <p className="font-semibold text-slate-900 text-sm">Quick Response</p>
-                <p className="text-xs text-slate-600">Within 2 hours</p>
+                <p className="font-semibold text-white text-sm">Quick Response</p>
+                <p className="text-xs text-white/70">Within 2 hours</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-white rounded-lg p-4 shadow-sm border border-slate-100">
-              <div className="p-2 bg-copper/10 rounded-lg">
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+              <div className="p-2 bg-copper/20 rounded-lg">
                 <Shield className="h-5 w-5 text-copper" />
               </div>
               <div>
-                <p className="font-semibold text-slate-900 text-sm">Fixed Pricing</p>
-                <p className="text-xs text-slate-600">No hidden charges</p>
+                <p className="font-semibold text-white text-sm">Fixed Pricing</p>
+                <p className="text-xs text-white/70">No hidden charges</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-white rounded-lg p-4 shadow-sm border border-slate-100">
-              <div className="p-2 bg-copper/10 rounded-lg">
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+              <div className="p-2 bg-copper/20 rounded-lg">
                 <Phone className="h-5 w-5 text-copper" />
               </div>
               <div>
-                <p className="font-semibold text-slate-900 text-sm">Direct Contact</p>
-                <p className="text-xs text-slate-600">I answer my phone</p>
+                <p className="font-semibold text-white text-sm">Direct Contact</p>
+                <p className="text-xs text-white/70">I answer my phone</p>
               </div>
             </div>
           </div>
 
           {/* Form Container */}
-          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 md:p-8">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 md:p-8 shadow-2xl">
             {/* Tally Form Embed */}
             <div className="rounded-lg">
               <iframe
@@ -80,12 +80,12 @@ export function QuoteFormSection() {
             </div>
 
             {/* Or call directly */}
-            <div className="pt-6 mt-6 border-t border-slate-200">
-              <p className="text-slate-600 text-sm mb-3 text-center">Prefer to speak directly?</p>
+            <div className="pt-6 mt-6 border-t border-white/20">
+              <p className="text-white/70 text-sm mb-3 text-center">Prefer to speak directly?</p>
               <div className="flex justify-center">
                 <a
                   href="tel:08003162922"
-                  className="inline-flex items-center gap-2 text-copper hover:text-copper-600 transition-colors font-semibold text-lg group"
+                  className="inline-flex items-center gap-2 text-copper hover:text-copper-400 transition-colors font-semibold text-lg group"
                 >
                   <Phone className="h-5 w-5 group-hover:animate-bounce" />
                   0800 316 2922
@@ -94,7 +94,7 @@ export function QuoteFormSection() {
             </div>
 
             {/* Checkatrade Badge */}
-            <div className="pt-6 mt-6 border-t border-slate-200">
+            <div className="pt-6 mt-6 border-t border-white/20">
               <div className="flex justify-center">
                 <a
                   href="https://www.checkatrade.com/trades/nobleroofingandgutterrepairs"
@@ -109,9 +109,9 @@ export function QuoteFormSection() {
                         </svg>
                       ))}
                   </div>
-                  <span className="text-slate-700 text-sm">
-                    <span className="font-semibold text-slate-900">10/10</span> on Checkatrade
-                    <span className="text-slate-500 ml-1">(58 reviews)</span>
+                  <span className="text-white/80 text-sm">
+                    <span className="font-semibold text-white">10/10</span> on Checkatrade
+                    <span className="text-white/60 ml-1">(58 reviews)</span>
                   </span>
                 </a>
               </div>
