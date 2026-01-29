@@ -9,9 +9,11 @@ export function HeroSection() {
     <section className="relative min-h-[90vh] flex items-center pt-20 bg-gradient-to-b from-[#1a2e42] to-[#0f1c2a]">
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10 py-16 md:py-24">
-        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-center">
-          {/* Left Column - Hero Content */}
-          <div className="lg:col-span-3 max-w-2xl">
+        {/* Max-width wrapper to center content on very wide screens */}
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 xl:gap-16 items-center">
+            {/* Left Column - Hero Content */}
+            <div className="lg:col-span-2 max-w-2xl">
             {/* Badges Row - Horizontally aligned */}
             <div className="flex flex-wrap items-center gap-3 mb-6 animate-fade-in">
               {/* Urgency Badge */}
@@ -108,22 +110,23 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Right Column - Wizard Mascot */}
-          <div className="lg:col-span-2 flex justify-center lg:justify-end items-center animate-fade-up delay-500">
-            <div className="relative">
-              {/* Golden glow effect behind mascot */}
-              <div className="absolute inset-0 bg-gradient-radial from-[#d4af37]/20 to-transparent blur-3xl" />
-
-              {/* Wizard mascot image */}
+            {/* Right Column - Wizard Mascot */}
+            <div className="lg:col-span-1 flex justify-center lg:justify-end items-center animate-fade-up delay-500">
               <div className="relative">
-                <Image
-                  src="/images/wizard-mascot.webp"
-                  alt="Weather Wizard mascot"
-                  width={1024}
-                  height={1024}
-                  className="w-64 sm:w-80 lg:w-full max-w-md drop-shadow-[0_0_30px_rgba(212,175,55,0.25)] animate-float"
-                  priority
-                />
+                {/* Golden glow effect behind mascot */}
+                <div className="absolute inset-0 bg-gradient-radial from-[#d4af37]/20 to-transparent blur-3xl" />
+
+                {/* Wizard mascot image */}
+                <div className="relative">
+                  <Image
+                    src="/images/wizard-mascot.webp"
+                    alt="Weather Wizard mascot"
+                    width={1024}
+                    height={1024}
+                    className="w-64 sm:w-80 lg:w-96 xl:w-[28rem] 2xl:w-[32rem] drop-shadow-[0_0_30px_rgba(212,175,55,0.25)] animate-float"
+                    priority
+                  />
+                </div>
               </div>
             </div>
           </div>
