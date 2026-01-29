@@ -117,10 +117,10 @@ export function HeroSection() {
               {/* Wizard mascot image */}
               <div className="relative">
                 <Image
-                  src="/images/wizard-mascot.png"
+                  src="/images/wizard-mascot.webp"
                   alt="Weather Wizard mascot"
-                  width={400}
-                  height={400}
+                  width={1024}
+                  height={1024}
                   className="w-64 sm:w-80 lg:w-full max-w-md drop-shadow-[0_0_30px_rgba(212,175,55,0.25)] animate-float"
                   priority
                 />
