@@ -63,11 +63,11 @@ export function QuoteFormSection() {
           </div>
 
           {/* Form Container */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 md:p-8 shadow-2xl">
+          <div className="max-w-xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 md:p-8 shadow-2xl">
             {/* Tally Form Embed */}
             <div className="rounded-lg">
               <iframe
-                data-tally-src="https://tally.so/embed/npqGpV?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+                data-tally-src="https://tally.so/embed/npqGpV?hideTitle=1&transparentBackground=1&dynamicHeight=1"
                 loading="lazy"
                 width="100%"
                 height="450"
