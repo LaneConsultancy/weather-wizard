@@ -24,6 +24,7 @@ function AreaHeroContent({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
     ? titleCase(sanitizedKeyword)
     : `Roof Repairs ${area.displayName}`;
 
+
   return (
     <section className="relative min-h-[90vh] flex items-center pt-20 bg-gradient-to-b from-[#1a2e42] to-[#0f1c2a]">
       {/* Content */}
