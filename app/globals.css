@@ -218,6 +218,21 @@
   .glass-dark {
     @apply bg-slate-900/80 backdrop-blur-md border border-white/10;
   }
+
+  /* Radial gradient background for wizard mascot glow */
+  .bg-gradient-radial {
+    background: radial-gradient(circle at center, var(--tw-gradient-from), var(--tw-gradient-to));
+  }
+}
+
+/* Float animation for wizard mascot */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
 }
 
 /* Custom scrollbar */

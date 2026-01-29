@@ -4,7 +4,8 @@ import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
 import { TrustSignals } from "@/components/trust-signals";
 import { ServicesSection } from "@/components/services-section";
-import { TestimonialsSection } from "@/components/testimonials-section";
+import { ReviewsSection } from "@/components/reviews-section";
+import { QuoteFormSection } from "@/components/quote-form-section";
 import { CTASection } from "@/components/cta-section";
 import { Footer } from "@/components/footer";
 import { getAllAreas } from "@/lib/areas";
@@ -17,6 +18,12 @@ export default function Home() {
 
       {/* Hero Section with Integrated Form */}
       <HeroSection />
+
+      {/* Reviews Section - Real Checkatrade Reviews */}
+      <ReviewsSection />
+
+      {/* Quote Form Section */}
+      <QuoteFormSection />
 
       {/* Trust Signals Bar */}
       <TrustSignals />
@@ -104,9 +111,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Testimonials Section */}
-      <TestimonialsSection />
 
       {/* Service Areas Section */}
       <section className="relative py-20 md:py-28 bg-cream overflow-hidden">
