@@ -12,32 +12,32 @@ export function AreaServices({ area }: AreaServicesProps) {
     {
       title: "Roof Repairs",
       description: `Missing tiles, cracked flashing, valley leaks — I've fixed them all across ${area.name}. I'll photograph the damage, explain what's wrong, and give you a fixed price before touching anything.`,
-      image: "/images/roof-repairs.png"
+      image: "/images/roof-repairs.webp"
     },
     {
       title: "Guttering Repairs",
       description: `Blocked gutters cause damp walls and foundation problems. I'll clear the debris, check the joints, and fix any leaks at your ${area.name} property. If sections need replacing, I'll match your existing system.`,
-      image: "/images/guttering.png"
+      image: "/images/guttering.webp"
     },
     {
       title: "Chimney Repairs",
       description: `Cracked flaunching, loose pots, failing flashing — chimney problems get worse fast. I've repaired hundreds of chimneys across ${area.name}. Repointing to full rebuilds, I've done it all.`,
-      image: "/images/chimney.png"
+      image: "/images/chimney.webp"
     },
     {
       title: "Flat Roofing",
       description: `Felt roofs fail — that's just what they do. I fit EPDM rubber and GRP fibreglass in ${area.name} — materials that'll last 25+ years. Proper job, proper guarantee.`,
-      image: "/images/flat-roofing.png"
+      image: "/images/flat-roofing.webp"
     },
     {
       title: "Fascias & Soffits",
       description: `Rotten fascias let water into your roof space. I fit quality UPVC that won't need painting. I'll check for any hidden damage while I'm up there — better to know now.`,
-      image: "/images/fascias-soffits.png"
+      image: "/images/fascias-soffits.webp"
     },
     {
       title: "Emergency Repairs",
       description: `Storm damage at 2am? I answer my phone. I'll get to your ${area.name} property fast, make it watertight, and arrange proper repairs once the weather clears.`,
-      image: "/images/hero.png",
+      image: "/images/hero.webp",
       isEmergency: true
     }
   ];
@@ -81,7 +81,7 @@ export function AreaServices({ area }: AreaServicesProps) {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading={index < 3 ? "eager" : "lazy"}
+                  loading="lazy"
                 />
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />

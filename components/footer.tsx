@@ -50,7 +50,7 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-6 group">
               <Image
-                src="/weather-wizard-logo-no-bg.png"
+                src="/weather-wizard-logo-no-bg.webp"
                 alt="Weather Wizard Logo"
                 width={56}
                 height={56}

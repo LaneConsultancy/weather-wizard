@@ -43,11 +43,12 @@ export function Header({ variant = "default" }: HeaderProps) {
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative">
               <Image
-                src="/weather-wizard-logo-no-bg.png"
+                src="/weather-wizard-logo-no-bg.webp"
                 alt="Weather Wizard Logo"
                 width={56}
                 height={56}
                 className="w-14 h-14 transition-transform duration-300 group-hover:scale-105"
+                priority
               />
             </div>
             <div className="flex flex-col">

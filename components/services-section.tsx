@@ -10,42 +10,42 @@ export function ServicesSection() {
       title: "Roof Repairs",
       description:
         "Missing tiles, cracked flashing, valley leaks, blown ridge tiles — I've fixed them all. I'll photograph the damage, explain exactly what's wrong, and give you a fixed price before touching anything. Most repairs done same-day.",
-      image: "/images/roof-repairs.png",
+      image: "/images/roof-repairs.webp",
       features: ["Fixed price upfront", "Same-day repairs", "Photos of damage"],
     },
     {
       title: "Guttering Repairs",
       description:
         "Blocked gutters cause damp walls and foundation problems. I'll clear the debris, check the joints and brackets, and fix any leaks. If sections need replacing, I'll match your existing system — no need to redo the lot.",
-      image: "/images/guttering.png",
+      image: "/images/guttering.webp",
       features: ["Full inspection", "Leak repairs", "Match existing systems"],
     },
     {
       title: "Chimney Repairs",
       description:
         "Cracked flaunching, loose pots, failing flashing — chimney problems get worse fast. I'll scaffold safely, photograph everything from up top, and give you options. Repointing to full rebuilds, I've done hundreds.",
-      image: "/images/chimney.png",
+      image: "/images/chimney.webp",
       features: ["Safe access", "Photographic survey", "All repairs covered"],
     },
     {
       title: "Flat Roofing",
       description:
         "Felt roofs fail, that's just what they do. I fit EPDM rubber and GRP fibreglass — materials that'll last 25+ years. I'll strip back properly, check the boards, and give you a roof that won't need touching for decades.",
-      image: "/images/flat-roofing.png",
+      image: "/images/flat-roofing.webp",
       features: ["EPDM or GRP", "20-year guarantee", "Full deck inspection"],
     },
     {
       title: "Fascias & Soffits",
       description:
         "Rotten fascias let water into your roof space. I fit quality UPVC that won't need painting and lasts for years. I'll check for any hidden damage while I'm up there — better to know now than later.",
-      image: "/images/fascias-soffits.png",
+      image: "/images/fascias-soffits.webp",
       features: ["Quality UPVC", "Hidden damage check", "Clean finish"],
     },
     {
       title: "Emergency Repairs",
       description:
         "Storm damage at 2am? I answer my phone. I'll get to you fast, make it watertight, and arrange proper repairs once the weather clears. Don't let a small leak become a big problem.",
-      image: "/images/hero.png",
+      image: "/images/hero.webp",
       features: ["I answer the phone", "Fast response", "Made watertight"],
       isEmergency: true,
     },
@@ -94,7 +94,7 @@ export function ServicesSection() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading={index < 3 ? "eager" : "lazy"}
+                  loading="lazy"
                 />
                 {/* Gradient overlay */}
                 <div
