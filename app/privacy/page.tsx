@@ -118,7 +118,7 @@ export default function PrivacyPolicyPage() {
               <p className="text-slate-600 leading-relaxed">
                 We use cookies and similar technologies to enhance your experience and for advertising purposes.
                 Please see our{" "}
-                <Link href="/cookies" className="text-copper hover:underline">
+                <Link href="/cookies" className="text-copper underline hover:no-underline">
                   Cookie Policy
                 </Link>{" "}
                 for detailed information.
@@ -192,7 +192,7 @@ export default function PrivacyPolicyPage() {
                   href="https://privacy.microsoft.com/en-gb/privacystatement"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-copper hover:underline"
+                  className="text-copper underline hover:no-underline"
                 >
                   Privacy Statement
                 </a>
@@ -329,7 +329,7 @@ export default function PrivacyPolicyPage() {
                     href="https://ico.org.uk"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-copper hover:underline"
+                    className="text-copper underline hover:no-underline"
                   >
                     ico.org.uk
                   </a>

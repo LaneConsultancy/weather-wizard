@@ -94,7 +94,7 @@ export function ReviewsSection() {
             {/* Checkatrade style badge */}
             <div className="flex flex-col items-center">
               <div className="text-5xl font-bold text-white">10</div>
-              <div className="text-white/60 text-sm">/10</div>
+              <div className="text-white/70 text-sm">/10</div>
             </div>
 
             <div className="w-px h-16 bg-white/20" />
@@ -108,7 +108,7 @@ export function ReviewsSection() {
                 </div>
               </div>
               <div className="text-white font-semibold">58 Reviews</div>
-              <div className="text-white/60 text-sm flex items-center gap-1">
+              <div className="text-white/70 text-sm flex items-center gap-1">
                 on Checkatrade
                 <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
               </div>
@@ -123,7 +123,7 @@ export function ReviewsSection() {
               ].map((item) => (
                 <div key={item.label} className="text-center">
                   <div className="text-2xl font-bold text-copper">{item.score}</div>
-                  <div className="text-white/50 text-xs">{item.label}</div>
+                  <div className="text-white/70 text-xs">{item.label}</div>
                 </div>
               ))}
             </div>
@@ -218,7 +218,7 @@ export function CheckatradeBadge({ variant = "default" }: { variant?: "default" 
           <span className={`font-semibold ${isDark ? "text-white" : "text-slate-900"}`}>10/10</span>
           {" "}on Checkatrade
         </span>
-        <ExternalLink className={`w-3 h-3 ${isDark ? "text-white/50" : "text-slate-400"} group-hover:translate-x-0.5 transition-transform`} />
+        <ExternalLink className={`w-3 h-3 ${isDark ? "text-white/70" : "text-slate-400"} group-hover:translate-x-0.5 transition-transform`} />
       </a>
     );
   }
@@ -243,11 +243,11 @@ export function CheckatradeBadge({ variant = "default" }: { variant?: "default" 
         <div className={`font-semibold text-sm ${isDark ? "text-white" : "text-slate-900"}`}>
           10/10 on Checkatrade
         </div>
-        <div className={`text-xs ${isDark ? "text-white/60" : "text-slate-500"}`}>
+        <div className={`text-xs ${isDark ? "text-white/70" : "text-slate-500"}`}>
           58 verified reviews
         </div>
       </div>
-      <ExternalLink className={`w-4 h-4 ${isDark ? "text-white/50" : "text-slate-400"} group-hover:translate-x-0.5 transition-transform`} />
+      <ExternalLink className={`w-4 h-4 ${isDark ? "text-white/70" : "text-slate-400"} group-hover:translate-x-0.5 transition-transform`} />
     </a>
   );
 }

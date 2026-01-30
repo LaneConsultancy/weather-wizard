@@ -82,7 +82,7 @@ export function Footer() {
                 </div>
                 <div>
                   <p className="font-semibold text-white">0800 316 2922</p>
-                  <p className="text-xs text-white/50">Call anytime</p>
+                  <p className="text-xs text-white/65">Call anytime</p>
                 </div>
               </a>
               <div className="flex items-center gap-3 text-white/70">
@@ -157,7 +157,7 @@ export function Footer() {
               ))}
             </div>
             {hasMoreAreas && (
-              <p className="text-xs text-white/40 mt-3">
+              <p className="text-xs text-white/65 mt-3">
                 + {areas.length - 12} more areas across Kent
               </p>
             )}
@@ -167,7 +167,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-white/50 text-sm">
+            <p className="text-white/65 text-sm">
               © {currentYear} Weather Wizard Roofing & Guttering. All rights
               reserved.
             </p>
@@ -176,13 +176,13 @@ export function Footer() {
                 <Link
                   key={index}
                   href={link.href}
-                  className="text-white/50 hover:text-copper transition-colors text-sm"
+                  className="text-white/65 hover:text-copper transition-colors text-sm"
                 >
                   {link.name}
                 </Link>
               ))}
               <CookieSettingsButton />
-              <span className="text-white/50 text-sm flex items-center gap-2">
+              <span className="text-white/65 text-sm flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500" />
                 Fully Insured & Certified
               </span>

@@ -55,7 +55,7 @@ export function Header({ variant = "default" }: HeaderProps) {
               <span className="font-display text-xl text-copper tracking-wide">
                 Weather Wizard
               </span>
-              <span className="text-xs text-white/60 italic hidden sm:block">
+              <span className="text-xs text-white/70 italic hidden sm:block">
                 We Weather Every Storm
               </span>
             </div>

@@ -55,7 +55,7 @@ export function AreaTrustSignals({ area }: AreaTrustSignalsProps) {
                 </h3>
 
                 {/* Description */}
-                <p className="text-white/60 text-sm">
+                <p className="text-white/70 text-sm">
                   {signal.description}
                 </p>
               </div>

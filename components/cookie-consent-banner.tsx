@@ -30,7 +30,7 @@ export function CookieConsentBanner() {
                 <Cookie className="h-4 w-4 text-copper flex-shrink-0 mt-0.5" />
                 <p className="text-white/80 text-xs leading-relaxed">
                   We use cookies for analytics and marketing.{" "}
-                  <Link href="/privacy" className="text-copper hover:underline">
+                  <Link href="/privacy" className="text-copper underline hover:no-underline">
                     Learn more
                   </Link>
                 </p>
@@ -57,7 +57,8 @@ export function CookieConsentBanner() {
                     setTempConsent(consent);
                     setShowSettings(true);
                   }}
-                  className="text-white/50 hover:text-white text-xs ml-auto"
+                  className="text-white/70 hover:text-white text-xs ml-auto"
+                  aria-label="Manage cookie settings"
                 >
                   <Settings className="h-3.5 w-3.5" />
                 </button>
@@ -70,7 +71,8 @@ export function CookieConsentBanner() {
                 <span className="text-white text-xs font-medium">Cookie Settings</span>
                 <button
                   onClick={() => setShowSettings(false)}
-                  className="text-white/50 hover:text-white"
+                  className="text-white/70 hover:text-white"
+                  aria-label="Close cookie settings"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -92,6 +94,7 @@ export function CookieConsentBanner() {
                     onClick={() => setTempConsent((prev) => ({ ...prev, analytics: !prev.analytics }))}
                     role="switch"
                     aria-checked={tempConsent.analytics}
+                    aria-label="Toggle analytics cookies"
                   >
                     <div
                       className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors ${
@@ -110,6 +113,7 @@ export function CookieConsentBanner() {
                     onClick={() => setTempConsent((prev) => ({ ...prev, marketing: !prev.marketing }))}
                     role="switch"
                     aria-checked={tempConsent.marketing}
+                    aria-label="Toggle marketing cookies"
                   >
                     <div
                       className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors ${
@@ -144,7 +148,7 @@ export function CookieSettingsButton() {
   return (
     <button
       onClick={() => setShowBanner(true)}
-      className="text-white/50 hover:text-copper transition-colors text-sm flex items-center gap-1"
+      className="text-white/70 hover:text-copper transition-colors text-sm flex items-center gap-1"
       aria-label="Manage cookie preferences"
     >
       <Cookie className="h-3 w-3" />

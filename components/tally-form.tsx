@@ -54,25 +54,25 @@ export function TallyForm({ variant = "default" }: TallyFormProps) {
                       <div className="flex-shrink-0 w-5 h-5 rounded-full bg-copper/20 flex items-center justify-center mt-0.5">
                         <div className="w-2 h-2 rounded-full bg-copper" />
                       </div>
-                      <p className="text-white/60 text-sm">Response within 2 hours during business hours</p>
+                      <p className="text-white/70 text-sm">Response within 2 hours during business hours</p>
                     </div>
                     <div className="flex items-start gap-3">
                       <div className="flex-shrink-0 w-5 h-5 rounded-full bg-copper/20 flex items-center justify-center mt-0.5">
                         <div className="w-2 h-2 rounded-full bg-copper" />
                       </div>
-                      <p className="text-white/60 text-sm">Fixed prices, no hidden charges</p>
+                      <p className="text-white/70 text-sm">Fixed prices, no hidden charges</p>
                     </div>
                     <div className="flex items-start gap-3">
                       <div className="flex-shrink-0 w-5 h-5 rounded-full bg-copper/20 flex items-center justify-center mt-0.5">
                         <div className="w-2 h-2 rounded-full bg-copper" />
                       </div>
-                      <p className="text-white/60 text-sm">25 years&apos; experience you can trust</p>
+                      <p className="text-white/70 text-sm">25 years&apos; experience you can trust</p>
                     </div>
                   </div>
 
                   {/* Or call directly */}
                   <div className="pt-6 mt-6 border-t border-white/10">
-                    <p className="text-white/50 text-sm mb-2">Prefer to speak directly?</p>
+                    <p className="text-white/70 text-sm mb-2">Prefer to speak directly?</p>
                     <a
                       href="tel:08003162922"
                       className="inline-flex items-center gap-2 text-copper hover:text-copper-500 transition-colors font-semibold text-lg group"

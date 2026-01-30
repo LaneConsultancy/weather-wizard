@@ -208,7 +208,7 @@ export default function CookiePolicyPage() {
                   href="https://privacy.microsoft.com/en-gb/privacystatement"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-copper hover:underline"
+                  className="text-copper underline hover:no-underline"
                 >
                   Privacy Statement
                 </a>
@@ -264,7 +264,7 @@ export default function CookiePolicyPage() {
                     href="https://support.google.com/chrome/answer/95647"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-copper hover:underline"
+                    className="text-copper underline hover:no-underline"
                   >
                     Google Chrome
                   </a>
@@ -274,7 +274,7 @@ export default function CookiePolicyPage() {
                     href="https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-copper hover:underline"
+                    className="text-copper underline hover:no-underline"
                   >
                     Mozilla Firefox
                   </a>
@@ -284,7 +284,7 @@ export default function CookiePolicyPage() {
                     href="https://support.apple.com/en-gb/guide/safari/sfri11471/mac"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-copper hover:underline"
+                    className="text-copper underline hover:no-underline"
                   >
                     Safari
                   </a>
@@ -294,7 +294,7 @@ export default function CookiePolicyPage() {
                     href="https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-copper hover:underline"
+                    className="text-copper underline hover:no-underline"
                   >
                     Microsoft Edge
                   </a>
@@ -330,14 +330,14 @@ export default function CookiePolicyPage() {
               <h2 className="text-xl font-semibold text-slate-900 mb-4">9. More Information</h2>
               <p className="text-slate-600 leading-relaxed mb-4">
                 For more information about how we handle your personal data, please read our{" "}
-                <Link href="/privacy" className="text-copper hover:underline">
+                <Link href="/privacy" className="text-copper underline hover:no-underline">
                   Privacy Policy
                 </Link>
                 .
               </p>
               <p className="text-slate-600 leading-relaxed">
                 If you have any questions about our use of cookies, please contact us at{" "}
-                <a href="mailto:privacy@weatherwizard.co.uk" className="text-copper hover:underline">
+                <a href="mailto:privacy@weatherwizard.co.uk" className="text-copper underline hover:no-underline">
                   privacy@weatherwizard.co.uk
                 </a>
                 .
@@ -352,7 +352,7 @@ export default function CookiePolicyPage() {
                     href="https://ico.org.uk/for-the-public/online/cookies/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-copper hover:underline"
+                    className="text-copper underline hover:no-underline"
                   >
                     ICO Guide to Cookies
                   </a>
@@ -362,7 +362,7 @@ export default function CookiePolicyPage() {
                     href="https://www.aboutcookies.org/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-copper hover:underline"
+                    className="text-copper underline hover:no-underline"
                   >
                     AboutCookies.org
                   </a>
@@ -372,7 +372,7 @@ export default function CookiePolicyPage() {
                     href="https://www.youronlinechoices.eu/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-copper hover:underline"
+                    className="text-copper underline hover:no-underline"
                   >
                     Your Online Choices (Opt-out of Behavioural Advertising)
                   </a>
