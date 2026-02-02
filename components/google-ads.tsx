@@ -99,15 +99,15 @@ export function GoogleAds() {
 
   return (
     <>
-      {/* Google Ads gtag.js */}
+      {/* Google Ads gtag.js - lazyOnload to avoid blocking LCP */}
       <Script
         id="google-ads-gtag"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
       />
       <Script
         id="google-ads-config"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];

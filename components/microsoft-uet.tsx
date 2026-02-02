@@ -51,10 +51,10 @@ export function MicrosoftUET() {
 
   return (
     <>
-      {/* Microsoft UET Script - loads after consent state is set */}
+      {/* Microsoft UET Script - lazyOnload to avoid blocking LCP */}
       <Script
         id="microsoft-uet"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         src="//bat.bing.com/bat.js"
         onLoad={() => {
           // Initialize UET after script loads

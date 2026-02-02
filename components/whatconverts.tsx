@@ -58,7 +58,7 @@ export function WhatConverts() {
     <Script
       id="whatconverts"
       src="//s.ksrndkehqnwntyxlhgto.com/159946.js"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
     />
   );
 }

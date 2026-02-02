@@ -148,6 +148,15 @@ export default function RootLayout({
   return (
     <html lang="en-GB" className={`${plusJakarta.variable} ${cinzel.variable}`}>
       <head>
+        {/* Preload hero image for faster LCP */}
+        <link
+          rel="preload"
+          href="/images/hero-roofer.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
+
         {/* Preconnect to Google Fonts for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
