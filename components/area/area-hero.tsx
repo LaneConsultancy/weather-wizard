@@ -86,12 +86,10 @@ function AreaHeroContent({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
                   <Check className="h-5 w-5 text-[#5ba8a0]" />
                   <span className="text-base md:text-lg font-medium">No Call-Out Fee</span>
                 </div>
-                <span className="text-white/40">•</span>
                 <div className="flex items-center gap-2 text-white/90">
                   <Check className="h-5 w-5 text-[#5ba8a0]" />
                   <span className="text-base md:text-lg font-medium">Same-Day Response</span>
                 </div>
-                <span className="text-white/40">•</span>
                 <div className="flex items-center gap-2 text-white/90">
                   <Check className="h-5 w-5 text-[#5ba8a0]" />
                   <span className="text-base md:text-lg font-medium">Fixed Pricing</span>

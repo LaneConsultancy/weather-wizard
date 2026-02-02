@@ -67,12 +67,10 @@ export function HeroSection() {
                   <Check className="h-5 w-5 text-[#5ba8a0]" />
                   <span className="text-base md:text-lg font-medium">No Call-Out Fee</span>
                 </div>
-                <span className="text-white/40">•</span>
                 <div className="flex items-center gap-2 text-white/90">
                   <Check className="h-5 w-5 text-[#5ba8a0]" />
                   <span className="text-base md:text-lg font-medium">Same-Day Response</span>
                 </div>
-                <span className="text-white/40">•</span>
                 <div className="flex items-center gap-2 text-white/90">
                   <Check className="h-5 w-5 text-[#5ba8a0]" />
                   <span className="text-base md:text-lg font-medium">Fixed Pricing</span>
@@ -81,9 +79,9 @@ export function HeroSection() {
 
               {/* Description */}
               <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed animate-fade-up delay-100">
-                After 25 years fixing Kent roofs, I&apos;ve seen every problem going.
-                I answer my own phone, turn up when I say I will, and give you a fixed
-                price before any work starts. No surprises.
+                Your roof problem gets fixed right the first time - no runaround, no surprise
+                costs halfway through the job. You&apos;ll speak to me directly, get a firm price
+                upfront, and know exactly when I&apos;ll arrive. That&apos;s how roofing should work.
               </p>
 
               {/* Trust Badges */}
