@@ -6,6 +6,7 @@ import { AreaTrustSignals } from "@/components/area/area-trust-signals";
 import { AreaServices } from "@/components/area/area-services";
 import { AreaLocalInfo } from "@/components/area/area-local-info";
 import { ReviewsSection } from "@/components/reviews-section";
+import { QuoteFormSection } from "@/components/quote-form-section";
 import { CTASection } from "@/components/cta-section";
 import { Footer } from "@/components/footer";
 import {
@@ -125,6 +126,9 @@ export default async function AreaPage({ params }: AreaPageProps) {
         heroHeadline={content.heroHeadline}
         heroSubheadline={content.heroSubheadline}
       />
+
+      {/* Quote Form Section */}
+      <QuoteFormSection />
 
       {/* Reviews Section - Real Checkatrade Reviews */}
       <ReviewsSection />

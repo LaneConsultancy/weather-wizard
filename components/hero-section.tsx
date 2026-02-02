@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Phone, MapPin, Shield, Clock, Wrench, Check } from "lucide-react";
+import { Phone, Shield, Clock, Wrench, Check } from "lucide-react";
 
 export function HeroSection() {
   return (
@@ -15,7 +15,7 @@ export function HeroSection() {
             {/* Left Column - Hero Content */}
             <div className="lg:col-span-2 max-w-2xl">
             {/* Badges Row - Horizontally aligned */}
-            <div className="flex flex-wrap items-center gap-3 mb-6 animate-fade-in">
+            <div className="flex flex-wrap items-center gap-3 mb-6 animate-fade-in delay-100">
               {/* Urgency Badge */}
               <div className="inline-flex items-center gap-2 bg-green-500/20 border border-green-500/30 rounded-full px-4 py-2">
                 <span className="relative flex h-2 w-2">
@@ -27,45 +27,34 @@ export function HeroSection() {
                 </span>
               </div>
 
-              {/* Location Badge */}
-              <div className="inline-flex items-center gap-2 bg-copper/20 border border-copper/30 rounded-full px-4 py-2">
-                <MapPin className="h-4 w-4 text-copper" />
-                <span className="text-sm font-medium text-copper">
-                  Maidstone-based
-                </span>
-              </div>
             </div>
 
             {/* Main Headline - Problem-Solution Lead */}
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-up">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 leading-tight animate-fade-up">
               Kent Roof Repairs
-              <span className="block text-copper">I&apos;ll Fix It Properly.</span>
+              <span className="block text-copper mt-2">Free Quote Within 24 Hours</span>
             </h1>
 
-            {/* MOBILE: Bullet points for quick scanning */}
-            <div className="block sm:hidden space-y-3 mb-6 animate-fade-up delay-100">
-              <div className="flex items-center gap-3 text-white/90">
-                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-copper/20 flex items-center justify-center">
-                  <Check className="h-3 w-3 text-copper" />
-                </div>
-                <span className="text-base">25 years fixing Kent roofs</span>
+            {/* Value Proposition - Streamlined */}
+            <div className="flex flex-wrap items-center gap-3 mb-8 animate-fade-up delay-100">
+              <div className="flex items-center gap-2 text-white/90">
+                <Check className="h-5 w-5 text-[#5ba8a0]" />
+                <span className="text-base md:text-lg font-medium">No Call-Out Fee</span>
               </div>
-              <div className="flex items-center gap-3 text-white/90">
-                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-copper/20 flex items-center justify-center">
-                  <Check className="h-3 w-3 text-copper" />
-                </div>
-                <span className="text-base">I answer my phone personally</span>
+              <span className="text-white/40">•</span>
+              <div className="flex items-center gap-2 text-white/90">
+                <Check className="h-5 w-5 text-[#5ba8a0]" />
+                <span className="text-base md:text-lg font-medium">Same-Day Response</span>
               </div>
-              <div className="flex items-center gap-3 text-white/90">
-                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-copper/20 flex items-center justify-center">
-                  <Check className="h-3 w-3 text-copper" />
-                </div>
-                <span className="text-base">Fixed prices before work starts</span>
+              <span className="text-white/40">•</span>
+              <div className="flex items-center gap-2 text-white/90">
+                <Check className="h-5 w-5 text-[#5ba8a0]" />
+                <span className="text-base md:text-lg font-medium">Fixed Pricing</span>
               </div>
             </div>
 
-            {/* DESKTOP: Full paragraph */}
-            <p className="hidden sm:block text-lg md:text-xl text-white/90 mb-8 leading-relaxed animate-fade-up delay-100">
+            {/* Description paragraph - shown on all devices */}
+            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed animate-fade-up delay-100">
               After 25 years fixing Kent roofs, I&apos;ve seen every problem going.
               I answer my own phone, turn up when I say I will, and give you a fixed
               price before any work starts. No surprises.
@@ -94,7 +83,7 @@ export function HeroSection() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-10 animate-fade-up delay-300">
+            <div className="flex flex-col sm:flex-row gap-4 mb-6 animate-fade-up delay-300">
               <Button
                 size="lg"
                 className="bg-copper hover:bg-copper-500 text-white font-semibold text-lg px-8 py-6 shadow-copper hover:shadow-copper-lg transition-all duration-300 btn-shine"
@@ -115,6 +104,28 @@ export function HeroSection() {
               </Button>
             </div>
 
+            {/* Risk Reversal Badges - Below CTAs */}
+            <div className="flex flex-wrap gap-4 mb-10 animate-fade-up delay-350">
+              <div className="flex items-center gap-2 text-white/80 text-sm">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#5ba8a0]/20 flex items-center justify-center">
+                  <Check className="h-3 w-3 text-[#5ba8a0]" />
+                </div>
+                <span>No call-out fee</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/80 text-sm">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#5ba8a0]/20 flex items-center justify-center">
+                  <Check className="h-3 w-3 text-[#5ba8a0]" />
+                </div>
+                <span>No deposit required</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/80 text-sm">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#5ba8a0]/20 flex items-center justify-center">
+                  <Check className="h-3 w-3 text-[#5ba8a0]" />
+                </div>
+                <span>Fixed price guarantee</span>
+              </div>
+            </div>
+
             {/* Stats Row - Updated with honest metrics */}
             <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/10 animate-fade-up delay-400">
               <div>
@@ -122,8 +133,8 @@ export function HeroSection() {
                 <p className="text-sm text-white/70">Years in the Trade</p>
               </div>
               <div>
-                <p className="text-2xl md:text-3xl font-bold text-copper">Maidstone</p>
-                <p className="text-sm text-white/70">Based Locally</p>
+                <p className="text-2xl md:text-3xl font-bold text-copper">Kent</p>
+                <p className="text-sm text-white/70">Local Roofer</p>
               </div>
               <div>
                 <p className="text-2xl md:text-3xl font-bold text-copper">All Kent</p>

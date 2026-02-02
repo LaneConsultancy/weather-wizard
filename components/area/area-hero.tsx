@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Phone, MapPin, Shield, Clock, Wrench } from "lucide-react";
+import { Phone, MapPin, Shield, Clock, Wrench, Check } from "lucide-react";
 import { Area } from "@/lib/areas";
 import { sanitizeKeyword, titleCase } from "@/lib/utils";
 
@@ -32,8 +32,16 @@ function AreaHeroContent({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-center">
           {/* Left Column - Hero Content */}
           <div className="lg:col-span-3 max-w-2xl">
+            {/* FREE Offer Badge - Prominent */}
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#d4af37] to-[#c49b2e] rounded-full px-6 py-3 mb-4 shadow-lg animate-fade-in">
+              <Check className="h-5 w-5 text-white" />
+              <span className="text-base font-bold text-white uppercase tracking-wide">
+                FREE No-Obligation Quote
+              </span>
+            </div>
+
             {/* Badges Row - Horizontally aligned */}
-            <div className="flex flex-wrap items-center gap-3 mb-6 animate-fade-in">
+            <div className="flex flex-wrap items-center gap-3 mb-6 animate-fade-in delay-100">
               {/* Urgency Badge */}
               <div className="inline-flex items-center gap-2 bg-green-500/20 border border-green-500/30 rounded-full px-4 py-2">
                 <span className="relative flex h-2 w-2">
@@ -61,9 +69,27 @@ function AreaHeroContent({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
             </h1>
 
             {/* Subheadline */}
-            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed animate-fade-up delay-100">
+            <p className="text-lg md:text-xl text-white/90 mb-6 leading-relaxed animate-fade-up delay-100">
               {heroSubheadline}
             </p>
+
+            {/* Value Proposition Badges */}
+            <div className="flex flex-wrap items-center gap-3 mb-8 animate-fade-up delay-150">
+              <div className="flex items-center gap-2 text-white/90">
+                <Check className="h-5 w-5 text-[#5ba8a0]" />
+                <span className="text-base md:text-lg font-medium">No Call-Out Fee</span>
+              </div>
+              <span className="text-white/40">•</span>
+              <div className="flex items-center gap-2 text-white/90">
+                <Check className="h-5 w-5 text-[#5ba8a0]" />
+                <span className="text-base md:text-lg font-medium">Same-Day Response</span>
+              </div>
+              <span className="text-white/40">•</span>
+              <div className="flex items-center gap-2 text-white/90">
+                <Check className="h-5 w-5 text-[#5ba8a0]" />
+                <span className="text-base md:text-lg font-medium">Fixed Pricing</span>
+              </div>
+            </div>
 
             {/* Trust Badges Row */}
             <div className="flex flex-wrap gap-4 mb-10 animate-fade-up delay-200">
@@ -88,7 +114,7 @@ function AreaHeroContent({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-10 animate-fade-up delay-300">
+            <div className="flex flex-col sm:flex-row gap-4 mb-6 animate-fade-up delay-300">
               <Button
                 size="lg"
                 className="bg-copper hover:bg-copper-500 text-white font-semibold text-lg px-8 py-6 shadow-copper hover:shadow-copper-lg transition-all duration-300 btn-shine"
@@ -107,6 +133,28 @@ function AreaHeroContent({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
               >
                 <a href="#contact">Get Free Quote</a>
               </Button>
+            </div>
+
+            {/* Risk Reversal Badges - Below CTAs */}
+            <div className="flex flex-wrap gap-4 mb-10 animate-fade-up delay-350">
+              <div className="flex items-center gap-2 text-white/80 text-sm">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#5ba8a0]/20 flex items-center justify-center">
+                  <Check className="h-3 w-3 text-[#5ba8a0]" />
+                </div>
+                <span>No call-out fee</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/80 text-sm">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#5ba8a0]/20 flex items-center justify-center">
+                  <Check className="h-3 w-3 text-[#5ba8a0]" />
+                </div>
+                <span>No deposit required</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/80 text-sm">
+                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#5ba8a0]/20 flex items-center justify-center">
+                  <Check className="h-3 w-3 text-[#5ba8a0]" />
+                </div>
+                <span>Fixed price guarantee</span>
+              </div>
             </div>
 
             {/* Stats Row */}

@@ -19,11 +19,11 @@ export default function Home() {
       {/* Hero Section with Integrated Form */}
       <HeroSection />
 
-      {/* Reviews Section - Real Checkatrade Reviews */}
-      <ReviewsSection />
-
       {/* Quote Form Section */}
       <QuoteFormSection />
+
+      {/* Reviews Section - Real Checkatrade Reviews */}
+      <ReviewsSection />
 
       {/* Trust Signals Bar */}
       <TrustSignals />

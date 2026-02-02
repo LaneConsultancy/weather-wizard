@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Phone, Menu, X } from "lucide-react";
+import { Phone, Menu, X, FileText } from "lucide-react";
 
 interface HeaderProps {
   variant?: "default" | "transparent";
@@ -75,7 +75,7 @@ export function Header({ variant = "default" }: HeaderProps) {
           </nav>
 
           {/* CTA Area */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {/* Emergency callout - desktop only */}
             <div className="hidden lg:flex flex-col items-end">
               <span className="text-xs text-copper font-semibold tracking-wide uppercase">
@@ -83,6 +83,18 @@ export function Header({ variant = "default" }: HeaderProps) {
               </span>
               <span className="text-sm text-white/70">0800 316 2922</span>
             </div>
+
+            {/* Get Free Quote Button - desktop only */}
+            <Button
+              size="default"
+              className="hidden md:flex bg-copper/90 hover:bg-copper text-white font-medium shadow-md hover:shadow-copper transition-all duration-300"
+              asChild
+            >
+              <a href="#contact" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                <span>Get Free Quote</span>
+              </a>
+            </Button>
 
             {/* Call Button */}
             <Button
@@ -114,7 +126,7 @@ export function Header({ variant = "default" }: HeaderProps) {
         {/* Mobile Navigation */}
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 ${
-            isMobileMenuOpen ? "max-h-64 pb-6" : "max-h-0"
+            isMobileMenuOpen ? "max-h-80 pb-6" : "max-h-0"
           }`}
         >
           <nav className="flex flex-col gap-4 pt-4 border-t border-white/10">
@@ -128,6 +140,23 @@ export function Header({ variant = "default" }: HeaderProps) {
                 {link.label}
               </a>
             ))}
+
+            {/* Get Free Quote Button - mobile */}
+            <Button
+              size="lg"
+              className="bg-copper/90 hover:bg-copper text-white font-medium shadow-md hover:shadow-copper transition-all duration-300 mt-2"
+              asChild
+            >
+              <a
+                href="#contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2"
+              >
+                <FileText className="h-4 w-4" />
+                <span>Get Free Quote</span>
+              </a>
+            </Button>
+
             <div className="pt-2 border-t border-white/10">
               <p className="text-xs text-copper font-semibold tracking-wide uppercase mb-1">
                 24/7 Emergency Service
