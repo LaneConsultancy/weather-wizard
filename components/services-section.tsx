@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Phone, ArrowRight, AlertTriangle } from "lucide-react";
+import { ArrowRight, AlertTriangle } from "lucide-react";
 
 export function ServicesSection() {
   const services = [
@@ -155,8 +155,7 @@ export function ServicesSection() {
                   }`}
                   asChild
                 >
-                  <a href="tel:08003162922" className="flex items-center justify-center gap-2">
-                    <Phone className="h-4 w-4" />
+                  <a href="#contact" className="flex items-center justify-center gap-2">
                     {service.isEmergency ? "Call Now" : "Get Quote"}
                   </a>
                 </Button>

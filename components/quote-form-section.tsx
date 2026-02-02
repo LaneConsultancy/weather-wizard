@@ -61,11 +61,11 @@ export function QuoteFormSection() {
             </div>
             <div className="flex items-start gap-3 bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
               <div className="p-2 bg-copper/20 rounded-lg flex-shrink-0">
-                <FileText className="h-5 w-5 text-copper" />
+                <Shield className="h-5 w-5 text-copper" />
               </div>
               <div>
-                <p className="font-semibold text-white text-sm">No Deposit Required</p>
-                <p className="text-xs text-white/70">Pay when happy</p>
+                <p className="font-semibold text-white text-sm">Fully Insured</p>
+                <p className="text-xs text-white/70">For your peace of mind</p>
               </div>
             </div>
             <div className="flex items-start gap-3 bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">

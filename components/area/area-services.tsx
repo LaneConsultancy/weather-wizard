@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Phone, Clock, ArrowRight } from "lucide-react";
+import { Clock, ArrowRight } from "lucide-react";
 import { Area } from "@/lib/areas";
 
 interface AreaServicesProps {
@@ -118,8 +118,7 @@ export function AreaServices({ area }: AreaServicesProps) {
                   }`}
                   asChild
                 >
-                  <a href="tel:08003162922" className="flex items-center justify-center gap-2">
-                    <Phone className="h-4 w-4" />
+                  <a href="#contact" className="flex items-center justify-center gap-2">
                     {service.isEmergency ? "Emergency Call" : "Get Quote"}
                   </a>
                 </Button>
