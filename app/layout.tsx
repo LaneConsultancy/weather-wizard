@@ -6,6 +6,7 @@ import { SITE_URL } from "@/lib/config";
 import { ConsentProvider } from "@/lib/cookie-consent";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { MicrosoftUET } from "@/components/microsoft-uet";
+import { MicrosoftClarity } from "@/components/microsoft-clarity";
 import { WhatConverts } from "@/components/whatconverts";
 import { GoogleAds } from "@/components/google-ads";
 import { StickyCallBar } from "@/components/sticky-call-bar";
@@ -186,6 +187,7 @@ export default function RootLayout({
           {/* Tracking scripts - only load after consent */}
           <GoogleAds />
           <MicrosoftUET />
+          <MicrosoftClarity />
           <WhatConverts />
         </ConsentProvider>
 
