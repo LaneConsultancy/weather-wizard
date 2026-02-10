@@ -7,6 +7,9 @@ import { useConsent, type ConsentState } from "@/lib/cookie-consent";
 // Google Ads account ID (from customer ID 6652965980)
 const GOOGLE_ADS_ID = "AW-17329716108";
 
+// Google Analytics 4 measurement ID
+const GA4_MEASUREMENT_ID = "G-YE1JVKY826";
+
 declare global {
   interface Window {
     dataLayer: unknown[];
@@ -118,6 +121,7 @@ export function GoogleAds() {
             gtag('config', '${GOOGLE_ADS_ID}', {
               allow_enhanced_conversions: true
             });
+            gtag('config', '${GA4_MEASUREMENT_ID}');
           `,
         }}
       />
