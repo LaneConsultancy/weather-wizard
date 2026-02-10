@@ -149,6 +149,28 @@ export default function RootLayout({
   return (
     <html lang="en-GB" className={`${plusJakarta.variable} ${cinzel.variable}`}>
       <head>
+        {/* Consent Mode v2 defaults - MUST be synchronous and before all tracking scripts */}
+        <script
+          dangerouslySetInnerHTML={{ __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('consent', 'default', {
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
+              'analytics_storage': 'denied',
+              'url_passthrough': true,
+              'ads_data_redaction': true,
+              'wait_for_update': 500
+            });
+
+            window.uetq = window.uetq || [];
+            window.uetq.push('consent', 'default', {
+              'ad_storage': 'denied'
+            });
+          ` }}
+        />
+
         {/* Preload hero image for faster LCP */}
         <link
           rel="preload"

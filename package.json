@@ -13,7 +13,14 @@
     "example-create-campaign": "tsx scripts/example-create-campaign.ts",
     "create-campaigns": "tsx scripts/create-weather-wizard-campaigns.ts",
     "update-ad-urls": "tsx scripts/update-ad-urls.ts",
-    "remove-wrong-ads": "tsx scripts/remove-wrong-domain-ads.ts"
+    "remove-wrong-ads": "tsx scripts/remove-wrong-domain-ads.ts",
+    "add-secondary-towns": "tsx scripts/add-secondary-towns.ts",
+    "update-budget": "tsx scripts/update-campaign-budget.ts",
+    "test-twilio": "tsx scripts/test-twilio-connection.ts",
+    "test-whatconverts": "tsx scripts/test-whatconverts-connection.ts",
+    "reconcile-calls": "tsx scripts/upload-offline-conversions.ts --dry-run",
+    "upload-offline-conversions": "tsx scripts/upload-offline-conversions.ts",
+    "create-offline-conversion-action": "tsx scripts/create-offline-conversion-action.ts"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.8",
@@ -29,7 +36,8 @@
     "react-dom": "^18",
     "replicate": "^0.34.1",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "twilio": "^5.12.1"
   },
   "devDependencies": {
     "@types/node": "^20",

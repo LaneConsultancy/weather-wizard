@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Phone, Menu, X, FileText } from "lucide-react";
+import { PhoneLink } from "@/components/phone-link";
 
 interface HeaderProps {
   variant?: "default" | "transparent";
@@ -102,10 +103,10 @@ export function Header({ variant = "default" }: HeaderProps) {
               className="bg-copper hover:bg-copper-500 text-white font-semibold shadow-copper hover:shadow-copper-lg transition-all duration-300 btn-shine"
               asChild
             >
-              <a href="tel:08003162922" className="flex items-center gap-2">
+              <PhoneLink className="flex items-center gap-2" label="header_phone">
                 <Phone className="h-4 w-4" />
                 <span className="hidden sm:inline">Call Now</span>
-              </a>
+              </PhoneLink>
             </Button>
 
             {/* Mobile Menu Button */}
@@ -161,12 +162,12 @@ export function Header({ variant = "default" }: HeaderProps) {
               <p className="text-xs text-copper font-semibold tracking-wide uppercase mb-1">
                 24/7 Emergency Service
               </p>
-              <a
-                href="tel:08003162922"
+              <PhoneLink
                 className="text-lg text-white font-semibold"
+                label="header_mobile_phone"
               >
                 0800 316 2922
-              </a>
+              </PhoneLink>
             </div>
           </nav>
         </div>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Phone, MapPin, Clock, ChevronRight, Cookie } from "lucide-react";
+import { PhoneLink } from "@/components/phone-link";
 import { getAllAreas } from "@/lib/areas";
 import { CookieSettingsButton } from "@/components/cookie-consent-banner";
 
@@ -73,9 +74,9 @@ export function Footer() {
 
             {/* Contact info */}
             <div className="space-y-3">
-              <a
-                href="tel:08003162922"
+              <PhoneLink
                 className="flex items-center gap-3 text-white/80 hover:text-copper transition-colors group"
+                label="footer_phone"
               >
                 <div className="p-2 rounded-lg bg-copper/10 group-hover:bg-copper/20 transition-colors">
                   <Phone className="h-4 w-4 text-copper" />
@@ -84,7 +85,7 @@ export function Footer() {
                   <p className="font-semibold text-white">0800 316 2922</p>
                   <p className="text-xs text-white/65">Call anytime</p>
                 </div>
-              </a>
+              </PhoneLink>
               <div className="flex items-center gap-3 text-white/70">
                 <div className="p-2 rounded-lg bg-copper/10">
                   <Clock className="h-4 w-4 text-copper" />

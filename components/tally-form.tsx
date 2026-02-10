@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { Phone, FileText } from "lucide-react";
+import { PhoneLink } from "@/components/phone-link";
 
 interface TallyFormProps {
   variant?: "default" | "compact";
@@ -11,6 +12,30 @@ export function TallyForm({ variant = "default" }: TallyFormProps) {
   useEffect(() => {
     // Load Tally embeds after component mounts
     if (typeof window !== "undefined" && (window as any).Tally) {
+      (window as any).Tally.loadEmbeds();
+    }
+
+    // Read click IDs from client-accessible cookies and append to Tally embed URL
+    const gclid = document.cookie.match(/(?:^|; )ww_gclid_js=([^;]*)/)?.[1];
+    const msclkid = document.cookie.match(/(?:^|; )ww_msclkid_js=([^;]*)/)?.[1];
+
+    const tallyFrames = document.querySelectorAll<HTMLIFrameElement>(
+      "iframe[data-tally-src]"
+    );
+
+    tallyFrames.forEach((frame) => {
+      const src = frame.getAttribute("data-tally-src");
+      if (!src) return;
+
+      const url = new URL(src);
+      if (gclid) url.searchParams.set("gclid", decodeURIComponent(gclid));
+      if (msclkid) url.searchParams.set("msclkid", decodeURIComponent(msclkid));
+
+      frame.setAttribute("data-tally-src", url.toString());
+    });
+
+    // Reload Tally embeds to pick up the updated URL
+    if ((gclid || msclkid) && (window as any).Tally) {
       (window as any).Tally.loadEmbeds();
     }
   }, []);
@@ -73,13 +98,13 @@ export function TallyForm({ variant = "default" }: TallyFormProps) {
                   {/* Or call directly */}
                   <div className="pt-6 mt-6 border-t border-white/10">
                     <p className="text-white/70 text-sm mb-2">Prefer to speak directly?</p>
-                    <a
-                      href="tel:08003162922"
+                    <PhoneLink
                       className="inline-flex items-center gap-2 text-copper hover:text-copper-500 transition-colors font-semibold text-lg group"
+                      label="form_phone"
                     >
                       <Phone className="h-5 w-5 group-hover:animate-bounce" />
                       0800 316 2922
-                    </a>
+                    </PhoneLink>
                   </div>
                 </div>
 

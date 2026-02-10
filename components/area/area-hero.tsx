@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Phone, Shield, Clock, Wrench, Check } from "lucide-react";
+import { PhoneLink } from "@/components/phone-link";
 import { Area } from "@/lib/areas";
 import { sanitizeKeyword, titleCase } from "@/lib/utils";
 
@@ -130,10 +131,10 @@ function AreaHeroContent({ area, heroHeadline, heroSubheadline }: AreaHeroProps)
                   className="bg-copper hover:bg-copper-500 text-white font-semibold text-lg px-8 py-6 shadow-copper hover:shadow-copper-lg transition-all duration-300 btn-shine"
                   asChild
                 >
-                  <a href="tel:08003162922" className="flex items-center gap-3">
+                  <PhoneLink className="flex items-center gap-3" label="area_hero_phone">
                     <Phone className="h-5 w-5" />
                     Call 0800 316 2922
-                  </a>
+                  </PhoneLink>
                 </Button>
                 <Button
                   size="lg"

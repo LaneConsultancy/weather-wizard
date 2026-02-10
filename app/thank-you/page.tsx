@@ -1,9 +1,10 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, Phone, ArrowLeft } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { GoogleAdsConversion } from "@/components/google-ads-conversion";
+import { EnhancedConversionTracker } from "@/components/enhanced-conversion-tracker";
 
 export const metadata: Metadata = {
   title: "Thank You | Weather Wizard",
@@ -21,12 +22,13 @@ export const metadata: Metadata = {
 export default function ThankYouPage() {
   return (
     <main className="min-h-screen flex flex-col">
-      {/* Google Ads Conversion Tracking */}
-      <GoogleAdsConversion
-        conversionLabel="Lx0ZCNmdzO4bEIz3ucdA"
-        conversionValue={50}
-        currency="GBP"
-      />
+      {/* Enhanced Conversion Tracking (reads URL params from Tally redirect) */}
+      <Suspense fallback={null}>
+        <EnhancedConversionTracker
+          conversionLabel="Lx0ZCNmdzO4bEIz3ucdA"
+          conversionValue={50}
+        />
+      </Suspense>
 
       {/* Header */}
       <Header />

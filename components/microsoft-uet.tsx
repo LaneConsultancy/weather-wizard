@@ -16,33 +16,37 @@ declare global {
 export function MicrosoftUET() {
   const { consent, hasInteracted } = useConsent();
 
+  // Consent DEFAULTS are set synchronously in <head> (layout.tsx).
+  // This effect only handles UPDATES after user interaction.
   useEffect(() => {
-    // Initialize uetq array if not exists
-    window.uetq = window.uetq || [];
+    // Guard: uetq should already be defined by the inline script in <head>.
+    if (!window.uetq) {
+      window.uetq = [];
+    }
 
-    // Set consent state based on user preferences
-    // This must be called BEFORE the UET tag fires
-    const consentValue = consent.marketing ? "granted" : "denied";
+    // If user has previously set consent, send an update
+    if (hasInteracted) {
+      const consentValue = consent.marketing ? "granted" : "denied";
+      window.uetq.push("consent", "update", {
+        ad_storage: consentValue,
+      });
+    }
 
-    // Push consent signal to UET
-    window.uetq.push("consent", "default", {
-      ad_storage: consentValue,
-    });
-
-    // Listen for consent updates
-    const handleConsentUpdate = (event: CustomEvent<{ marketing: boolean }>) => {
-      const newConsentValue = event.detail.marketing ? "granted" : "denied";
+    // Listen for real-time consent changes from the cookie banner
+    const handleConsentUpdate = (event: Event) => {
+      const detail = (event as CustomEvent<{ marketing: boolean }>).detail;
+      const newConsentValue = detail.marketing ? "granted" : "denied";
       window.uetq.push("consent", "update", {
         ad_storage: newConsentValue,
       });
     };
 
-    window.addEventListener("consentUpdated", handleConsentUpdate as EventListener);
+    window.addEventListener("consentUpdated", handleConsentUpdate);
 
     return () => {
-      window.removeEventListener("consentUpdated", handleConsentUpdate as EventListener);
+      window.removeEventListener("consentUpdated", handleConsentUpdate);
     };
-  }, [consent.marketing]);
+  }, [consent.marketing, hasInteracted]);
 
   // Don't render the script if no UET Tag ID is configured
   if (!UET_TAG_ID) {
@@ -108,6 +112,6 @@ export function trackConversion(
 }
 
 // Track phone click conversions
-export function trackPhoneClick() {
-  trackConversion("phone_click", "contact", "header_phone");
+export function trackPhoneClick(label: string = "header_phone") {
+  trackConversion("phone_click", "contact", label);
 }

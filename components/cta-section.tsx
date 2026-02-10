@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Phone, Clock, Shield, Wrench } from "lucide-react";
+import { PhoneLink } from "@/components/phone-link";
 
 export function CTASection() {
   const trustPoints = [
@@ -47,10 +48,10 @@ export function CTASection() {
               className="bg-copper hover:bg-copper-500 text-white font-semibold text-lg px-10 py-7 shadow-copper hover:shadow-copper-lg transition-all duration-300 btn-shine"
               asChild
             >
-              <a href="tel:08003162922" className="flex items-center gap-3">
+              <PhoneLink className="flex items-center gap-3" label="cta_phone">
                 <Phone className="h-5 w-5" />
                 Call 0800 316 2922
-              </a>
+              </PhoneLink>
             </Button>
 
             <Button

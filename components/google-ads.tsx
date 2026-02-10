@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Script from "next/script";
-import { useConsent } from "@/lib/cookie-consent";
+import { useConsent, type ConsentState } from "@/lib/cookie-consent";
 
 // Google Ads account ID (from customer ID 6652965980)
 const GOOGLE_ADS_ID = "AW-17329716108";
@@ -51,51 +51,53 @@ function normalizeName(name: string): string {
 }
 
 export function GoogleAds() {
-  const { consent } = useConsent();
+  const { consent, hasInteracted } = useConsent();
 
+  // Sync consent state on mount and when consent changes.
+  // Consent DEFAULTS are set synchronously in <head> (layout.tsx).
+  // This effect only handles UPDATES after user interaction.
   useEffect(() => {
-    // Initialize dataLayer if not exists
-    window.dataLayer = window.dataLayer || [];
-
-    // Define gtag function if not exists
+    // Guard: gtag should already be defined by the inline script in <head>.
+    // If not (e.g., in tests), define a stub so downstream code does not throw.
     if (!window.gtag) {
+      window.dataLayer = window.dataLayer || [];
       window.gtag = function gtag(...args: unknown[]) {
         window.dataLayer.push(args);
       };
     }
 
-    // Set default consent state
-    window.gtag("consent", "default", {
-      ad_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied",
-      analytics_storage: "denied",
-    });
-
-    // Update consent based on user preferences
-    const consentValue = consent.marketing ? "granted" : "denied";
-    window.gtag("consent", "update", {
-      ad_storage: consentValue,
-      ad_user_data: consentValue,
-      ad_personalization: consentValue,
-    });
-
-    // Listen for consent updates
-    const handleConsentUpdate = (event: CustomEvent<{ marketing: boolean }>) => {
-      const newConsentValue = event.detail.marketing ? "granted" : "denied";
+    // If user has previously set consent (cookie exists), send an update
+    // to override the denied defaults with their stored preference.
+    if (hasInteracted) {
+      const marketingValue = consent.marketing ? "granted" : "denied";
+      const analyticsValue = consent.analytics ? "granted" : "denied";
       window.gtag("consent", "update", {
-        ad_storage: newConsentValue,
-        ad_user_data: newConsentValue,
-        ad_personalization: newConsentValue,
+        ad_storage: marketingValue,
+        ad_user_data: marketingValue,
+        ad_personalization: marketingValue,
+        analytics_storage: analyticsValue,
+      });
+    }
+
+    // Listen for real-time consent changes from the cookie banner
+    const handleConsentUpdate = (event: Event) => {
+      const detail = (event as CustomEvent<ConsentState>).detail;
+      const marketingValue = detail.marketing ? "granted" : "denied";
+      const analyticsValue = detail.analytics ? "granted" : "denied";
+      window.gtag("consent", "update", {
+        ad_storage: marketingValue,
+        ad_user_data: marketingValue,
+        ad_personalization: marketingValue,
+        analytics_storage: analyticsValue,
       });
     };
 
-    window.addEventListener("consentUpdated", handleConsentUpdate as EventListener);
+    window.addEventListener("consentUpdated", handleConsentUpdate);
 
     return () => {
-      window.removeEventListener("consentUpdated", handleConsentUpdate as EventListener);
+      window.removeEventListener("consentUpdated", handleConsentUpdate);
     };
-  }, [consent.marketing]);
+  }, [consent.marketing, consent.analytics, hasInteracted]);
 
   return (
     <>

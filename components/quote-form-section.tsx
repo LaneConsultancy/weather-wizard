@@ -9,6 +9,30 @@ export function QuoteFormSection() {
     if (typeof window !== "undefined" && (window as any).Tally) {
       (window as any).Tally.loadEmbeds();
     }
+
+    // Read click IDs from client-accessible cookies and append to Tally embed URL
+    const gclid = document.cookie.match(/(?:^|; )ww_gclid_js=([^;]*)/)?.[1];
+    const msclkid = document.cookie.match(/(?:^|; )ww_msclkid_js=([^;]*)/)?.[1];
+
+    const tallyFrames = document.querySelectorAll<HTMLIFrameElement>(
+      "iframe[data-tally-src]"
+    );
+
+    tallyFrames.forEach((frame) => {
+      const src = frame.getAttribute("data-tally-src");
+      if (!src) return;
+
+      const url = new URL(src);
+      if (gclid) url.searchParams.set("gclid", decodeURIComponent(gclid));
+      if (msclkid) url.searchParams.set("msclkid", decodeURIComponent(msclkid));
+
+      frame.setAttribute("data-tally-src", url.toString());
+    });
+
+    // Reload Tally embeds to pick up the updated URL
+    if ((gclid || msclkid) && (window as any).Tally) {
+      (window as any).Tally.loadEmbeds();
+    }
   }, []);
 
   return (

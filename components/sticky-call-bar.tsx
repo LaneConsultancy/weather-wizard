@@ -1,6 +1,7 @@
 "use client";
 
 import { Phone } from "lucide-react";
+import { PhoneLink } from "@/components/phone-link";
 import { useEffect, useState } from "react";
 
 export function StickyCallBar() {
@@ -24,13 +25,13 @@ export function StickyCallBar() {
           isVisible ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        <a
-          href="tel:08003162922"
+        <PhoneLink
           className="flex items-center justify-center gap-3 bg-copper text-white py-4 px-6 font-semibold text-lg shadow-lg"
+          label="sticky_mobile_phone"
         >
           <Phone className="h-5 w-5 animate-pulse" />
           <span>Call Now - 0800 316 2922</span>
-        </a>
+        </PhoneLink>
       </div>
 
       {/* Desktop sticky header bar - shows on scroll */}
@@ -54,13 +55,13 @@ export function StickyCallBar() {
               </div>
 
               {/* Right - Phone CTA */}
-              <a
-                href="tel:08003162922"
+              <PhoneLink
                 className="flex items-center gap-2 bg-copper hover:bg-copper/90 text-white px-5 py-2 rounded-lg font-semibold transition-colors"
+                label="sticky_desktop_phone"
               >
                 <Phone className="h-4 w-4" />
                 0800 316 2922
-              </a>
+              </PhoneLink>
             </div>
           </div>
         </div>
