@@ -12,7 +12,7 @@ interface PhoneLinkProps {
 
 // Google Ads conversion label for phone clicks.
 // Replace with the real label from Step 1 once the conversion action is created.
-const PHONE_CLICK_CONVERSION_LABEL = "PHONE_CLICK_LABEL";
+const PHONE_CLICK_CONVERSION_LABEL = "e9c-CLC-7fYbEIz3ucdA";
 
 export function PhoneLink({
   children,
