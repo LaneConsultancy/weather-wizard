@@ -23,7 +23,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import type { UnmatchedCall, UploadResult } from './types';
 
-dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 /** Default conversion value in GBP */
 const DEFAULT_CONVERSION_VALUE = 75;

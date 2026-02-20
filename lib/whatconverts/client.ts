@@ -14,7 +14,7 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 const requiredEnvVars = [
   'WHATCONVERTS_API_TOKEN',

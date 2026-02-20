@@ -25,7 +25,7 @@ import { getCustomer, accountConfig } from '../lib/google-ads/client';
 import { toMicros } from '../lib/google-ads/types';
 
 // Load environment variables from project root
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 
 // Base website URL - production domain
 const BASE_URL = 'https://www.weatherwizardroofing.co.uk';

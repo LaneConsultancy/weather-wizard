@@ -24,7 +24,7 @@ import { getAllAreas } from '../lib/areas';
 import * as readline from 'readline';
 
 // Load environment variables from project root
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 
 const BASE_URL = 'https://www.weatherwizardroofing.co.uk';
 

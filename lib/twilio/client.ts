@@ -13,8 +13,8 @@ import Twilio from 'twilio';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-// Load env vars from parent directory (same pattern as lib/google-ads/client.ts)
-dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
+// Load env vars from .env.local in the project root
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 const requiredEnvVars = ['TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN'];
 

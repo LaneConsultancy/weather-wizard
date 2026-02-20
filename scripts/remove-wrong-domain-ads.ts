@@ -21,7 +21,7 @@ import { getCustomer } from '../lib/google-ads/client';
 import * as readline from 'readline';
 
 // Load environment variables from project root
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 
 const WRONG_DOMAIN = 'weatherwizard.co.uk';
 const CORRECT_DOMAIN = 'weatherwizardroofing.co.uk';

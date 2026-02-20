@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { Phone, FileText, Clock, Shield } from "lucide-react";
+import { PhoneLink } from "@/components/phone-link";
 
 export function QuoteFormSection() {
   useEffect(() => {
@@ -124,13 +125,13 @@ export function QuoteFormSection() {
             <div className="pt-6 mt-6 border-t border-white/20">
               <p className="text-white/70 text-sm mb-3 text-center">Prefer to speak directly?</p>
               <div className="flex justify-center">
-                <a
-                  href="tel:08003162922"
+                <PhoneLink
                   className="inline-flex items-center gap-2 text-copper hover:text-copper-400 transition-colors font-semibold text-lg group"
+                  label="quote_form_phone"
                 >
                   <Phone className="h-5 w-5 group-hover:animate-bounce" />
                   0800 316 2922
-                </a>
+                </PhoneLink>
               </div>
             </div>
 

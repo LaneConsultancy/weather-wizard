@@ -26,7 +26,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import type { UnmatchedCall, UploadResult, UploadError } from './types';
 
-dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 /**
  * Get a fresh OAuth2 access token using the refresh token.

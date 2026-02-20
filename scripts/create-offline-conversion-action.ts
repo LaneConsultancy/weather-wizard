@@ -12,7 +12,6 @@
  * - Category: PHONE_CALL_LEAD
  * - Default value: 75 GBP
  * - Counting: ONE_PER_CLICK (one conversion per unique caller per day)
- * - Attribution: Google Ads Last Click
  * - Click-through window: 30 days
  *
  * After running:
@@ -24,7 +23,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { GoogleAdsApi, enums } from 'google-ads-api';
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 
 async function main() {
   console.log('Creating Google Ads Offline Call Conversion Action...\n');
@@ -49,9 +48,6 @@ async function main() {
         type: enums.ConversionActionType.UPLOAD_CALLS,
         status: enums.ConversionActionStatus.ENABLED,
         counting_type: enums.ConversionActionCountingType.ONE_PER_CLICK,
-        attribution_model_settings: {
-          attribution_model: enums.AttributionModel.GOOGLE_ADS_LAST_CLICK,
-        },
         value_settings: {
           default_value: 75,
           default_currency_code: 'GBP',
@@ -59,8 +55,6 @@ async function main() {
         },
         // 30-day click-through window
         click_through_lookback_window_days: 30,
-        // 1-day view-through window
-        view_through_lookback_window_days: 1,
       },
     ]);
 

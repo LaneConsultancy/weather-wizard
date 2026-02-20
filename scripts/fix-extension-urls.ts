@@ -6,7 +6,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { GoogleAdsApi } from 'google-ads-api';
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 
 const OLD_DOMAIN = 'weatherwizard.co.uk';
 const NEW_DOMAIN = 'www.weatherwizardroofing.co.uk';

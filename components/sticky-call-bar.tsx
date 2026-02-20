@@ -3,8 +3,10 @@
 import { Phone } from "lucide-react";
 import { PhoneLink } from "@/components/phone-link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export function StickyCallBar() {
+  const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -16,6 +18,11 @@ export function StickyCallBar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Don't render on upfolded landing pages — they have their own sticky CTA
+  if (pathname.startsWith("/upfolded")) {
+    return null;
+  }
 
   return (
     <>

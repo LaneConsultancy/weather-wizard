@@ -18,10 +18,14 @@
  * GOOGLE_ADS_CLIENT_ID=xxx GOOGLE_ADS_CLIENT_SECRET=yyy npm run get-google-ads-token
  */
 
+import path from 'path';
+import dotenv from 'dotenv';
 import http from 'http';
 import { URL } from 'url';
 import readline from 'readline';
 import open from 'open';
+
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 
 const PORT = 3001;
 const REDIRECT_URI = `http://localhost:${PORT}/oauth2callback`;

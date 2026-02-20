@@ -9,8 +9,8 @@ import { GoogleAdsApi, Customer } from 'google-ads-api';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-// Load environment variables from the parent directory's .env file
-dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
+// Load environment variables from .env.local in the project root
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 // Validate required environment variables
 const requiredEnvVars = [
