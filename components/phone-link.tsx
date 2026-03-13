@@ -58,16 +58,22 @@ export function PhoneLink({
 
       const body = JSON.stringify(payload);
 
+      // Phone click events go directly to the Cloudflare Worker, which stores
+      // them in KV for later matching against Twilio call logs. This avoids
+      // Vercel's ephemeral filesystem and keeps storage server-side.
+      const CLICK_ENDPOINT =
+        "https://ww-conversion-importer.georgejlane.workers.dev/phone-click";
+
       try {
         if (navigator.sendBeacon) {
           // sendBeacon requires a Blob when sending JSON so the Content-Type
           // header is set correctly for the server to parse it.
           const blob = new Blob([body], { type: "application/json" });
-          navigator.sendBeacon("/api/phone-click", blob);
+          navigator.sendBeacon(CLICK_ENDPOINT, blob);
         } else {
           // Fallback for environments without sendBeacon (rare in 2025, but
           // some desktop browsers in kiosk/restricted modes may lack it).
-          fetch("/api/phone-click", {
+          fetch(CLICK_ENDPOINT, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body,
