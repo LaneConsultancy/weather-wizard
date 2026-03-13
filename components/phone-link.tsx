@@ -2,6 +2,7 @@
 
 import { trackPhoneClickConversion } from "@/components/google-ads";
 import { trackPhoneClick } from "@/components/microsoft-uet";
+import { getStoredGclid, getStoredMsclkid } from "@/lib/gclid-store";
 
 interface PhoneLinkProps {
   children: React.ReactNode;
@@ -11,7 +12,6 @@ interface PhoneLinkProps {
 }
 
 // Google Ads conversion label for phone clicks.
-// Replace with the real label from Step 1 once the conversion action is created.
 const PHONE_CLICK_CONVERSION_LABEL = "e9c-CLC-7fYbEIz3ucdA";
 
 export function PhoneLink({
@@ -24,6 +24,7 @@ export function PhoneLink({
   const normalizedNumber = phoneNumber.replace(/\D/g, "");
 
   const handleClick = () => {
+    // --- Existing real-time conversion pings (gtag / UET) ---
     try {
       trackPhoneClickConversion(PHONE_CLICK_CONVERSION_LABEL, phoneNumber);
     } catch (error) {
@@ -34,6 +35,51 @@ export function PhoneLink({
       trackPhoneClick(label);
     } catch (error) {
       console.warn("[PhoneLink] Microsoft UET tracking failed:", error);
+    }
+
+    // --- Offline click conversion capture ---
+    // If we have a gclid or msclkid from this session we fire a beacon to
+    // our API so the click can later be matched against Twilio call logs
+    // and uploaded to Google Ads as an offline click conversion.
+    //
+    // navigator.sendBeacon() is fire-and-forget and survives the browser
+    // switching to the phone dialler immediately after the user taps the
+    // tel: link. Falls back to a standard fetch() when unavailable.
+    const gclid = getStoredGclid();
+    const msclkid = getStoredMsclkid();
+
+    if (gclid || msclkid) {
+      const payload: Record<string, string> = {
+        timestamp: new Date().toISOString(),
+        page: typeof window !== "undefined" ? window.location.pathname : "/",
+      };
+      if (gclid) payload.gclid = gclid;
+      if (msclkid) payload.msclkid = msclkid;
+
+      const body = JSON.stringify(payload);
+
+      try {
+        if (navigator.sendBeacon) {
+          // sendBeacon requires a Blob when sending JSON so the Content-Type
+          // header is set correctly for the server to parse it.
+          const blob = new Blob([body], { type: "application/json" });
+          navigator.sendBeacon("/api/phone-click", blob);
+        } else {
+          // Fallback for environments without sendBeacon (rare in 2025, but
+          // some desktop browsers in kiosk/restricted modes may lack it).
+          fetch("/api/phone-click", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body,
+            // keepalive ensures the request completes even if the page unloads
+            keepalive: true,
+          }).catch(() => {
+            // Fire-and-forget — ignore errors silently
+          });
+        }
+      } catch (error) {
+        console.warn("[PhoneLink] Click capture beacon failed:", error);
+      }
     }
   };
 

@@ -20,7 +20,10 @@
     "test-whatconverts": "tsx scripts/test-whatconverts-connection.ts",
     "reconcile-calls": "tsx scripts/upload-offline-conversions.ts --dry-run",
     "upload-offline-conversions": "tsx scripts/upload-offline-conversions.ts",
-    "create-offline-conversion-action": "tsx scripts/create-offline-conversion-action.ts"
+    "create-offline-conversion-action": "tsx scripts/create-offline-conversion-action.ts",
+    "test-microsoft-ads": "npx tsx scripts/test-microsoft-ads.ts",
+    "import-conversions": "tsx scripts/import-tally-conversions.ts",
+    "import-call-conversions": "tsx scripts/import-call-conversions.ts"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.8",
