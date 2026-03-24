@@ -7,7 +7,6 @@ import { TrustBar } from "@/components/upfolded/trust-bar";
 import { HowItWorksStrip } from "@/components/upfolded/how-it-works-strip";
 import { TestimonialsStrip } from "@/components/upfolded/testimonials-strip";
 import { LossAversionSection } from "@/components/upfolded/loss-aversion-section";
-import { UpfoldedQuoteForm } from "@/components/upfolded/upfolded-quote-form";
 import { UpfoldedStickyCta } from "@/components/upfolded/upfolded-sticky-cta";
 
 export const metadata: Metadata = {
@@ -61,7 +60,6 @@ export default function UpfoldedNewPage() {
       <TrustBar locationName="Kent" />
       <HowItWorksStrip />
       <TestimonialsStrip />
-      <UpfoldedQuoteForm locationName="Kent" />
       <LossAversionSection locationName="Kent" />
 
       {/* Second CTA section - drives back to form */}

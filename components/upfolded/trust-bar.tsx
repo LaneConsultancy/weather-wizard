@@ -8,7 +8,7 @@ const stats = [
   {
     icon: Star,
     value: "10/10",
-    label: "on Checkatrade",
+    label: "Customer Rating",
     showStars: true,
   },
   {

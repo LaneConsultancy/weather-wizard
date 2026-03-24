@@ -1,32 +1,127 @@
-import { Check, Clock } from "lucide-react";
+"use client";
+
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { Check, Clock, Phone } from "lucide-react";
 import { PhoneLink } from "@/components/phone-link";
 import Image from "next/image";
+
+function formatKeyword(raw: string): string {
+  return raw
+    .replace(/\+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function buildHeadline(keyword: string, locationName: string): { main: string; sub: string } {
+  const kw = keyword.toLowerCase();
+
+  // Emergency / urgent keywords → urgency + speed
+  if (kw.includes("emergency") || kw.includes("urgent") || kw.includes("leak")) {
+    return {
+      main: `${formatKeyword(keyword)}? We\u2019ll Fix It Before It Gets Worse`,
+      sub: "Fixed prices. No call-out fee. Same day response.",
+    };
+  }
+
+  // Repair keywords → problem-solution
+  if (kw.includes("repair") || kw.includes("fix") || kw.includes("replacement")) {
+    return {
+      main: `${formatKeyword(keyword)} \u2014 Done Right, Fixed Price, Guaranteed`,
+      sub: "No call-out fee. No hidden costs. 25 years\u2019 experience.",
+    };
+  }
+
+  // Service keywords (guttering, chimney, fascia) → expertise
+  if (kw.includes("gutter") || kw.includes("chimney") || kw.includes("fascia") || kw.includes("soffit")) {
+    return {
+      main: `Need ${formatKeyword(keyword)}? Fixed Prices, No Call-Out Fee`,
+      sub: "Local experts. Fully insured. Get your free quote in 30 seconds.",
+    };
+  }
+
+  // Roofer/roofers/roofing keywords → trust + financial transparency
+  if (kw.includes("roofer") || kw.includes("roofing")) {
+    return {
+      main: `${formatKeyword(keyword)} \u2014 No Call-Out Fee, Fixed Prices`,
+      sub: "Don\u2019t let a small leak become a \u00a35,000 problem.",
+    };
+  }
+
+  // Default → problem-solution urgency
+  return {
+    main: `${formatKeyword(keyword)}? We\u2019ll Fix It Before It Gets Worse`,
+    sub: "Fixed prices guaranteed. No call-out fee. 25 years\u2019 experience.",
+  };
+}
 
 interface UpfoldedHeroProps {
   locationName?: string;
 }
 
 export function UpfoldedHero({ locationName = "Kent" }: UpfoldedHeroProps) {
+  const searchParams = useSearchParams();
+  const rawKeyword = searchParams.get("keyword");
+  const { main: headlineMain, sub: headlineSub } = rawKeyword
+    ? buildHeadline(rawKeyword, locationName)
+    : {
+        main: `Roofers in ${locationName} \u2014 No Call-Out Fee, Fixed Prices`,
+        sub: "Don\u2019t let a small leak become a \u00a35,000 problem.",
+      };
+
   const bullets = [
     "No call-out fee",
     "Fixed price guarantee",
     "25 years\u2019 experience",
   ];
 
+  useEffect(() => {
+    // Load Tally embeds after component mounts
+    if (typeof window !== "undefined" && (window as any).Tally) {
+      (window as any).Tally.loadEmbeds();
+    }
+
+    // Read click IDs from client-accessible cookies and append to Tally embed URL
+    const gclid = document.cookie.match(/(?:^|; )ww_gclid_js=([^;]*)/)?.[1];
+    const msclkid = document.cookie.match(
+      /(?:^|; )ww_msclkid_js=([^;]*)/
+    )?.[1];
+
+    const tallyFrames = document.querySelectorAll<HTMLIFrameElement>(
+      "iframe[data-tally-src]"
+    );
+
+    tallyFrames.forEach((frame) => {
+      const src = frame.getAttribute("data-tally-src");
+      if (!src) return;
+
+      const url = new URL(src);
+      if (gclid) url.searchParams.set("gclid", decodeURIComponent(gclid));
+      if (msclkid) url.searchParams.set("msclkid", decodeURIComponent(msclkid));
+
+      frame.setAttribute("data-tally-src", url.toString());
+    });
+
+    // Reload Tally embeds to pick up the updated URL
+    if ((gclid || msclkid) && (window as any).Tally) {
+      (window as any).Tally.loadEmbeds();
+    }
+  }, []);
+
   return (
     <section className="relative overflow-hidden bg-cream">
       <div className="py-8 md:py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-stretch max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start max-w-6xl mx-auto">
             {/* Left column - copy */}
             <div>
-              {/* Hero image - mobile/tablet only */}
+              {/* Hero image - mobile/tablet only, smaller */}
               <Image
                 src="/images/hero-roofer.webp"
                 alt="Professional roofer working on a roof"
                 width={600}
-                height={400}
-                className="lg:hidden rounded-xl shadow-soft max-h-56 sm:max-h-64 w-full object-cover object-[center_20%] mb-5"
+                height={300}
+                className="lg:hidden rounded-xl shadow-soft max-h-44 sm:max-h-52 w-full object-cover object-[center_20%] mb-5"
                 priority
               />
 
@@ -47,10 +142,12 @@ export function UpfoldedHero({ locationName = "Kent" }: UpfoldedHeroProps) {
                 </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-6 text-slate-900">
-                Don&apos;t Let a Small Leak Become a{" "}
-                <span className="text-copper">&pound;5,000 Problem</span>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3 text-slate-900">
+                {headlineMain}
               </h1>
+              <p className="text-lg sm:text-xl text-copper font-semibold mb-6">
+                {headlineSub}
+              </p>
 
               <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                 Get a free, no-obligation quote from a local {locationName} roofer
@@ -76,36 +173,83 @@ export function UpfoldedHero({ locationName = "Kent" }: UpfoldedHeroProps) {
                 </p>
               </div>
 
-              {/* Primary CTA */}
-              <a
-                href="#quote-form"
-                className="inline-flex items-center gap-2 bg-[#c2410c] hover:bg-[#c2410c]/90 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-copper transition-all btn-shine"
-              >
-                Get Your Free Quote
-              </a>
-
-              {/* Phone fallback */}
-              <p className="text-slate-500 text-sm mt-3">
-                or call{" "}
+              {/* Primary CTA - desktop only (form is right column on desktop) */}
+              <div className="hidden lg:flex flex-wrap items-center gap-3">
+                <a
+                  href="#quote-form"
+                  className="inline-flex items-center gap-2 bg-[#c2410c] hover:bg-[#c2410c]/90 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-copper transition-all btn-shine"
+                >
+                  Get Your Free Quote
+                </a>
                 <PhoneLink
-                  className="text-orange-800 hover:text-orange-900 transition-colors font-semibold inline-flex items-center min-h-[44px]"
+                  className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-lg px-6 py-3.5 rounded-xl shadow-md transition-all"
                   label="upfolded_hero_phone"
                 >
-                  0800 316 2922
+                  <Phone className="h-5 w-5" />
+                  Call 0800 316 2922
                 </PhoneLink>
-              </p>
+              </div>
+
+              {/* Mobile CTAs - shown below copy, above form card */}
+              <div className="lg:hidden flex flex-wrap items-center gap-3 mt-2">
+                <a
+                  href="#quote-form"
+                  className="inline-flex items-center gap-2 bg-[#c2410c] hover:bg-[#c2410c]/90 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-copper transition-all btn-shine"
+                >
+                  Get Your Free Quote
+                </a>
+                <PhoneLink
+                  className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-lg px-6 py-3.5 rounded-xl shadow-md transition-all"
+                  label="upfolded_hero_phone_mobile"
+                >
+                  <Phone className="h-5 w-5" />
+                  Call 0800 316 2922
+                </PhoneLink>
+              </div>
             </div>
 
-            {/* Right column - hero image (desktop only) */}
-            <div className="hidden lg:flex flex-col">
-              <Image
-                src="/images/hero-roofer.webp"
-                alt="Professional roofer working on a roof"
-                width={600}
-                height={500}
-                className="rounded-xl shadow-soft w-full h-full object-cover object-[center_20%]"
-                priority
-              />
+            {/* Right column - quote form card (desktop); inline form card (mobile, below copy) */}
+            <div id="quote-form" className="scroll-mt-20">
+              <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-soft-lg">
+                {/* Form heading */}
+                <h2 className="text-slate-900 font-semibold text-xl mb-1 text-center">
+                  Get Your Free Quote
+                </h2>
+                <p className="text-slate-500 text-sm text-center mb-5">
+                  30 seconds. No spam. No obligation.
+                </p>
+
+                {/* Tally Form Embed — eager loading since it's above the fold */}
+                <div className="rounded-lg">
+                  <iframe
+                    data-tally-src="https://tally.so/embed/VL5e5l?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+                    loading="eager"
+                    width="100%"
+                    height="177"
+                    frameBorder="0"
+                    marginHeight={0}
+                    marginWidth={0}
+                    title="Weather Wizards landing page quote form on a light background."
+                    className="rounded-lg"
+                  ></iframe>
+                </div>
+
+                {/* Risk reversal checks below form */}
+                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-5 text-sm text-slate-500">
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-copper" />
+                    No obligation
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-copper" />
+                    No call-out fee
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-copper" />
+                    Fixed price
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

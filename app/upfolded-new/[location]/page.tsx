@@ -7,7 +7,6 @@ import { TrustBar } from "@/components/upfolded/trust-bar";
 import { HowItWorksStrip } from "@/components/upfolded/how-it-works-strip";
 import { TestimonialsStrip } from "@/components/upfolded/testimonials-strip";
 import { LossAversionSection } from "@/components/upfolded/loss-aversion-section";
-import { UpfoldedQuoteForm } from "@/components/upfolded/upfolded-quote-form";
 import { UpfoldedStickyCta } from "@/components/upfolded/upfolded-sticky-cta";
 import { getAllAreaSlugs, getAreaBySlug } from "@/lib/areas";
 
@@ -85,7 +84,6 @@ export default async function UpfoldedLocationPage({
       <TrustBar locationName={locationName} />
       <HowItWorksStrip />
       <TestimonialsStrip />
-      <UpfoldedQuoteForm locationName={locationName} />
       <LossAversionSection locationName={locationName} />
 
       {/* Second CTA section - drives back to form */}
