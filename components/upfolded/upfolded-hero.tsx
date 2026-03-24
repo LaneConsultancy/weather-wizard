@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Check, Clock, Phone } from "lucide-react";
 import { PhoneLink } from "@/components/phone-link";
 import Image from "next/image";
@@ -60,14 +59,18 @@ interface UpfoldedHeroProps {
 }
 
 export function UpfoldedHero({ locationName = "Kent" }: UpfoldedHeroProps) {
-  const searchParams = useSearchParams();
-  const rawKeyword = searchParams.get("keyword");
-  const { main: headlineMain, sub: headlineSub } = rawKeyword
-    ? buildHeadline(rawKeyword, locationName)
-    : {
-        main: `Roofers in ${locationName} \u2014 No Call-Out Fee, Fixed Prices`,
-        sub: "Don\u2019t let a small leak become a \u00a35,000 problem.",
-      };
+  const [headlineMain, setHeadlineMain] = useState(`Roofers in ${locationName} \u2014 No Call-Out Fee, Fixed Prices`);
+  const [headlineSub, setHeadlineSub] = useState("Don\u2019t let a small leak become a \u00a35,000 problem.");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const rawKeyword = params.get("keyword");
+    if (rawKeyword) {
+      const { main, sub } = buildHeadline(rawKeyword, locationName);
+      setHeadlineMain(main);
+      setHeadlineSub(sub);
+    }
+  }, [locationName]);
 
   const bullets = [
     "No call-out fee",
