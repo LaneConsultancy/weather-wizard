@@ -1,0 +1,14 @@
+name = "ww-conversion-importer"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[triggers]
+crons = ["0 */6 * * *"]
+
+[[kv_namespaces]]
+binding = "DEDUP"
+id = "0113a358294d4a2cb4ea3b0e7f77b221"
+
+[[kv_namespaces]]
+binding = "PHONE_CLICKS"
+id = "04e23fbb9d8147c4ae8bfd8da39e605f"
