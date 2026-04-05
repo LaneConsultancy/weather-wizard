@@ -126,10 +126,12 @@
     @apply h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent;
   }
 
-  /* Scroll-triggered animations - use with intersection observer */
+  /* Scroll-triggered animations - content is visible by default to prevent
+     invisible sections when intersection observer fails to fire (e.g. above-fold
+     content, slow JS execution, or bots/crawlers). */
   .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   }
 

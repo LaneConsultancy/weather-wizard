@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, Clock, Phone } from "lucide-react";
+import { Check, Phone } from "lucide-react";
 import { PhoneLink } from "@/components/phone-link";
 import Image from "next/image";
 
@@ -12,7 +12,7 @@ function formatKeyword(raw: string): string {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-function buildHeadline(keyword: string, locationName: string): { main: string; sub: string } {
+function buildHeadline(keyword: string, _locationName: string): { main: string; sub: string } {
   const kw = keyword.toLowerCase();
 
   // Emergency / urgent keywords → urgency + speed
@@ -112,69 +112,69 @@ export function UpfoldedHero({ locationName = "Kent" }: UpfoldedHeroProps) {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-cream">
-      <div className="py-8 md:py-12">
+    <section className="relative overflow-hidden">
+      {/* Mobile: solid cream background */}
+      {/* Desktop: full-bleed hero image with navy gradient overlay */}
+
+      {/* Desktop background image */}
+      <Image
+        src="/images/hero-roofer.webp"
+        alt="Professional roofer working on a roof"
+        fill
+        className="hidden lg:block object-cover object-[center_10%]"
+        sizes="100vw"
+        priority
+      />
+      {/* Desktop gradient overlay — navy left, fades to transparent right */}
+      <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#1a2e42] via-[#1a2e42]/90 to-transparent z-[1]" />
+
+      {/* Mobile: cream background for copy area */}
+      <div className="lg:hidden absolute inset-0 bg-cream" />
+
+      <div className="relative z-[2] py-8 md:py-12 lg:py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start max-w-6xl mx-auto">
             {/* Left column - copy */}
             <div>
-              {/* Hero image - mobile/tablet only, smaller */}
+              {/* Hero image - mobile/tablet only */}
               <Image
                 src="/images/hero-roofer.webp"
                 alt="Professional roofer working on a roof"
                 width={600}
                 height={300}
-                className="lg:hidden rounded-xl shadow-soft max-h-44 sm:max-h-52 w-full object-cover object-[center_20%] mb-5"
+                className="lg:hidden rounded-xl shadow-soft h-56 w-full object-cover object-[center_20%] mb-5"
                 priority
               />
 
-              {/* Badges row */}
+              {/* Badges row — Available today only (keyword badge removed: adds no trust for humans) */}
               <div className="flex flex-wrap items-center gap-3 mb-5">
-                {/* Urgency badge */}
-                <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-4 py-2">
+                <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-4 py-2 lg:bg-green-500/20 lg:border-green-500/30">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                   </span>
-                  <span className="text-sm font-medium text-green-700">Available today</span>
+                  <span className="text-sm font-medium text-green-700 lg:text-green-400">Available today</span>
                 </div>
-
-                {/* Eyebrow keyword badge for Google Ads quality score */}
-                <span className="inline-flex items-center gap-2 bg-copper-50 border border-copper-200 text-copper-700 text-sm font-semibold px-4 py-1.5 rounded-full">
-                  Trusted Roofers in {locationName}
-                </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3 text-slate-900">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3 text-slate-900 lg:text-white">
                 {headlineMain}
               </h1>
               <p className="text-lg sm:text-xl text-copper font-semibold mb-6">
                 {headlineSub}
               </p>
 
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                Get a free, no-obligation quote from a local {locationName} roofer
-                with 25 years&apos; experience
-              </p>
-
+              {/* Bullet points — no duplicate body paragraph */}
               <ul className="space-y-4 mb-8" role="list">
                 {bullets.map((bullet) => (
                   <li key={bullet} className="flex items-center gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-copper-50 flex items-center justify-center">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-copper-50 flex items-center justify-center lg:bg-copper/20">
                       <Check className="h-4 w-4 text-copper" />
                     </span>
-                    <span className="text-slate-700 font-medium">{bullet}</span>
+                    <span className="text-slate-700 font-medium lg:text-white/90">{bullet}</span>
                   </li>
                 ))}
               </ul>
-
-              {/* Speed promise */}
-              <div className="flex items-center gap-3 bg-slate-100 border border-slate-200 rounded-xl px-5 py-4 mb-6">
-                <Clock className="h-5 w-5 text-copper flex-shrink-0" />
-                <p className="text-slate-700 text-sm font-medium">
-                  Get your quote in under 30 seconds
-                </p>
-              </div>
 
               {/* Primary CTA - desktop only (form is right column on desktop) */}
               <div className="hidden lg:flex flex-wrap items-center gap-3">
@@ -184,13 +184,16 @@ export function UpfoldedHero({ locationName = "Kent" }: UpfoldedHeroProps) {
                 >
                   Get Your Free Quote
                 </a>
-                <PhoneLink
-                  className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-lg px-6 py-3.5 rounded-xl shadow-md transition-all"
-                  label="upfolded_hero_phone"
-                >
-                  <Phone className="h-5 w-5" />
-                  Call 0800 316 2922
-                </PhoneLink>
+                <div className="flex flex-col gap-0.5">
+                  <PhoneLink
+                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold text-lg px-6 py-3.5 rounded-xl transition-all"
+                    label="upfolded_hero_phone"
+                  >
+                    <Phone className="h-5 w-5" />
+                    Call Jon &mdash; 0800 316 2922
+                  </PhoneLink>
+                  <p className="text-white/60 text-xs pl-1">Jon answers personally</p>
+                </div>
               </div>
 
               {/* Mobile CTAs - shown below copy, above form card */}
@@ -201,13 +204,16 @@ export function UpfoldedHero({ locationName = "Kent" }: UpfoldedHeroProps) {
                 >
                   Get Your Free Quote
                 </a>
-                <PhoneLink
-                  className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-lg px-6 py-3.5 rounded-xl shadow-md transition-all"
-                  label="upfolded_hero_phone_mobile"
-                >
-                  <Phone className="h-5 w-5" />
-                  Call 0800 316 2922
-                </PhoneLink>
+                <div className="flex flex-col gap-0.5">
+                  <PhoneLink
+                    className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-lg px-6 py-3.5 rounded-xl shadow-md transition-all"
+                    label="upfolded_hero_phone_mobile"
+                  >
+                    <Phone className="h-5 w-5" />
+                    Call Jon &mdash; 0800 316 2922
+                  </PhoneLink>
+                  <p className="text-slate-500 text-xs pl-1">Jon answers personally</p>
+                </div>
               </div>
             </div>
 
@@ -218,20 +224,21 @@ export function UpfoldedHero({ locationName = "Kent" }: UpfoldedHeroProps) {
                 <h2 className="text-slate-900 font-semibold text-xl mb-1 text-center">
                   Get Your Free Quote
                 </h2>
+                {/* "30 seconds" promise moved here from standalone box */}
                 <p className="text-slate-500 text-sm text-center mb-5">
-                  30 seconds. No spam. No obligation.
+                  Under 30 seconds &middot; No spam &middot; No obligation
                 </p>
 
-                {/* Tally Form Embed — eager loading since it's above the fold */}
+                {/* Tally Form Embed — eager loading since it's above the fold.
+                    Initial height set to 300px to ensure form fields render before
+                    the dynamicHeight script fires and corrects the final height. */}
                 <div className="rounded-lg">
                   <iframe
                     data-tally-src="https://tally.so/embed/VL5e5l?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
                     loading="eager"
                     width="100%"
-                    height="177"
-                    frameBorder="0"
-                    marginHeight={0}
-                    marginWidth={0}
+                    height="300"
+                    style={{ border: 0, margin: 0 }}
                     title="Weather Wizards landing page quote form on a light background."
                     className="rounded-lg"
                   ></iframe>
