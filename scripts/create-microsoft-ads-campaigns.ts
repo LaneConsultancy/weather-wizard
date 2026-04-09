@@ -33,6 +33,9 @@ const TOKEN_ENDPOINT =
 const CAMPAIGN_MGMT_ENDPOINT =
   'https://campaign.api.bingads.microsoft.com/Api/Advertiser/CampaignManagement/v13/CampaignManagementService.svc';
 
+const CUSTOMER_MGMT_ENDPOINT =
+  'https://clientcenter.api.bingads.microsoft.com/Api/CustomerManagement/v13/CustomerManagementService.svc';
+
 const MICROSOFT_ADS_SCOPE =
   'https://ads.microsoft.com/msads.manage offline_access';
 
@@ -46,6 +49,16 @@ type Town = typeof TOWNS[number];
 
 interface Credentials {
   developerToken: string;
+  /**
+   * The human-readable account number from the .env file (e.g. "F1108HVE").
+   * This is resolved to a numeric accountId via SearchAccounts before any
+   * Campaign Management calls are made.
+   */
+  accountNumber: string;
+  /**
+   * The numeric account ID required by all Campaign Management API calls.
+   * Populated by lookupNumericAccountId() at script start.
+   */
   accountId: string;
   clientId: string;
   clientSecret: string;
@@ -431,11 +444,115 @@ function loadCredentials(): Credentials {
 
   return {
     developerToken: required.MICROSOFT_ADS_DEVELOPER_TOKEN!,
-    accountId:      required.MICROSOFT_ADS_ACCOUNT_ID!,
+    // accountNumber is the alphanumeric account number (e.g. "F1108HVE").
+    // accountId will be resolved to the numeric ID by lookupNumericAccountId().
+    accountNumber:  required.MICROSOFT_ADS_ACCOUNT_ID!,
+    accountId:      '',
     clientId:       required.MICROSOFT_ADS_CLIENT_ID!,
     clientSecret:   required.MICROSOFT_ADS_CLIENT_SECRET!,
     refreshToken:   required.MICROSOFT_ADS_REFRESH_TOKEN!,
   };
+}
+
+// ── Customer Management Service ───────────────────────────────────────────────
+
+/**
+ * Calls the Customer Management Service's SearchAccounts operation to resolve
+ * an alphanumeric account number (e.g. "F1108HVE") to the numeric account ID
+ * required by all Campaign Management API calls.
+ *
+ * This is necessary because MICROSOFT_ADS_ACCOUNT_ID in the .env file stores
+ * the account number visible in the UI, not the internal numeric identifier
+ * that the SOAP API expects in the CustomerAccountId header.
+ *
+ * @param accountNumber - The alphanumeric account number from the .env file
+ * @param developerToken - Microsoft Ads developer token
+ * @param accessToken - OAuth2 access token
+ * @returns The numeric account ID as a string
+ */
+async function lookupNumericAccountId(
+  accountNumber: string,
+  developerToken: string,
+  accessToken: string
+): Promise<string> {
+  // Use GetAccountsInfo to list all accounts, then match by account number.
+  // This avoids SearchAccounts predicate format issues.
+  const envelope = `<?xml version="1.0" encoding="utf-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
+            xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <s:Header>
+    <h:AuthenticationToken xmlns:h="https://bingads.microsoft.com/Customer/v13">${accessToken}</h:AuthenticationToken>
+    <h:DeveloperToken xmlns:h="https://bingads.microsoft.com/Customer/v13">${developerToken}</h:DeveloperToken>
+  </s:Header>
+  <s:Body>
+    <GetAccountsInfoRequest xmlns="https://bingads.microsoft.com/Customer/v13">
+      <CustomerId i:nil="true" />
+      <OnlyParentAccounts>false</OnlyParentAccounts>
+    </GetAccountsInfoRequest>
+  </s:Body>
+</s:Envelope>`;
+
+  const response = await fetch(CUSTOMER_MGMT_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/xml; charset=utf-8',
+      SOAPAction: 'GetAccountsInfo',
+    },
+    body: envelope,
+  });
+
+  const text = await response.text();
+
+  if (!response.ok) {
+    throw new Error(
+      `GetAccountsInfo HTTP error (${response.status}):\n${text.substring(0, 1000)}`
+    );
+  }
+
+  if (text.includes('<s:Fault>') || text.includes(':Fault>')) {
+    const detail =
+      extractXml(text, 'Message') ??
+      extractXml(text, 'faultstring') ??
+      'See raw response';
+    throw new Error(`GetAccountsInfo SOAP Fault: ${detail}\n\nRaw:\n${text.substring(0, 2000)}`);
+  }
+
+  // The response contains namespaced elements like <a:AccountInfo> with
+  // <a:Id>141613328</a:Id> and <a:Number>F1108HVE</a:Number>.
+  // Match the AccountInfo block containing our account number.
+  const accountBlockPattern = new RegExp(
+    `<[^>]*AccountInfo[^>]*>[\\s\\S]*?<[^>]*Number[^>]*>${escapeXml(accountNumber)}</[^>]*Number>[\\s\\S]*?</[^>]*AccountInfo>`,
+    'i'
+  );
+  const block = text.match(accountBlockPattern)?.[0];
+
+  if (!block) {
+    // Try matching by Id first, Number second (element order varies)
+    const reversePattern = new RegExp(
+      `<[^>]*AccountInfo[^>]*>[\\s\\S]*?</[^>]*AccountInfo>`,
+      'gi'
+    );
+    const blocks = text.match(reversePattern) ?? [];
+    for (const b of blocks) {
+      if (b.includes(accountNumber)) {
+        const idMatch = b.match(/<[^>]*Id[^>]*>(\d+)<\/[^>]*Id>/i);
+        if (idMatch?.[1]) return idMatch[1];
+      }
+    }
+
+    throw new Error(
+      `GetAccountsInfo: no account found with number "${accountNumber}".\n` +
+        'Check that the account number is correct and the credentials have access.\n\n' +
+        `Raw response:\n${text.substring(0, 2000)}`
+    );
+  }
+
+  const idMatch = block.match(/<[^>]*Id[^>]*>(\d+)<\/[^>]*Id>/i);
+  if (!idMatch?.[1]) {
+    throw new Error(`Found account block but could not extract numeric ID.\nBlock:\n${block}`);
+  }
+
+  return idMatch[1];
 }
 
 // ── OAuth token exchange ──────────────────────────────────────────────────────
@@ -566,6 +683,39 @@ function extractAllXml(xml: string, tag: string): string[] {
 // ── Campaign Management Operations ───────────────────────────────────────────
 
 /**
+ * Fetches all Search campaigns currently in the account.
+ * Used to detect duplicates before attempting to create new campaigns so that
+ * the script can be re-run safely after a partial failure.
+ *
+ * @returns Map of campaign name → numeric campaign ID string
+ */
+async function getCampaignsByAccountId(
+  credentials: Credentials,
+  accessToken: string
+): Promise<Map<string, string>> {
+  const body = `<AccountId>${credentials.accountId}</AccountId>
+    <CampaignType>Search</CampaignType>`;
+
+  const xml = await soapRequest('GetCampaignsByAccountId', body, credentials, accessToken);
+
+  // Each campaign block looks like:
+  //   <Campaign> ... <Id>123456</Id> ... <Name>Search - Guttering - Kent</Name> ... </Campaign>
+  const campaignBlockRe = /<(?:[a-zA-Z]+:)?Campaign\b[^>]*>[\s\S]*?<\/(?:[a-zA-Z]+:)?Campaign>/gi;
+  const existing = new Map<string, string>();
+
+  let block: RegExpExecArray | null;
+  while ((block = campaignBlockRe.exec(xml)) !== null) {
+    const idMatch   = block[0].match(/<(?:[a-zA-Z]+:)?Id[^>]*>(\d+)<\/(?:[a-zA-Z]+:)?Id>/i);
+    const nameMatch = block[0].match(/<(?:[a-zA-Z]+:)?Name[^>]*>([\s\S]*?)<\/(?:[a-zA-Z]+:)?Name>/i);
+    if (idMatch?.[1] && nameMatch?.[1]) {
+      existing.set(nameMatch[1].trim(), idMatch[1].trim());
+    }
+  }
+
+  return existing;
+}
+
+/**
  * Creates campaigns in the account and returns their assigned IDs.
  * All campaigns are created in PAUSED status so they don't serve immediately.
  *
@@ -589,7 +739,8 @@ async function addCampaigns(
     )
     .join('\n      ');
 
-  const body = `<Campaigns>${campaignsXml}</Campaigns>`;
+  const body = `<AccountId>${credentials.accountId}</AccountId>
+      <Campaigns>${campaignsXml}</Campaigns>`;
   const xml = await soapRequest('AddCampaigns', body, credentials, accessToken);
 
   const ids = extractAllXml(xml, 'long');
@@ -656,6 +807,7 @@ async function addAdGroups(
         <CpcBid>
           <Amount>0.50</Amount>
         </CpcBid>
+        <Language>English</Language>
         <Name>${escapeXml(ag.name)}</Name>
         <Status>Paused</Status>
       </AdGroup>`
@@ -667,10 +819,16 @@ async function addAdGroups(
 
   const xml = await soapRequest('AddAdGroups', body, credentials, accessToken);
 
-  const ids = extractAllXml(xml, 'long');
-  if (ids.length !== adGroupSpecs.length) {
+  // Extract IDs — filter out nil values (which indicate per-item errors)
+  const allLongs = extractAllXml(xml, 'long');
+  const ids = allLongs.filter(id => id && /^\d+$/.test(id));
+
+  if (ids.length === 0) {
+    // Check for partial errors in the response
+    const errors = extractAllXml(xml, 'Message');
+    const errorDetail = errors.length > 0 ? errors.join('; ') : xml.substring(0, 1500);
     throw new Error(
-      `AddAdGroups returned ${ids.length} IDs but expected ${adGroupSpecs.length} for campaign ${campaignId}.`
+      `AddAdGroups returned 0 valid IDs for campaign ${campaignId}.\nErrors: ${errorDetail}`
     );
   }
   return ids;
@@ -825,7 +983,7 @@ async function main(): Promise<void> {
   let credentials: Credentials;
   try {
     credentials = loadCredentials();
-    console.log(`  Account ID:       ${credentials.accountId}`);
+    console.log(`  Account Number:   ${credentials.accountNumber}`);
     console.log(`  Developer Token:  ${credentials.developerToken.substring(0, 6)}...`);
     console.log('  OK');
   } catch (err: any) {
@@ -846,21 +1004,76 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // ── Step 3: Create campaigns ────────────────────────────────────────────────
-  console.log('\nStep 3: Creating campaigns...');
-  let campaignIds: string[];
+  // ── Step 3: Resolve numeric account ID ──────────────────────────────────────
+  // MICROSOFT_ADS_ACCOUNT_ID holds the human-readable account number (e.g.
+  // "F1108HVE").  The Campaign Management API requires the internal numeric ID
+  // in the CustomerAccountId SOAP header, so we look it up via SearchAccounts.
+  console.log('\nStep 3: Resolving numeric account ID...');
   try {
-    campaignIds = await addCampaigns(CAMPAIGNS, credentials, accessToken);
-    for (let i = 0; i < CAMPAIGNS.length; i++) {
-      console.log(`  [${campaignIds[i]}] ${CAMPAIGNS[i].name}`);
-    }
+    credentials.accountId = await lookupNumericAccountId(
+      credentials.accountNumber,
+      credentials.developerToken,
+      accessToken
+    );
+    console.log(`  Account Number "${credentials.accountNumber}" → Numeric ID: ${credentials.accountId}`);
     console.log('  OK');
   } catch (err: any) {
-    console.error(`\nFailed to create campaigns: ${err.message}`);
+    console.error(`\nFailed to resolve numeric account ID: ${err.message}`);
     process.exit(1);
   }
 
-  // ── Step 4: Per-campaign: negatives, ad groups, keywords, ads ───────────────
+  // ── Step 4: Resolve campaign IDs (create new or reuse existing) ─────────────
+  // Fetch existing campaigns first so the script is idempotent — if campaigns
+  // were created in a prior run but ad groups/keywords/ads were not added (e.g.
+  // due to a failure), we reuse the existing IDs rather than attempting to
+  // create duplicates (which would return CampaignServiceCannotCreateDuplicateCampaign).
+  console.log('\nStep 4: Resolving campaign IDs...');
+  let existingCampaigns: Map<string, string>;
+  try {
+    existingCampaigns = await getCampaignsByAccountId(credentials, accessToken);
+    console.log(`  Found ${existingCampaigns.size} existing Search campaign(s) in account.`);
+  } catch (err: any) {
+    console.error(`\nFailed to fetch existing campaigns: ${err.message}`);
+    process.exit(1);
+  }
+
+  let campaignIds: string[];
+  const campaignsToCreate: CampaignSpec[] = [];
+  const campaignsToCreateIndices: number[] = [];
+  const resolvedIds: string[] = new Array(CAMPAIGNS.length).fill('');
+
+  // Separate already-existing campaigns from those that need creation
+  for (let i = 0; i < CAMPAIGNS.length; i++) {
+    const existingId = existingCampaigns.get(CAMPAIGNS[i].name);
+    if (existingId) {
+      console.log(`  Campaign already exists, using ID: ${existingId}  — ${CAMPAIGNS[i].name}`);
+      resolvedIds[i] = existingId;
+    } else {
+      campaignsToCreate.push(CAMPAIGNS[i]);
+      campaignsToCreateIndices.push(i);
+    }
+  }
+
+  // Create only the campaigns that don't exist yet
+  if (campaignsToCreate.length > 0) {
+    console.log(`  Creating ${campaignsToCreate.length} new campaign(s)...`);
+    try {
+      const newIds = await addCampaigns(campaignsToCreate, credentials, accessToken);
+      for (let j = 0; j < campaignsToCreate.length; j++) {
+        const originalIndex = campaignsToCreateIndices[j];
+        resolvedIds[originalIndex] = newIds[j];
+        console.log(`  [${newIds[j]}] ${campaignsToCreate[j].name}  (new)`);
+      }
+    } catch (err: any) {
+      console.error(`\nFailed to create campaigns: ${err.message}`);
+      process.exit(1);
+    }
+  }
+
+  campaignIds = resolvedIds;
+  console.log('  OK');
+
+  // ── Step 5: Per-campaign: negatives, ad groups, keywords, ads ───────────────
   for (let ci = 0; ci < CAMPAIGNS.length; ci++) {
     const campaign = CAMPAIGNS[ci];
     const campaignId = campaignIds[ci];

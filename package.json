@@ -25,7 +25,8 @@
     "import-conversions": "tsx scripts/import-tally-conversions.ts",
     "import-call-conversions": "tsx scripts/import-call-conversions.ts",
     "create-service-campaigns": "tsx scripts/create-service-campaigns.ts",
-    "create-ms-campaigns": "npx tsx scripts/create-microsoft-ads-campaigns.ts"
+    "create-ms-campaigns": "npx tsx scripts/create-microsoft-ads-campaigns.ts",
+    "add-service-negatives": "tsx scripts/add-service-negatives.ts"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.8",
