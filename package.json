@@ -23,7 +23,9 @@
     "create-offline-conversion-action": "tsx scripts/create-offline-conversion-action.ts",
     "test-microsoft-ads": "npx tsx scripts/test-microsoft-ads.ts",
     "import-conversions": "tsx scripts/import-tally-conversions.ts",
-    "import-call-conversions": "tsx scripts/import-call-conversions.ts"
+    "import-call-conversions": "tsx scripts/import-call-conversions.ts",
+    "create-service-campaigns": "tsx scripts/create-service-campaigns.ts",
+    "create-ms-campaigns": "npx tsx scripts/create-microsoft-ads-campaigns.ts"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.8",
@@ -43,9 +45,11 @@
     "twilio": "^5.12.1"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.8",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "adm-zip": "^0.5.16",
     "eslint": "^8",
     "eslint-config-next": "15.1.6",
     "open": "^10.0.3",

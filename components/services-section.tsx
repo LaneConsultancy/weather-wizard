@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 
 export function ServicesSection() {
   const services = [
@@ -14,11 +14,12 @@ export function ServicesSection() {
       features: ["Fixed price upfront", "Same-day repairs", "Photos of damage"],
     },
     {
-      title: "Guttering Repairs",
+      title: "Guttering",
       description:
         "Blocked gutters cause damp walls and foundation problems. I'll clear the debris, check the joints and brackets, and fix any leaks. If sections need replacing, I'll match your existing system — no need to redo the lot.",
       image: "/images/guttering.webp",
       features: ["Full inspection", "Leak repairs", "Match existing systems"],
+      href: "/guttering",
     },
     {
       title: "Chimney Repairs",
@@ -33,6 +34,22 @@ export function ServicesSection() {
         "Felt roofs fail, that's just what they do. I fit EPDM rubber and GRP fibreglass — materials that'll last 25+ years. I'll strip back properly, check the boards, and give you a roof that won't need touching for decades.",
       image: "/images/flat-roofing.webp",
       features: ["EPDM or GRP", "20-year guarantee", "Full deck inspection"],
+    },
+    {
+      title: "Bird & Pigeon Proofing",
+      description:
+        "Pigeons nesting under your solar panels or on your flat roof? I fit UV-stabilised mesh, spikes, and netting — humane deterrents that stop birds getting in without harming them. Solar panel proofing a speciality.",
+      image: "/images/bird-proofing.webp",
+      features: ["Solar panel mesh", "Humane deterrents", "All building types"],
+      href: "/bird-proofing",
+    },
+    {
+      title: "Exterior Painting",
+      description:
+        "Fascias, soffits, bargeboards, doors, window frames — I paint and protect exterior woodwork and UPVC across Kent. Proper prep work, quality paints, and I'm comfortable working at height.",
+      image: "/images/exterior-painting.webp",
+      features: ["Full prep work", "Quality paints", "Safe at height"],
+      href: "/exterior-painting",
     },
     {
       title: "Fascias & Soffits",
@@ -155,8 +172,8 @@ export function ServicesSection() {
                   }`}
                   asChild
                 >
-                  <a href="#contact" className="flex items-center justify-center gap-2">
-                    {service.isEmergency ? "Call Now" : "Get Quote"}
+                    <a href={service.href || "#contact"} className="flex items-center justify-center gap-2">
+                    {service.isEmergency ? "Call Now" : service.href ? "Learn More" : "Get Quote"}
                   </a>
                 </Button>
               </div>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Clock, ArrowRight } from "lucide-react";
+import { Clock } from "lucide-react";
 import { Area } from "@/lib/areas";
 
 interface AreaServicesProps {
@@ -15,9 +15,10 @@ export function AreaServices({ area }: AreaServicesProps) {
       image: "/images/roof-repairs.webp"
     },
     {
-      title: "Guttering Repairs",
+      title: "Guttering",
       description: `Blocked gutters cause damp walls and foundation problems. I'll clear the debris, check the joints, and fix any leaks at your ${area.name} property. If sections need replacing, I'll match your existing system.`,
-      image: "/images/guttering.webp"
+      image: "/images/guttering.webp",
+      href: `/${area.slug}/guttering`
     },
     {
       title: "Chimney Repairs",
@@ -28,6 +29,18 @@ export function AreaServices({ area }: AreaServicesProps) {
       title: "Flat Roofing",
       description: `Felt roofs fail — that's just what they do. I fit EPDM rubber and GRP fibreglass in ${area.name} — materials that'll last 25+ years. Proper job, proper guarantee.`,
       image: "/images/flat-roofing.webp"
+    },
+    {
+      title: "Bird & Pigeon Proofing",
+      description: `Pigeons nesting under solar panels or on your flat roof in ${area.name}? I fit UV-stabilised mesh, spikes, and netting — humane deterrents that keep birds out without harming them.`,
+      image: "/images/bird-proofing.webp",
+      href: `/${area.slug}/bird-proofing`
+    },
+    {
+      title: "Exterior Painting",
+      description: `Fascias, soffits, bargeboards, doors — I paint and protect exterior woodwork and UPVC across ${area.name}. Proper prep, quality paints, comfortable working at height.`,
+      image: "/images/exterior-painting.webp",
+      href: `/${area.slug}/exterior-painting`
     },
     {
       title: "Fascias & Soffits",
@@ -118,8 +131,8 @@ export function AreaServices({ area }: AreaServicesProps) {
                   }`}
                   asChild
                 >
-                  <a href="#contact" className="flex items-center justify-center gap-2">
-                    {service.isEmergency ? "Emergency Call" : "Get Quote"}
+                  <a href={service.href || "#contact"} className="flex items-center justify-center gap-2">
+                    {service.isEmergency ? "Emergency Call" : service.href ? "Learn More" : "Get Quote"}
                   </a>
                 </Button>
               </div>

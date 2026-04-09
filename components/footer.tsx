@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, MapPin, Clock, ChevronRight, Cookie } from "lucide-react";
+import { Phone, MapPin, Clock, ChevronRight } from "lucide-react";
 import { PhoneLink } from "@/components/phone-link";
 import { getAllAreas } from "@/lib/areas";
 import { CookieSettingsButton } from "@/components/cookie-consent-banner";
@@ -17,9 +17,11 @@ export function Footer() {
 
   const services = [
     { name: "Roof Repairs", href: "#services" },
-    { name: "Guttering Repairs", href: "#services" },
+    { name: "Guttering", href: "/guttering" },
     { name: "Chimney Repairs", href: "#services" },
     { name: "Flat Roofing", href: "#services" },
+    { name: "Bird & Pigeon Proofing", href: "/bird-proofing" },
+    { name: "Exterior Painting", href: "/exterior-painting" },
     { name: "Fascias & Soffits", href: "#services" },
     { name: "Emergency Repairs", href: "#services" },
   ];
