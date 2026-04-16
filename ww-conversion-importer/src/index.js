@@ -94,7 +94,70 @@ async function handleFetch(request, env) {
     return handleStatus(env);
   }
 
+  if (request.method === 'GET' && path === '/clicks') {
+    return handleGetClicks(request, env);
+  }
+
   return new Response('Not Found', { status: 404 });
+}
+
+async function handleGetClicks(request, env) {
+  // Bearer-token auth against CLICKS_READ_TOKEN secret
+  if (!env.CLICKS_READ_TOKEN) {
+    console.error('[clicks] CLICKS_READ_TOKEN is not configured');
+    return new Response(JSON.stringify({ error: 'server_misconfigured' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  const authHeader = request.headers.get('Authorization') || '';
+  const providedToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+  if (!providedToken || providedToken !== env.CLICKS_READ_TOKEN) {
+    return new Response(JSON.stringify({ error: 'unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  // Parse start/end query params (YYYY-MM-DD). Default to last 14 days.
+  const url = new URL(request.url);
+  const startParam = url.searchParams.get('start');
+  const endParam = url.searchParams.get('end');
+
+  let startMs;
+  let endMs;
+  if (startParam) {
+    startMs = Date.parse(`${startParam}T00:00:00Z`);
+  } else {
+    const d = lookbackDate();
+    d.setUTCHours(0, 0, 0, 0);
+    startMs = d.getTime();
+  }
+  if (endParam) {
+    endMs = Date.parse(`${endParam}T23:59:59.999Z`);
+  } else {
+    endMs = Date.now();
+  }
+  if (isNaN(startMs) || isNaN(endMs) || startMs > endMs) {
+    return new Response(JSON.stringify({ error: 'invalid_date_range' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  const allClicks = await readAllPhoneClicks(env);
+  const clicks = allClicks.filter((c) => {
+    const ts = Date.parse(c.timestamp);
+    return !isNaN(ts) && ts >= startMs && ts <= endMs;
+  });
+
+  console.log(`[clicks] Returned ${clicks.length} / ${allClicks.length} records for ${new Date(startMs).toISOString()} – ${new Date(endMs).toISOString()}`);
+
+  return new Response(JSON.stringify({ count: clicks.length, clicks }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
 }
 
 async function handlePhoneClick(request, env) {
