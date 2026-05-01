@@ -110,8 +110,3 @@ export function trackConversion(
 
   window.uetq.push("event", eventAction, eventData);
 }
-
-// Track phone click conversions
-export function trackPhoneClick(label: string = "header_phone") {
-  trackConversion("phone_click", "contact", label);
-}

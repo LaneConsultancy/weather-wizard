@@ -52,8 +52,7 @@ async function main() {
       }
 
       console.log('\n  ' + '-'.repeat(56));
-      console.log('  IMPORTANT: Verify these field names match the mapping in');
-      console.log('  lib/whatconverts/leads.ts. If they differ, update the mapping.');
+      console.log('  Field names above can be referenced when querying via lib/whatconverts/client.ts.');
 
       // Test 3: Print all leads
       console.log(`\nStep 3: Recent phone call leads (up to 5):`);

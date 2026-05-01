@@ -189,43 +189,39 @@ npm run ads-search-terms            # Top search terms, ad approvals, impression
 
 # Offline conversion imports (also automated via CF Worker cron)
 npm run import-conversions          # Tally form submissions → Google Ads click conversions
-npm run import-call-conversions     # Phone clicks matched to Twilio calls → click conversions
 ```
 
 **Required environment variables** (in `weather-wizard-site/.env.local`):
 - `GOOGLE_ADS_CLIENT_ID`, `GOOGLE_ADS_CLIENT_SECRET`, `GOOGLE_ADS_DEVELOPER_TOKEN`
 - `GOOGLE_ADS_CUSTOMER_ID` (6652965980), `GOOGLE_ADS_LOGIN_CUSTOMER_ID` (5151905694 — MCC)
 - `GOOGLE_ADS_REFRESH_TOKEN`
-- `GOOGLE_ADS_OFFLINE_CALL_CONVERSION_ACTION` (type UPLOAD_CALLS for Twilio)
-- `GOOGLE_ADS_TALLY_CLICK_CONVERSION_ACTION` (type UPLOAD_CLICKS for forms + phone clicks)
+- `GOOGLE_ADS_TALLY_CLICK_CONVERSION_ACTION` (type UPLOAD_CLICKS for forms)
 - `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER`
 - `TALLY_API_KEY`
 - `WHATCONVERTS_API_TOKEN`, `WHATCONVERTS_API_SECRET`
 
-### Offline Conversion Tracking
+### Conversion Tracking
 
-Google Consent Mode v2 blocks ~90% of conversion tracking (cookie banner defaults to denied). To give smart bidding real conversion data, offline conversions are imported:
+Google Consent Mode v2 blocks ~90% of client-side conversion tracking (cookie banner defaults to denied). Two offline pipelines fill the gap:
+
+**Phone calls — handled by WhatConverts:**
+- WhatConverts dynamic number insertion (DNI) swaps the displayed phone number per visitor and tracks the call when it lands at the WhatConverts number (which forwards to the Twilio number).
+- WhatConverts pushes attributed calls back to Google Ads and Microsoft Ads natively via its account integrations — no custom code on this side.
+- Twilio is just the destination; we read it from `scripts/ad-report.ts` to count total unique callers.
 
 **Tally form submissions (gclid-based):**
-- Tally hidden fields capture `gclid` from URL params (`url_passthrough: true`)
-- Forms: `VL5e5l` (landing page), `npqGpV` (original quote)
-- Script: `scripts/import-tally-conversions.ts` — value £50/lead
-
-**Phone call conversions (gclid-based):**
-- `lib/gclid-store.ts` captures gclid from URL into sessionStorage on page load
-- `components/phone-link.tsx` sends gclid via `sendBeacon` to CF Worker on phone click
-- CF Worker stores click in KV, then matches to Twilio call logs by timing (within 5 min)
-- Script: `scripts/import-call-conversions.ts` — value £75/call
+- `proxy.ts` middleware captures `gclid`/`msclkid` from URL params into `ww_*_js` cookies (90-day TTL).
+- The form-embed components read those cookies and append the click ID to the Tally iframe URL so it's stored in the form's hidden field.
+- Forms: `VL5e5l` (landing page), `npqGpV` (original quote).
+- Local: `scripts/import-tally-conversions.ts` — value £50/lead.
+- Automated: `ww-conversion-importer` CF Worker runs the same logic on a 6-hour cron.
 
 **Cloudflare Worker: `ww-conversion-importer`**
 - URL: `https://ww-conversion-importer.georgejlane.workers.dev`
 - Cron: every 6 hours (`0 */6 * * *`)
-- Handles both Tally and phone call conversion imports automatically
-- KV namespaces: `WW_PHONE_CLICKS` (click storage), `WW_CONVERSION_DEDUP` (dedup)
-- `POST /phone-click` — stores phone click events with gclids
-- `GET /status` — last cron run summary
-
-**Note:** The `google-ads-api` npm package (gRPC) works for uploads from local scripts. The CF Worker uses the Google Ads REST API v22 instead (gRPC unavailable in Workers). REST supports `uploadClickConversions` but NOT `uploadCallConversions` (returns 501).
+- Imports completed Tally form submissions and uploads them as gclid-based offline click conversions to Google Ads.
+- KV namespace: `DEDUP` (dedup by Tally submission ID, 90-day TTL).
+- `GET /status` — last cron run summary.
 
 ## Working with Areas
 

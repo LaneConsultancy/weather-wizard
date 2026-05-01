@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import Script from "next/script";
 import { useConsent, type ConsentState } from "@/lib/cookie-consent";
-import { initGclidCapture } from "@/lib/gclid-store";
 
 // Google Ads account ID (from customer ID 6652965980)
 const GOOGLE_ADS_ID = "AW-17329716108";
@@ -56,14 +55,6 @@ function normalizeName(name: string): string {
 
 export function GoogleAds() {
   const { consent, hasInteracted } = useConsent();
-
-  // Capture gclid / msclkid on every page mount so phone clicks fired
-  // later in the session can reference the originating ad click.
-  // initGclidCapture() is idempotent — it only writes to sessionStorage
-  // if no value has been stored yet for this session.
-  useEffect(() => {
-    initGclidCapture();
-  }, []);
 
   // Sync consent state on mount and when consent changes.
   // Consent DEFAULTS are set synchronously in <head> (layout.tsx).
@@ -240,17 +231,6 @@ export async function trackEnhancedConversion(
 
   // Then trigger the conversion
   trackGoogleAdsConversion(conversionLabel, conversionValue, currency, transactionId);
-}
-
-// Helper: Track phone click with enhanced data
-export async function trackPhoneClickConversion(
-  conversionLabel: string,
-  phoneNumber?: string
-) {
-  if (phoneNumber) {
-    await setEnhancedConversionUserData({ phone: phoneNumber });
-  }
-  trackGoogleAdsConversion(conversionLabel);
 }
 
 // Helper: Track form submission with enhanced data

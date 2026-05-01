@@ -812,118 +812,6 @@ async function countTallySubmissionsBySource(
 }
 
 // ---------------------------------------------------------------------------
-// Phone-click records (for call source classification)
-// ---------------------------------------------------------------------------
-
-/**
- * Phone-click records live in the CF Worker's PHONE_CLICKS KV namespace.
- * The worker exposes `GET /clicks?start=YYYY-MM-DD&end=YYYY-MM-DD` (bearer-auth
- * with CLICKS_READ_TOKEN) which returns all click records in the window.
- *
- * The worker only stores clicks that carry a gclid or msclkid — organic/direct
- * phone taps are silently dropped by handlePhoneClick. So any call with no
- * matching click record is legitimately "direct" from our point of view.
- */
-interface PhoneClickRecord {
-  id: string;
-  gclid?: string;
-  msclkid?: string;
-  /** ISO timestamp from the browser at click time */
-  timestamp: string;
-  createdAt: string;
-  page: string;
-}
-
-/** Maximum seconds before a call start that a click may be the originating event. */
-const CLICK_MATCH_WINDOW_SECONDS = 5 * 60;
-
-/**
- * Fetch phone-click records from the CF Worker for the given date range.
- * Returns an empty array (never throws) if the worker is unreachable or
- * misconfigured — all calls will then bucket as 'direct', which is safe.
- */
-async function fetchPhoneClickRecords(
-  startDate: string,
-  endDate: string
-): Promise<PhoneClickRecord[]> {
-  const baseUrl = process.env.WW_CONVERSION_IMPORTER_URL;
-  const token = process.env.WW_CLICKS_READ_TOKEN;
-
-  if (!baseUrl || !token) {
-    console.warn(
-      'Warning: WW_CONVERSION_IMPORTER_URL or WW_CLICKS_READ_TOKEN is not set — calls will all bucket as direct'
-    );
-    return [];
-  }
-
-  const url = `${baseUrl.replace(/\/+$/, '')}/clicks?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate)}`;
-
-  try {
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!response.ok) {
-      const body = await response.text();
-      console.warn(
-        `Warning: /clicks returned ${response.status}: ${body.slice(0, 200)} — calls will bucket as direct`
-      );
-      return [];
-    }
-    const data = (await response.json()) as { count: number; clicks: PhoneClickRecord[] };
-    return Array.isArray(data.clicks) ? data.clicks : [];
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.warn(`Warning: phone-click fetch failed (${message}) — calls will bucket as direct`);
-    return [];
-  }
-}
-
-/**
- * Given a call's start timestamp and the pool of available phone-click records,
- * find the best-matching click and return its traffic source.
- *
- * Matching rules (mirror import-call-conversions.ts matchClicksToCalls):
- *   - Click timestamp must be within CLICK_MATCH_WINDOW_SECONDS before call start.
- *   - If multiple qualify, use the one closest to the call start.
- *   - The matched click ID is removed from availableClickIds so it can't
- *     match a second call.
- *
- * Source priority:
- *   google    — matched click has gclid
- *   microsoft — matched click has msclkid but no gclid
- *   direct    — no matching click record
- */
-function classifyCallSource(
-  callStartMs: number,
-  clicks: PhoneClickRecord[],
-  availableClickIds: Set<string>
-): TrafficSource {
-  const windowStartMs = callStartMs - CLICK_MATCH_WINDOW_SECONDS * 1000;
-
-  const candidates = clicks.filter((click) => {
-    if (!availableClickIds.has(click.id)) return false;
-    const clickMs = new Date(click.timestamp).getTime();
-    return clickMs >= windowStartMs && clickMs <= callStartMs;
-  });
-
-  if (candidates.length === 0) return 'direct';
-
-  // Closest click to call start wins
-  candidates.sort((a, b) => {
-    const aLag = callStartMs - new Date(a.timestamp).getTime();
-    const bLag = callStartMs - new Date(b.timestamp).getTime();
-    return aLag - bLag;
-  });
-
-  const best = candidates[0];
-  availableClickIds.delete(best.id); // consume so it can't match another call
-
-  if (best.gclid) return 'google';
-  if (best.msclkid) return 'microsoft';
-  return 'direct';
-}
-
-// ---------------------------------------------------------------------------
 // Twilio inbound calls
 // ---------------------------------------------------------------------------
 
@@ -933,24 +821,24 @@ const TWILIO_TRACKING_NUMBER = '+448003162922';
 /** Minimum call duration in seconds to count as a genuine lead. */
 const MIN_CALL_DURATION_SECONDS = 10;
 
-interface TwilioSourceCounts {
+interface TwilioCallerCount {
   total: number;
-  google: number;
-  microsoft: number;
-  direct: number;
 }
 
 /**
- * Count unique inbound callers via the Twilio REST API and classify each
- * by traffic source using the phone-click records from data/phone-clicks.json.
+ * Count unique inbound callers via the Twilio REST API.
  *
  * We use the raw REST API rather than the Twilio SDK to keep this script
  * dependency-free and not reliant on SDK initialisation order.
+ *
+ * Source attribution lives in WhatConverts now — it tracks calls placed via
+ * the dynamically-inserted website number and pushes attributed conversions
+ * directly to Google Ads and Microsoft Ads.
  */
-async function countUniqueTwilioCallersBySource(
+async function countUniqueTwilioCallers(
   startDate: string,
   endDate: string
-): Promise<TwilioSourceCounts> {
+): Promise<TwilioCallerCount> {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
 
@@ -991,9 +879,8 @@ async function countUniqueTwilioCallersBySource(
   const endMoment = new Date(`${endDate}T23:59:59Z`);
 
   // De-duplicate by caller number — keep the earliest qualifying call per number
-  // (same policy as the original countUniqueTwilioCallers function).
   const seenCallers = new Set<string>();
-  const qualifyingCalls: Array<{ startTime: Date }> = [];
+  let total = 0;
 
   for (const call of calls) {
     if (call.direction !== 'inbound') continue;
@@ -1004,27 +891,13 @@ async function countUniqueTwilioCallersBySource(
     const callStart = new Date(call.start_time);
     if (callStart > endMoment) continue;
 
-    // Only count first call per unique caller number
     if (seenCallers.has(call.from)) continue;
     seenCallers.add(call.from);
 
-    qualifyingCalls.push({ startTime: callStart });
+    total++;
   }
 
-  // Load phone-click records from the CF Worker for source attribution.
-  // If the worker is unreachable, all calls fall through to 'direct'.
-  const clicks = await fetchPhoneClickRecords(startDate, endDate);
-  const availableClickIds = new Set<string>(clicks.map((c) => c.id));
-
-  const counts: TwilioSourceCounts = { total: 0, google: 0, microsoft: 0, direct: 0 };
-
-  for (const call of qualifyingCalls) {
-    counts.total++;
-    const source = classifyCallSource(call.startTime.getTime(), clicks, availableClickIds);
-    counts[source]++;
-  }
-
-  return counts;
+  return { total };
 }
 
 // ---------------------------------------------------------------------------
@@ -1040,7 +913,7 @@ function printReport(
   googleResult: PromiseSettledResult<GoogleAdsResult>,
   microsoftResult: PromiseSettledResult<MicrosoftAdsReportData>,
   tallyResult: PromiseSettledResult<TallySourceCounts>,
-  twilioResult: PromiseSettledResult<TwilioSourceCounts>
+  twilioResult: PromiseSettledResult<TwilioCallerCount>
 ): void {
   const startDisplay = formatDateForDisplay(dateRange.startDate);
   const endDisplay = formatDateForDisplay(dateRange.endDate);
@@ -1142,12 +1015,11 @@ function printReport(
     console.log(`  Form submissions: ERROR — ${(tallyResult.reason as Error).message}`);
   }
 
-  // Twilio source counts (with fallback zeros when the API call failed)
-  let twilioCounts: TwilioSourceCounts = { total: 0, google: 0, microsoft: 0, direct: 0 };
+  // Twilio: total unique callers only. WhatConverts handles per-source
+  // attribution and pushes calls to Google/Microsoft Ads natively.
   if (twilioResult.status === 'fulfilled') {
-    twilioCounts = twilioResult.value;
-    uniqueCallers = twilioCounts.total;
-    console.log(`  Phone calls: ${uniqueCallers} (unique callers)`);
+    uniqueCallers = twilioResult.value.total;
+    console.log(`  Phone calls: ${uniqueCallers} (unique callers — see WhatConverts for source attribution)`);
   } else {
     console.log(`  Phone calls: ERROR — ${(twilioResult.reason as Error).message}`);
   }
@@ -1169,51 +1041,19 @@ function printReport(
 
   console.log('');
 
-  // ── Conversions by source ───────────────────────────────────────────────
-  const googleForms = tallyCounts.google;
-  const googleCalls = twilioCounts.google;
-  const googleLeads = googleForms + googleCalls;
-
-  const microsoftForms = tallyCounts.microsoft;
-  const microsoftCalls = twilioCounts.microsoft;
-  const microsoftLeads = microsoftForms + microsoftCalls;
-
-  const directForms = tallyCounts.direct;
-  const directCalls = twilioCounts.direct;
-  const directLeads = directForms + directCalls;
-
-  console.log('CONVERSIONS BY SOURCE');
-  console.log(`  Google:    ${googleForms} forms + ${googleCalls} calls = ${googleLeads} leads`);
-  console.log(
-    `  Microsoft: ${microsoftForms} forms + ${microsoftCalls} calls = ${microsoftLeads} leads`
-  );
-  console.log(`  Direct:    ${directForms} forms + ${directCalls} calls = ${directLeads} leads`);
+  // ── Form submissions by source (Tally captures gclid/msclkid in hidden fields) ──
+  console.log('FORM SUBMISSIONS BY SOURCE');
+  console.log(`  Google:    ${tallyCounts.google}`);
+  console.log(`  Microsoft: ${tallyCounts.microsoft}`);
+  console.log(`  Direct:    ${tallyCounts.direct}`);
 
   console.log('');
 
-  // ── Cost per lead by source ─────────────────────────────────────────────
-  console.log('COST PER LEAD BY SOURCE');
-
-  if (googleLeads > 0 && googleSpend > 0) {
-    console.log(`  Google:    ${formatGbp(googleSpend)} / ${googleLeads} leads = ${formatGbp(googleSpend / googleLeads)}`);
-  } else if (googleLeads > 0) {
-    console.log(`  Google:    no spend data`);
-  } else {
-    console.log(`  Google:    no leads attributed`);
-  }
-
-  if (microsoftLeads > 0 && microsoftSpend > 0) {
-    console.log(`  Microsoft: ${formatGbp(microsoftSpend)} / ${microsoftLeads} leads = ${formatGbp(microsoftSpend / microsoftLeads)}`);
-  } else if (microsoftLeads > 0) {
-    console.log(`  Microsoft: no spend data`);
-  } else {
-    console.log(`  Microsoft: no leads attributed`);
-  }
-
+  // ── Cost per lead (blended only — per-source for calls is in WhatConverts) ──
   if (totalLeads > 0 && combinedSpend > 0) {
-    console.log(`  Blended:   ${formatGbp(combinedSpend)} / ${totalLeads} leads = ${formatGbp(combinedSpend / totalLeads)}`);
+    console.log(`COST PER LEAD (blended): ${formatGbp(combinedSpend / totalLeads)}`);
   } else {
-    console.log(`  Blended:   N/A`);
+    console.log('COST PER LEAD (blended): N/A');
   }
 
   console.log('');
@@ -1235,7 +1075,7 @@ async function main(): Promise<void> {
     fetchGoogleAdsData(dateRange.startDate, dateRange.endDate),
     fetchMicrosoftAdsData(dateRange.startDate, dateRange.endDate),
     countTallySubmissionsBySource(dateRange.startDate, dateRange.endDate),
-    countUniqueTwilioCallersBySource(dateRange.startDate, dateRange.endDate),
+    countUniqueTwilioCallers(dateRange.startDate, dateRange.endDate),
   ]);
 
   printReport(dateRange, googleResult, microsoftResult, tallyResult, twilioResult);
