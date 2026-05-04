@@ -31,12 +31,12 @@ const stats = [
   },
 ];
 
-export function TrustBar({ locationName = "Kent" }: TrustBarProps) {
+export function TrustBar(_props: TrustBarProps = {}) {
   return (
     <section className="bg-slate-900 py-12 md:py-14">
       <div className="container mx-auto px-4">
         {/* Stats grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-4xl mx-auto mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-4xl mx-auto">
           {stats.map((stat) => (
             <div
               key={stat.label}
@@ -67,10 +67,6 @@ export function TrustBar({ locationName = "Kent" }: TrustBarProps) {
           ))}
         </div>
 
-        {/* Trust line - uses text-copper-200 (NOT text-copper-300 which is undefined) */}
-        <p className="text-center text-copper-200 font-semibold text-lg md:text-xl max-w-2xl mx-auto">
-          Trusted by homeowners across {locationName} for over 25 years
-        </p>
       </div>
     </section>
   );

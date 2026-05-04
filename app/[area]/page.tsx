@@ -132,12 +132,11 @@ export default async function AreaPage({ params }: AreaPageProps) {
             </div>
 
             <PhoneLink
-              className="flex items-center gap-2 text-white hover:text-copper transition-colors font-semibold min-h-[44px]"
+              className="inline-flex items-center gap-2 bg-copper hover:bg-copper/90 text-white px-4 py-2 rounded-lg font-semibold transition-colors min-h-[44px]"
               label="area_header_phone"
             >
               <Phone className="h-4 w-4" />
-              <span className="hidden sm:inline">0800 316 2922</span>
-              <span className="sm:hidden">Call Us</span>
+              <span>0800 316 2922</span>
             </PhoneLink>
           </nav>
         </div>
@@ -166,11 +165,11 @@ export default async function AreaPage({ params }: AreaPageProps) {
       </nav>
 
       <UpfoldedHero locationName={area.name} />
+      <TestimonialsStrip />
       <TrustBar locationName={area.name} />
       <WhyChoose />
       <ServicesGrid />
       <HowItWorksStrip />
-      <TestimonialsStrip />
       <GuaranteesSection />
       <LossAversionSection locationName={area.name} />
       <AreasCovered currentArea={area} />
