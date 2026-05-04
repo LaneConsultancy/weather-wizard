@@ -52,26 +52,31 @@ export function WhyChoose() {
   return (
     <section className="bg-white py-20 md:py-28">
       <div className="container mx-auto px-4 max-w-6xl">
-        {/* Section header */}
-        <div className="text-center mb-14 md:mb-20 max-w-2xl mx-auto">
-          <div className="flex justify-center mb-6">
+        {/* Section header — photo + text two-column */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center mb-14 md:mb-20">
+          {/* Photo column */}
+          <div className="relative aspect-[4/5] w-full max-w-md mx-auto md:max-w-none rounded-3xl overflow-hidden bg-slate-100 ring-1 ring-slate-200">
             <Image
               src="/images/hero-roofer.webp"
               alt="Jon, Weather Wizard"
-              width={384}
-              height={384}
-              className="h-24 w-24 md:h-28 md:w-28 rounded-full object-cover object-top ring-4 ring-copper-50"
+              fill
+              className="object-cover"
+              sizes="(min-width: 768px) 50vw, 100vw"
             />
           </div>
-          <span className="inline-block bg-copper-50 text-copper-700 font-semibold text-xs uppercase tracking-widest rounded-full px-4 py-1.5 mb-5">
-            Why us
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-5 text-balance tracking-tight">
-            Why Choose Weather Wizard
-          </h2>
-          <p className="text-slate-500 text-lg leading-relaxed">
-            Straight talk, fixed prices, and a roofer who picks up the phone.
-          </p>
+
+          {/* Text column */}
+          <div className="text-center md:text-left">
+            <span className="inline-block bg-copper-50 text-copper-700 font-semibold text-xs uppercase tracking-widest rounded-full px-4 py-1.5 mb-5">
+              Why us
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-5 text-balance tracking-tight">
+              Why Choose Weather Wizard
+            </h2>
+            <p className="text-slate-500 text-lg leading-relaxed">
+              Straight talk, fixed prices, and a roofer who picks up the phone.
+            </p>
+          </div>
         </div>
 
         {/* Feature grid */}
