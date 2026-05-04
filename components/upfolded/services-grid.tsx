@@ -82,7 +82,7 @@ export function ServicesGrid() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
             <Link
-              key={service.href}
+              key={service.name}
               href={service.href}
               className="group relative flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-200 transition-all duration-200 hover:border-copper/40 hover:shadow-soft-lg hover:-translate-y-0.5"
             >

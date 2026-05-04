@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Hammer,
   Phone,
@@ -53,6 +54,15 @@ export function WhyChoose() {
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Section header */}
         <div className="text-center mb-14 md:mb-20 max-w-2xl mx-auto">
+          <div className="flex justify-center mb-6">
+            <Image
+              src="/images/hero-roofer.webp"
+              alt="Jon, Weather Wizard"
+              width={384}
+              height={384}
+              className="h-24 w-24 md:h-28 md:w-28 rounded-full object-cover object-top ring-4 ring-copper-50"
+            />
+          </div>
           <span className="inline-block bg-copper-50 text-copper-700 font-semibold text-xs uppercase tracking-widest rounded-full px-4 py-1.5 mb-5">
             Why us
           </span>
