@@ -164,25 +164,8 @@ export default function RootLayout({
           ` }}
         />
 
-        {/* Preload hero image for faster LCP */}
-        <link
-          rel="preload"
-          href="/images/hero-roofer.webp"
-          as="image"
-          type="image/webp"
-          fetchPriority="high"
-        />
-
-        {/* Preconnect to Google Fonts for faster loading */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        {/* Preload critical font */}
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=swap"
-          as="style"
-        />
+        {/* Preconnect to Tally — the form iframe loads above the fold */}
+        <link rel="preconnect" href="https://tally.so" crossOrigin="anonymous" />
 
         <script
           type="application/ld+json"
