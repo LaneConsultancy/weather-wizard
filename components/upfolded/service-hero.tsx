@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Check, Phone, Star } from "lucide-react";
 import { PhoneLink } from "@/components/phone-link";
 import type { ServiceContent } from "@/lib/content/services";
+import { useMetaLeadTracking } from "@/lib/use-meta-lead-tracking";
 
 function formatKeyword(raw: string): string {
   return raw
@@ -58,6 +59,8 @@ export function ServiceHero({
   service,
   locationName = "Kent",
 }: ServiceHeroProps) {
+  useMetaLeadTracking();
+
   const defaultMain =
     locationName && locationName !== "Kent"
       ? service.areaHeroHeadline.replace("{area}", locationName)
@@ -82,6 +85,7 @@ export function ServiceHero({
     const msclkid = document.cookie.match(
       /(?:^|; )ww_msclkid_js=([^;]*)/
     )?.[1];
+    const fbclid = document.cookie.match(/(?:^|; )ww_fbclid_js=([^;]*)/)?.[1];
 
     const tallyFrames = document.querySelectorAll<HTMLIFrameElement>(
       "iframe[data-tally-src]"
@@ -93,10 +97,11 @@ export function ServiceHero({
       const url = new URL(src);
       if (gclid) url.searchParams.set("gclid", decodeURIComponent(gclid));
       if (msclkid) url.searchParams.set("msclkid", decodeURIComponent(msclkid));
+      if (fbclid) url.searchParams.set("fbclid", decodeURIComponent(fbclid));
       frame.setAttribute("data-tally-src", url.toString());
     });
 
-    if ((gclid || msclkid) && (window as any).Tally) {
+    if ((gclid || msclkid || fbclid) && (window as any).Tally) {
       (window as any).Tally.loadEmbeds();
     }
   }, []);

@@ -3,12 +3,15 @@
 import { useEffect } from "react";
 import { Phone, FileText } from "lucide-react";
 import { PhoneLink } from "@/components/phone-link";
+import { useMetaLeadTracking } from "@/lib/use-meta-lead-tracking";
 
 interface TallyFormProps {
   variant?: "default" | "compact";
 }
 
 export function TallyForm({ variant = "default" }: TallyFormProps) {
+  useMetaLeadTracking();
+
   useEffect(() => {
     // Load Tally embeds after component mounts
     if (typeof window !== "undefined" && (window as any).Tally) {
@@ -18,6 +21,7 @@ export function TallyForm({ variant = "default" }: TallyFormProps) {
     // Read click IDs from client-accessible cookies and append to Tally embed URL
     const gclid = document.cookie.match(/(?:^|; )ww_gclid_js=([^;]*)/)?.[1];
     const msclkid = document.cookie.match(/(?:^|; )ww_msclkid_js=([^;]*)/)?.[1];
+    const fbclid = document.cookie.match(/(?:^|; )ww_fbclid_js=([^;]*)/)?.[1];
 
     const tallyFrames = document.querySelectorAll<HTMLIFrameElement>(
       "iframe[data-tally-src]"
@@ -30,12 +34,13 @@ export function TallyForm({ variant = "default" }: TallyFormProps) {
       const url = new URL(src);
       if (gclid) url.searchParams.set("gclid", decodeURIComponent(gclid));
       if (msclkid) url.searchParams.set("msclkid", decodeURIComponent(msclkid));
+      if (fbclid) url.searchParams.set("fbclid", decodeURIComponent(fbclid));
 
       frame.setAttribute("data-tally-src", url.toString());
     });
 
     // Reload Tally embeds to pick up the updated URL
-    if ((gclid || msclkid) && (window as any).Tally) {
+    if ((gclid || msclkid || fbclid) && (window as any).Tally) {
       (window as any).Tally.loadEmbeds();
     }
   }, []);

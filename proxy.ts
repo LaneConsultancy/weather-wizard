@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
  * - gbraid:  Google Ads iOS privacy-safe click ID
  * - wbraid:  Google Ads cross-device web click ID
  * - msclkid: Microsoft Advertising (Bing) click ID
+ * - fbclid:  Meta (Facebook/Instagram) click ID
  *
  * Cookies are set with:
  * - httpOnly: varies (see COOKIE_CONFIG)
@@ -18,7 +19,7 @@ import { NextRequest, NextResponse } from "next/server";
  * - maxAge: 90 days (matches Google's maximum conversion window)
  */
 
-const CLICK_ID_PARAMS = ["gclid", "gbraid", "wbraid", "msclkid"] as const;
+const CLICK_ID_PARAMS = ["gclid", "gbraid", "wbraid", "msclkid", "fbclid"] as const;
 
 const COOKIE_PREFIX = "ww_";
 const COOKIE_MAX_AGE = 90 * 24 * 60 * 60; // 90 days in seconds

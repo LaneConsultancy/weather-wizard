@@ -50,6 +50,9 @@ export const metadata: Metadata = {
       follow: true,
     },
   },
+  other: {
+    "facebook-domain-verification": "lg3u3wsim0xll44zn62xrzubl1m746",
+  },
 };
 
 const structuredData = {
@@ -189,6 +192,34 @@ export default function RootLayout({
           src="https://tally.so/widgets/embed.js"
           strategy="lazyOnload"
         />
+
+        {/* Meta Pixel — base code
+            Pixel ID is intentionally hardcoded: it is a public identifier
+            rendered into every page's HTML and carries no secret value.
+            strategy="afterInteractive" loads after hydration without blocking
+            paint, and is compatible with Next.js static export. */}
+        <Script id="meta-pixel" strategy="afterInteractive">{`
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '1367676768740652');
+          fbq('track', 'PageView');
+        `}</Script>
+        <noscript>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=1367676768740652&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
       </body>
     </html>
   );
