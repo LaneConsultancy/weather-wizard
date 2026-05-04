@@ -4,11 +4,17 @@ import { Phone } from "lucide-react";
 import { PhoneLink } from "@/components/phone-link";
 import { ServiceHero } from "@/components/upfolded/service-hero";
 import { TrustBar } from "@/components/upfolded/trust-bar";
+import { WhyChoose } from "@/components/upfolded/why-choose";
+import { ServicesGrid } from "@/components/upfolded/services-grid";
 import { ServiceHowItWorks } from "@/components/upfolded/service-how-it-works";
 import { TestimonialsStrip } from "@/components/upfolded/testimonials-strip";
+import { GuaranteesSection } from "@/components/upfolded/guarantees-section";
 import { ServiceLossAversion } from "@/components/upfolded/service-loss-aversion";
 import { ServiceContentSection } from "@/components/upfolded/service-content-section";
+import { AreasCovered } from "@/components/upfolded/areas-covered";
 import { ServiceFaq } from "@/components/upfolded/service-faq";
+import { FinalCta } from "@/components/upfolded/final-cta";
+import { UpfoldedFooter } from "@/components/upfolded/upfolded-footer";
 import { UpfoldedStickyCta } from "@/components/upfolded/upfolded-sticky-cta";
 import { getServiceForArea, getService } from "@/lib/content/services";
 import { getAreaBySlug } from "@/lib/areas";
@@ -152,45 +158,17 @@ export default async function AreaBirdProofingPage({ params }: PageProps) {
 
       <ServiceHero service={baseService} locationName={area.name} />
       <TrustBar locationName={area.name} />
+      <WhyChoose />
+      <ServicesGrid />
       <ServiceHowItWorks service={baseService} />
       <TestimonialsStrip />
+      <GuaranteesSection />
       <ServiceLossAversion service={baseService} locationName={area.name} />
       <ServiceContentSection service={baseService} />
+      <AreasCovered currentArea={area} />
       <ServiceFaq service={baseService} />
-
-      <section className="bg-slate-900 py-12 md:py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-            No Obligation. No Call-Out Fee. No Surprises.
-          </h2>
-          <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">
-            Get a free quote for bird proofing in {area.name} and I&apos;ll tell you exactly
-            what needs doing &mdash; and what doesn&apos;t. If it can wait, I&apos;ll say so.
-          </p>
-          <a
-            href="#quote-form"
-            className="inline-flex items-center gap-2 bg-[#c2410c] hover:bg-[#c2410c]/90 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-copper transition-all btn-shine"
-          >
-            Get Your Free Quote
-          </a>
-        </div>
-      </section>
-
-      <footer className="bg-slate-950 border-t border-white/10 py-6 pb-20">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-white/50">
-            <a href="/" className="hover:text-white/80 transition-colors min-h-[44px] inline-flex items-center">Home</a>
-            <span className="hidden sm:inline" aria-hidden="true">&middot;</span>
-            <a href="/privacy" className="hover:text-white/80 transition-colors min-h-[44px] inline-flex items-center">Privacy Policy</a>
-            <span className="hidden sm:inline" aria-hidden="true">&middot;</span>
-            <a href="/cookies" className="hover:text-white/80 transition-colors min-h-[44px] inline-flex items-center">Cookie Policy</a>
-          </div>
-          <p className="text-center text-white/60 text-xs mt-4">
-            &copy; {new Date().getFullYear()} Weather Wizard Roofing &amp; Guttering
-          </p>
-        </div>
-      </footer>
-
+      <FinalCta locationName={area.name} />
+      <UpfoldedFooter />
       <UpfoldedStickyCta />
     </main>
   );

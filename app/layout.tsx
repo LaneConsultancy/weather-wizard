@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Cinzel } from "next/font/google";
+import { Albert_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { SITE_URL } from "@/lib/config";
@@ -11,17 +11,10 @@ import { WhatConverts } from "@/components/whatconverts";
 import { GoogleAds } from "@/components/google-ads";
 import { StickyCallBar } from "@/components/sticky-call-bar";
 
-const plusJakarta = Plus_Jakarta_Sans({
+const albert = Albert_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-plus-jakarta",
-  display: "swap",
-});
-
-const cinzel = Cinzel({
-  subsets: ["latin"],
-  weight: ["700"],
-  variable: "--font-cinzel",
+  variable: "--font-albert",
   display: "swap",
 });
 
@@ -147,7 +140,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB" className={`${plusJakarta.variable} ${cinzel.variable}`}>
+    <html lang="en-GB" className={albert.variable}>
       <head>
         {/* Consent Mode v2 defaults - MUST be synchronous and before all tracking scripts */}
         <script
@@ -184,15 +177,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-        {/* Preload critical fonts */}
+        {/* Preload critical font */}
         <link
           rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-          as="style"
-        />
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=swap"
           as="style"
         />
 

@@ -155,8 +155,8 @@ const config: Config = {
         'inner-light': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.06)',
       },
       fontFamily: {
-        sans: ['var(--font-plus-jakarta)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-cinzel)', 'serif'],
+        sans: ['var(--font-albert)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-albert)', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-up': 'fadeUp 0.5s ease-out forwards',

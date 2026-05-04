@@ -33,7 +33,7 @@ const stats = [
 
 export function TrustBar({ locationName = "Kent" }: TrustBarProps) {
   return (
-    <section className="bg-slate-800 py-8 md:py-10 border-y border-white/10">
+    <section className="bg-slate-900 py-12 md:py-14">
       <div className="container mx-auto px-4">
         {/* Stats grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-4xl mx-auto mb-6">

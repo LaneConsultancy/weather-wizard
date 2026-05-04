@@ -31,7 +31,7 @@ export function ServiceFaq({ service }: ServiceFaqProps) {
   };
 
   return (
-    <section className="bg-slate-800 py-12 md:py-16">
+    <section className="bg-slate-900 py-20 md:py-28">
       {/* FAQPage JSON-LD — developer-authored controlled content, safe to serialise */}
       <script
         type="application/ld+json"
@@ -41,9 +41,14 @@ export function ServiceFaq({ service }: ServiceFaqProps) {
 
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-8 md:mb-10">
-            Frequently Asked Questions
-          </h2>
+          <div className="text-center mb-14 md:mb-20 max-w-2xl mx-auto">
+            <span className="inline-block text-xs font-semibold uppercase tracking-widest text-copper bg-copper/20 border border-copper/30 rounded-full px-4 py-1.5 mb-5">
+              FAQs
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white text-balance tracking-tight">
+              Frequently Asked Questions
+            </h2>
+          </div>
 
           <div className="space-y-3">
             {service.faqs.map((faq, index) => (

@@ -20,11 +20,16 @@ const testimonials = [
 
 export function TestimonialsStrip() {
   return (
-    <section className="bg-slate-800 py-12 md:py-16">
+    <section className="bg-slate-900 py-20 md:py-28">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-8 md:mb-10">
-          What Our Customers Say
-        </h2>
+        <div className="text-center mb-14 md:mb-20 max-w-2xl mx-auto">
+          <span className="inline-block text-xs font-semibold uppercase tracking-widest text-copper bg-copper/20 border border-copper/30 rounded-full px-4 py-1.5 mb-5">
+            Reviews
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white text-balance tracking-tight">
+            What Our Customers Say
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
           {testimonials.map((testimonial, index) => (
             <div
@@ -36,7 +41,7 @@ export function TestimonialsStrip() {
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
               <p className="text-white/70 text-xs font-semibold uppercase tracking-wider">
-                &mdash; {testimonial.author}
+                {testimonial.author}
               </p>
             </div>
           ))}

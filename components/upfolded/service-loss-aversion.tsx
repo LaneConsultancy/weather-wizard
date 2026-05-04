@@ -60,7 +60,7 @@ const stagesByService: Record<string, LossAversionStage[]> = {
       timeline: "Week 1",
       title: "Pigeons Move In",
       description:
-        "A pair of pigeons discovers the gap under your solar panels — the perfect sheltered nesting spot. Fitting mesh at this stage costs around \u00a3200\u2013\u00a3400.",
+        "A pair of pigeons discovers the gap under your solar panels: the perfect sheltered nesting spot. Fitting mesh at this stage costs around \u00a3200\u2013\u00a3400.",
       borderColor: "border-[#5ba8a0]",
       iconBg: "bg-[#5ba8a0]/10",
       iconColor: "text-[#5ba8a0]",
@@ -123,7 +123,7 @@ const stagesByService: Record<string, LossAversionStage[]> = {
       timeline: "Year 3",
       title: "Replacement Needed",
       description:
-        "Rotted fascias and soffits can no longer hold guttering brackets. Full replacement is unavoidable \u2014 now \u00a32,000\u2013\u00a34,000 including scaffolding.",
+        "Rotted fascias and soffits can no longer hold guttering brackets. Full replacement is unavoidable. Now \u00a32,000\u2013\u00a34,000 including scaffolding.",
       borderColor: "border-rust",
       iconBg: "bg-rust/10",
       iconColor: "text-rust",
@@ -146,15 +146,18 @@ export function ServiceLossAversion({
   const stages = stagesByService[service.slug] ?? stagesByService["guttering"];
 
   return (
-    <section className="bg-cream py-12 md:py-16">
+    <section className="bg-cream py-20 md:py-28">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Section heading */}
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+          <div className="text-center mb-14 md:mb-20 max-w-2xl mx-auto">
+            <span className="inline-block bg-copper-50 text-copper-700 font-semibold text-xs uppercase tracking-widest rounded-full px-4 py-1.5 mb-5">
+              The real cost
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-5 text-balance tracking-tight">
               A Low-Cost Fix Today Saves Thousands Later
             </h2>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+            <p className="text-slate-600 text-lg leading-relaxed">
               Most {service.name.toLowerCase()} problems in {locationName} start small and cheap to fix.
               Leave them, and the cost climbs fast. Here&apos;s the real timeline.
             </p>

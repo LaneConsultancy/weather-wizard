@@ -6,11 +6,16 @@ interface ServiceHowItWorksProps {
 
 export function ServiceHowItWorks({ service }: ServiceHowItWorksProps) {
   return (
-    <section className="bg-cream py-12 md:py-16">
+    <section className="bg-cream py-20 md:py-28">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 text-center mb-8 md:mb-10">
-          How It Works
-        </h2>
+        <div className="text-center mb-14 md:mb-20 max-w-2xl mx-auto">
+          <span className="inline-block bg-copper-50 text-copper-700 font-semibold text-xs uppercase tracking-widest rounded-full px-4 py-1.5 mb-5">
+            How it works
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 text-balance tracking-tight">
+            From first call to fixed roof
+          </h2>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {service.process.map((step) => (
             <div key={step.step} className="text-center">

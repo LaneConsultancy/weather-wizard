@@ -45,15 +45,18 @@ const stages = [
 
 export function LossAversionSection({ locationName = "Kent" }: LossAversionSectionProps) {
   return (
-    <section className="bg-cream py-12 md:py-16">
+    <section className="bg-cream py-20 md:py-28">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Section heading */}
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+          <div className="text-center mb-14 md:mb-20 max-w-2xl mx-auto">
+            <span className="inline-block bg-copper-50 text-copper-700 font-semibold text-xs uppercase tracking-widest rounded-full px-4 py-1.5 mb-5">
+              The real cost
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-5 text-balance tracking-tight">
               A Low-Cost Fix Today Saves Thousands Later
             </h2>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+            <p className="text-slate-600 text-lg leading-relaxed">
               Most roof problems in {locationName} start small and cheap to fix.
               Leave them, and the cost climbs fast. Here&apos;s the real timeline.
             </p>

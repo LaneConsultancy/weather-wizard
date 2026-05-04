@@ -1,174 +1,97 @@
-import Link from "next/link";
-import { Shield, Wrench, MapPin, Phone } from "lucide-react";
-import { Header } from "@/components/header";
-import { HeroSection } from "@/components/hero-section";
-import { TrustSignals } from "@/components/trust-signals";
-import { ServicesSection } from "@/components/services-section";
-import { ReviewsSection } from "@/components/reviews-section";
-import { QuoteFormSection } from "@/components/quote-form-section";
-import { CTASection } from "@/components/cta-section";
-import { Footer } from "@/components/footer";
-import { getAllAreas } from "@/lib/areas";
+import type { Metadata } from "next";
+import Image from "next/image";
+import { Phone } from "lucide-react";
+import { PhoneLink } from "@/components/phone-link";
+import { UpfoldedHero } from "@/components/upfolded/upfolded-hero";
+import { TrustBar } from "@/components/upfolded/trust-bar";
+import { WhyChoose } from "@/components/upfolded/why-choose";
+import { ServicesGrid } from "@/components/upfolded/services-grid";
+import { HowItWorksStrip } from "@/components/upfolded/how-it-works-strip";
+import { TestimonialsStrip } from "@/components/upfolded/testimonials-strip";
+import { GuaranteesSection } from "@/components/upfolded/guarantees-section";
+import { LossAversionSection } from "@/components/upfolded/loss-aversion-section";
+import { AreasCovered } from "@/components/upfolded/areas-covered";
+import { FaqSection } from "@/components/upfolded/faq-section";
+import { FinalCta } from "@/components/upfolded/final-cta";
+import { UpfoldedFooter } from "@/components/upfolded/upfolded-footer";
+import { UpfoldedStickyCta } from "@/components/upfolded/upfolded-sticky-cta";
+import { SITE_URL } from "@/lib/config";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: "Kent Roofers. No Call-Out Fee. Fixed Prices. | Weather Wizard",
+  description:
+    "Trusted Kent roofer with 25 years' experience. No call-out fee, fixed prices, written quotes. Roof repairs, guttering, chimneys & more. Free quote in 30 seconds.",
+  alternates: {
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    title: "Kent Roofers. No Call-Out Fee. Fixed Prices. | Weather Wizard",
+    description:
+      "Trusted Kent roofer with 25 years' experience. No call-out fee, fixed prices, written quotes. Free quote in 30 seconds.",
+    url: SITE_URL,
+    siteName: "Weather Wizard",
+    type: "website",
+    locale: "en_GB",
+  },
+};
 
 export default function Home() {
   return (
     <main className="min-h-screen">
-      {/* Header */}
-      <Header />
+      {/* Skip navigation */}
+      <a
+        href="#quote-form"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-slate-900 focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:text-sm focus:font-medium"
+      >
+        Skip to quote form
+      </a>
 
-      {/* Hero Section with Integrated Form */}
-      <HeroSection />
-
-      {/* Quote Form Section */}
-      <QuoteFormSection />
-
-      {/* Reviews Section - Real Checkatrade Reviews */}
-      <ReviewsSection />
-
-      {/* Trust Signals Bar */}
-      <TrustSignals />
-
-      {/* Services Section */}
-      <ServicesSection />
-
-      {/* Why Choose Weather Wizard Section */}
-      <section id="about" className="relative py-20 md:py-28 bg-slate-900 text-white overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0 slate-pattern opacity-40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-transparent to-slate-900" />
-
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-copper/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-slate-700/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-
-        <div className="container mx-auto px-4 relative z-10">
-          {/* Section header */}
-          <div className="text-center mb-16">
-            <span className="inline-block text-copper font-semibold text-sm tracking-wider uppercase mb-3">
-              Why Me
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-              A Roofer You Can Actually Rely On
-            </h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
-              New company, not new to roofing. I&apos;ve spent 25 years learning what matters —
-              and what doesn&apos;t. Here&apos;s what you&apos;re getting.
-            </p>
-          </div>
-
-          {/* Feature grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {[
-              {
-                icon: Wrench,
-                title: "25 Years' Experience",
-                description: "I've fixed every type of roof Kent has to offer. Pitched, flat, tiled, slate — there's nothing I haven't seen."
-              },
-              {
-                icon: Shield,
-                title: "Public Liability Insured",
-                description: "Full public liability insurance. If anything goes wrong (it won't), you're covered. Paperwork provided."
-              },
-              {
-                icon: MapPin,
-                title: "Based in Maidstone",
-                description: "30 minutes to most of Kent. I'm local, I'm not going anywhere, and I'll be here when you need me."
-              },
-              {
-                icon: Phone,
-                title: "I Answer the Phone",
-                description: "Call the number and you'll get me. Not a call centre, not a receptionist. Just the bloke who'll fix your roof."
-              }
-            ].map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div
-                  key={index}
-                  className="group relative bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 hover:border-copper/30 transition-all duration-300 hover:-translate-y-1"
-                >
-                  {/* Icon */}
-                  <div className="mb-5">
-                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-lg bg-gradient-to-br from-copper/20 to-copper/5 group-hover:from-copper/30 group-hover:to-copper/10 transition-colors duration-300">
-                      <Icon className="w-7 h-7 text-copper" />
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="font-display text-xl font-bold text-white mb-3 group-hover:text-copper transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-white/60 text-sm leading-relaxed">
-                    {feature.description}
-                  </p>
-
-                  {/* Decorative accent */}
-                  <div className="absolute bottom-0 left-6 right-6 h-0.5 bg-gradient-to-r from-transparent via-copper/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Service Areas Section */}
-      <section className="relative py-20 md:py-28 bg-cream overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-copper/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
-        <div className="absolute bottom-0 right-0 w-72 h-72 bg-slate-200/50 rounded-full blur-3xl translate-y-1/2 translate-x-1/2" />
-
-        <div className="container mx-auto px-4 relative z-10">
-          {/* Section header */}
-          <div className="text-center mb-12">
-            <span className="inline-block text-copper font-semibold text-sm tracking-wider uppercase mb-3">
-              Coverage
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-              Proudly Serving Kent
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Your local roofing experts across Kent and surrounding areas. Click an area to learn more about our services in your location.
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            {/* Areas grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-              {getAllAreas().slice(0, 15).map((area) => (
-                <Link
-                  key={area.slug}
-                  href={`/${area.slug}`}
-                  className="group relative bg-white rounded-lg py-4 px-4 shadow-soft hover:shadow-soft-lg border border-slate-100 hover:border-copper/30 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-copper/60 group-hover:text-copper transition-colors" />
-                    <p className="font-semibold text-slate-800 group-hover:text-copper transition-colors text-sm">
-                      {area.name}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+      {/* Minimal brand bar — logo + phone CTA */}
+      <header className="bg-slate-900 border-b border-white/10">
+        <div className="container mx-auto px-4">
+          <nav
+            aria-label="Main"
+            className="flex items-center justify-between py-3"
+          >
+            <div className="flex items-center gap-3">
+              <Image
+                src="/weather-wizard-logo-no-bg.png"
+                alt="Weather Wizard"
+                width={40}
+                height={40}
+                className="h-10 w-auto"
+              />
+              <span className="text-white font-semibold text-lg hidden sm:inline">
+                Weather Wizard
+              </span>
             </div>
 
-            {/* More areas indicator */}
-            <div className="mt-8 text-center">
-              <div className="inline-flex items-center gap-3 bg-white rounded-full px-6 py-3 shadow-soft border border-slate-100">
-                <MapPin className="w-4 h-4 text-copper" />
-                <span className="text-slate-600 text-sm">
-                  Plus <span className="font-semibold text-slate-900">{getAllAreas().length - 15}+ more areas</span> across Kent
-                </span>
-              </div>
-            </div>
-          </div>
+            <PhoneLink
+              className="flex items-center gap-2 text-white hover:text-copper transition-colors font-semibold min-h-[44px]"
+              label="home_header_phone"
+            >
+              <Phone className="h-4 w-4" />
+              <span className="hidden sm:inline">0800 316 2922</span>
+              <span className="sm:hidden">Call Us</span>
+            </PhoneLink>
+          </nav>
         </div>
-      </section>
+      </header>
 
-      {/* Final CTA Section */}
-      <CTASection />
-
-      {/* Footer */}
-      <Footer />
+      <UpfoldedHero locationName="Kent" />
+      <TrustBar locationName="Kent" />
+      <WhyChoose />
+      <ServicesGrid />
+      <HowItWorksStrip />
+      <TestimonialsStrip />
+      <GuaranteesSection />
+      <LossAversionSection locationName="Kent" />
+      <AreasCovered />
+      <FaqSection />
+      <FinalCta locationName="Kent" />
+      <UpfoldedFooter />
+      <UpfoldedStickyCta />
     </main>
   );
 }

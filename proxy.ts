@@ -47,7 +47,20 @@ const COOKIE_MAX_AGE = 90 * 24 * 60 * 60; // 90 days in seconds
  */
 
 export function proxy(request: NextRequest) {
-  const { searchParams } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
+
+  // 301 redirect for retired /upfolded-new/* routes. Kept as a safety net for
+  // stale external links (organic results, email signatures). Active ad URLs
+  // are migrated off this path before route deletion (see Phase F of the plan).
+  if (pathname === "/upfolded-new" || pathname.startsWith("/upfolded-new/")) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname =
+      pathname === "/upfolded-new"
+        ? "/"
+        : pathname.slice("/upfolded-new".length);
+    return NextResponse.redirect(redirectUrl, 308);
+  }
+
   const response = NextResponse.next();
 
   let hasClickId = false;
